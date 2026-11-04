@@ -9,24 +9,31 @@ import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 
-function ModeSelect() {
+/**
+ * variant:
+ * - 'appbar' (mặc định): chữ + viền TRẮNG, dùng trên nền xanh/dậm (AppBar, trang Auth)
+ * - 'page': theo theme (text.primary + viền divider), dùng trên nền sáng/tối của trang thường (Home)
+ */
+function ModeSelect({ variant = 'appbar' }) {
   const { mode, setMode } = useColorScheme()
   const { t } = useTranslation()
   const handleChange = (event) => {
     const selectedMode = event.target.value
     setMode(selectedMode)
-    // setAge(event.target.value)
   }
+
+  const onColoredBg = variant === 'appbar'
 
   return (
     <FormControl size="small" sx={{ minWidth: '120px' }}>
       <InputLabel
         id="label-select-dark-light-mode"
         sx={{
-          color: 'white',
-          '&.Mui-focused': { color: 'white' }
+          color: onColoredBg ? 'white' : 'text.primary',
+          '&.Mui-focused': { color: onColoredBg ? 'white' : 'text.primary' }
         }}
       >
+        {t('mode.label')}
       </InputLabel>
       <Select
         labelId="label-select-dark-light-mode"
@@ -35,12 +42,12 @@ function ModeSelect() {
         label={t('mode.label')}
         onChange={handleChange}
         sx={{
-          color: 'white',
-          'MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
-          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'white' },
-          '.MuiSvgIcon-root': { color: 'white' },
-          '& fieldset': { borderColor: 'white' }
+          color: onColoredBg ? 'white' : 'text.primary',
+          '.MuiOutlinedInput-notchedOutline': { borderColor: onColoredBg ? 'white' : 'rgba(0, 0, 0, 0.23)' },
+          '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: onColoredBg ? 'white' : 'text.primary' },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: onColoredBg ? 'white' : 'primary.main' },
+          '.MuiSvgIcon-root': { color: onColoredBg ? 'white' : 'text.primary' },
+          '& fieldset': { borderColor: onColoredBg ? 'white' : 'rgba(0, 0, 0, 0.23)' }
         }}
       >
         <MenuItem value="light">

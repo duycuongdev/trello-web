@@ -299,5 +299,11 @@
     "gradients": "Gradients",
     "colors": "Colors",
     "upload": "Upload"
+  },
+  "home": {
+    "getTrelloFree": "Get Trello for free",
+    "goToBoards": "Go to boards",
+    "boardsShort": "Boards",
+    "logIn": "Log in"
   }
 }
