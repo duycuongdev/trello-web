@@ -1,5 +1,7 @@
 // import React from 'react'
 import ReactDOM from 'react-dom/client'
+// i18n song ngữ (EN/VI) - khởi tạo trước App
+import '~/i18n'
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import GlobalStyles from '@mui/material/GlobalStyles'

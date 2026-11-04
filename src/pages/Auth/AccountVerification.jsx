@@ -2,8 +2,10 @@ import { useEffect, useRef } from 'react'
 import { useSearchParams, useNavigate, Navigate } from 'react-router-dom'
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 import { verifyUserAPI } from '~/apis'
+import { useTranslation } from 'react-i18next'
 
 const AccountVerification = () => {
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const { email, token } = Object.fromEntries([...searchParams])
   const navigate = useNavigate()
@@ -58,7 +60,7 @@ const AccountVerification = () => {
     return <Navigate to='/404' replace />
   }
 
-  return <PageLoadingSpinner caption='Verifying your account...' />
+  return <PageLoadingSpinner caption={t('auth.verifying')} />
 }
 
 export default AccountVerification

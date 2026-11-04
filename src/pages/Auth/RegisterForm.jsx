@@ -14,11 +14,7 @@ import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import {
   EMAIL_RULE,
-  EMAIL_RULE_MESSAGE,
-  PASSWORD_CONFIRMATION_MESSAGE,
-  PASSWORD_RULE,
-  PASSWORD_RULE_MESSAGE,
-  FIELD_REQUIRED_MESSAGE
+  PASSWORD_RULE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { useForm } from 'react-hook-form'
@@ -27,9 +23,11 @@ import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { loginGoogleUserAPI } from '~/redux/user/userSlice'
 import { GoogleLogin } from '@react-oauth/google'
+import { useTranslation } from 'react-i18next'
 
 function RegisterForm() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch
+  const { t } = useTranslation()()
   const navigate = useNavigate()
   const [registeredEmail, setRegisteredEmail] = useState(null)
   const { handleSubmit, register, formState: { errors }, watch, reset } = useForm()
@@ -37,14 +35,14 @@ function RegisterForm() {
   const handleGoogleLoginSuccess = (credentialResponse) => {
     if (!credentialResponse?.credential) return
     toast.promise(dispatch(loginGoogleUserAPI({ token: credentialResponse.credential })), {
-      pending: 'Signing up with Google...'
+      pending: t('auth.signingUpWithGoogle')
     }).then((res) => {
       if (!res.error) { navigate('/') }
     })
   }
 
   const handleGoogleLoginError = () => {
-    toast.error('Google Sign Up was unsuccessful. Please try again.')
+    toast.error(t('auth.googleSignUpFailed'))
   }
 
   // Lắng nghe tín hiệu kích hoạt từ tab xác thực email (BroadcastChannel & localStorage event)
@@ -92,9 +90,9 @@ function RegisterForm() {
   const submitRegister = (data) => {
     const { email, password } = data
     toast.promise(registerUserAPI({ email, password }), {
-      pending: 'Registering your account...',
-      success: 'Registration successful! Please check your email to activate.',
-      error: (err) => err?.response?.data?.message || 'Registration failed!'
+      pending: t('auth.registering'),
+      success: t('auth.registerSuccess'),
+      error: (err) => err?.response?.data?.message || t('auth.registerFailed')
     }).then((user) => {
       // Giữ nguyên ở trang đăng ký và lưu email để hiển thị thông báo hướng dẫn vào hộp thư xác thực
       setRegisteredEmail(user?.email || email)
@@ -138,11 +136,11 @@ function RegisterForm() {
             </Box>
 
             <Typography variant="h5" fontWeight={800} sx={{ letterSpacing: '-0.5px', mb: 1 }}>
-              Check your email
+              {t('auth.checkYourEmail')}
             </Typography>
 
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.6 }}>
-              We have sent an activation link to:
+              {t('auth.activationSent')}
             </Typography>
 
             <Box sx={{
@@ -159,7 +157,7 @@ function RegisterForm() {
             </Box>
 
             <Alert severity="info" sx={{ mb: 3, borderRadius: 2, textAlign: 'left', fontSize: '0.825rem' }}>
-              Please check your inbox and click the verification link to activate your account. If you don&apos;t see it, check your <strong>Spam / Junk</strong> folder!
+              {t('auth.activationHint')}
             </Alert>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
@@ -179,7 +177,7 @@ function RegisterForm() {
                     boxShadow: '0 4px 14px rgba(12, 102, 228, 0.35)'
                   }}
                 >
-                  Open Gmail
+                  {t('auth.openGmail')}
                 </Button>
               )}
 
@@ -198,7 +196,7 @@ function RegisterForm() {
                   ...(!isGmail && { boxShadow: '0 4px 14px rgba(12, 102, 228, 0.35)' })
                 }}
               >
-                Go to Log in
+                {t('auth.goToLogin')}
               </Button>
 
               <Button
@@ -210,7 +208,7 @@ function RegisterForm() {
                 }}
                 sx={{ textTransform: 'none', color: 'text.secondary', mt: 0.5 }}
               >
-                Use a different email address
+                {t('auth.useDifferentEmail')}
               </Button>
             </Box>
           </MuiCard>
@@ -269,15 +267,15 @@ function RegisterForm() {
               <TextField
                 autoFocus
                 fullWidth
-                label="Email"
+                label={t('auth.email')}
                 type="text"
                 variant="outlined"
                 error={!!errors.email}
                 {...register('email', {
-                  required: FIELD_REQUIRED_MESSAGE,
+                  required: t('validation.required'),
                   pattern: {
                     value: EMAIL_RULE,
-                    message: EMAIL_RULE_MESSAGE
+                    message: t('validation.emailInvalid')
                   }
                 })}
               />
@@ -287,15 +285,15 @@ function RegisterForm() {
             <Box>
               <TextField
                 fullWidth
-                label="Password"
+                label={t('auth.password')}
                 type="password"
                 variant="outlined"
                 error={!!errors.password}
                 {...register('password', {
-                  required: FIELD_REQUIRED_MESSAGE,
+                  required: t('validation.required'),
                   pattern: {
                     value: PASSWORD_RULE,
-                    message: PASSWORD_RULE_MESSAGE
+                    message: t('validation.passwordRule')
                   }
                 })}
               />
@@ -312,7 +310,7 @@ function RegisterForm() {
                 {...register('password_confirmation', {
                   validate: (value) => {
                     if (value === watch('password')) return true
-                    return PASSWORD_CONFIRMATION_MESSAGE
+                    return t('validation.passwordConfirmation')
                   }
                 })}
               />
@@ -367,7 +365,7 @@ function RegisterForm() {
           {/* Bottom link */}
           <Box sx={{ p: 1.5, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
-              Already have an account?{' '}
+              already have an account?{' '}
               <Link to="/login" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
                 Log in
               </Link>

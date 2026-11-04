@@ -1,4 +1,5 @@
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -11,11 +12,7 @@ import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import { useForm } from 'react-hook-form'
 import {
-  EMAIL_RULE,
-  EMAIL_RULE_MESSAGE,
-  FIELD_REQUIRED_MESSAGE,
-  PASSWORD_RULE,
-  PASSWORD_RULE_MESSAGE
+  EMAIL_RULE,  PASSWORD_RULE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { toast } from 'react-toastify'
@@ -25,6 +22,7 @@ import { GoogleLogin } from '@react-oauth/google'
 
 function LoginForm() {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   const [searchParams] = useSearchParams()
@@ -41,7 +39,7 @@ function LoginForm() {
   const submitLogIn = (data) => {
     const { email, password } = data
     toast.promise(dispatch(loginUserApi({ email, password })), {
-      pending: 'Logging in...'
+      pending: t('auth.loggingIn')
     }).then((res) => {
       if (!res.error) { navigate('/') }
     })
@@ -50,14 +48,14 @@ function LoginForm() {
   const handleGoogleLoginSuccess = (credentialResponse) => {
     if (!credentialResponse?.credential) return
     toast.promise(dispatch(loginGoogleUserAPI({ token: credentialResponse.credential })), {
-      pending: 'Signing in with Google...'
+      pending: t('auth.signingInWithGoogle')
     }).then((res) => {
       if (!res.error) { navigate('/') }
     })
   }
 
   const handleGoogleLoginError = () => {
-    toast.error('Google Sign In was unsuccessful. Please try again.')
+    toast.error(t('auth.googleLoginFailed'))
   }
 
   return (
@@ -97,10 +95,10 @@ function LoginForm() {
               <TrelloIcon fontSize="medium" sx={{ color: 'white' }} />
             </Box>
             <Typography component="h1" variant="h5" fontWeight={800} sx={{ letterSpacing: '-0.5px' }}>
-              Log in to continue
+              {t('auth.loginTitle')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Welcome back! Please enter your details.
+              {t('auth.loginSubtitle')}
             </Typography>
           </Box>
 
@@ -108,22 +106,17 @@ function LoginForm() {
           <Box sx={{ px: 1.5, mb: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
             {verifiedEmail &&
               <Alert severity="success" sx={{ borderRadius: 2, '.MuiAlert-message': { overflow: 'hidden' } }}>
-                Your email&nbsp;
-                <Typography component="span" sx={{ fontWeight: 'bold' }}>{verifiedEmail}</Typography>
-                &nbsp;has been verified.<br />Now you can log in to enjoy our services!
+                {t('auth.verifiedAlert', { email: verifiedEmail })}
               </Alert>
             }
             {registeredEmail &&
               <Alert severity="info" sx={{ borderRadius: 2, '.MuiAlert-message': { overflow: 'hidden' } }}>
-                An email has been sent to&nbsp;
-                <Typography component="span" sx={{ fontWeight: 'bold' }}>{registeredEmail}</Typography>
-                <br />Please check and verify your account before logging in!
+                {t('auth.registeredAlert', { email: registeredEmail })}
               </Alert>
             }
             {resetSuccessEmail &&
               <Alert severity="success" sx={{ borderRadius: 2, '.MuiAlert-message': { overflow: 'hidden' } }}>
-                Your password has been reset successfully.<br />
-                Please log in with your new password.
+                {t('auth.resetSuccessAlert')}
               </Alert>
             }
           </Box>
@@ -134,15 +127,15 @@ function LoginForm() {
               <TextField
                 autoFocus
                 fullWidth
-                label="Email"
+                label={t('auth.email')}
                 type="text"
                 variant="outlined"
                 error={!!errors.email}
                 {...register('email', {
-                  required: FIELD_REQUIRED_MESSAGE,
+                  required: t('validation.required'),
                   pattern: {
                     value: EMAIL_RULE,
-                    message: EMAIL_RULE_MESSAGE
+                    message: t('validation.emailInvalid')
                   }
                 })}
               />
@@ -152,15 +145,15 @@ function LoginForm() {
             <Box>
               <TextField
                 fullWidth
-                label="Password"
+                label={t('auth.password')}
                 type="password"
                 variant="outlined"
                 error={!!errors.password}
                 {...register('password', {
-                  required: FIELD_REQUIRED_MESSAGE,
+                  required: t('validation.required'),
                   pattern: {
                     value: PASSWORD_RULE,
-                    message: PASSWORD_RULE_MESSAGE
+                    message: t('validation.passwordRule')
                   }
                 })}
               />
@@ -194,7 +187,7 @@ function LoginForm() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, my: 1.5, px: 1.5 }}>
             <Divider sx={{ flex: 1 }} />
             <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Or continue with
+              {t('auth.orContinueWith')}
             </Typography>
             <Divider sx={{ flex: 1 }} />
           </Box>
@@ -216,11 +209,11 @@ function LoginForm() {
           <Box sx={{ p: 1.5, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
               <Link to="/forgot-password" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
-                Forgot password?
+                {t('auth.forgotPassword')}
               </Link>
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Don&apos;t have an account yet?{' '}
+              {t('auth.noAccount')}{' '}
               <Link to="/register" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
                 Sign up
               </Link>

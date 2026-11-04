@@ -7,13 +7,13 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { useForm } from 'react-hook-form'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
-import { FIELD_REQUIRED_MESSAGE } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import AbcIcon from '@mui/icons-material/Abc'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import Button from '@mui/material/Button'
 import { createNewBoardAPI } from '~/apis'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -42,6 +42,7 @@ const SidebarItem = styled(Box)(({ theme }) => ({
  * Component SidebarCreateBoardModal: nút SidebarItem mở Modal tạo Board mới.
  */
 function SidebarCreateBoardModal({ afterCreateNewBoard }) {
+  const { t } = useTranslation()
   const { register, handleSubmit, reset, formState: { errors } } = useForm()
 
   const [isOpen, setIsOpen] = useState(false)
@@ -62,7 +63,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
     <>
       <SidebarItem onClick={handleOpenModal}>
         <LibraryAddIcon fontSize="small" sx={{ color: '#0052cc' }} />
-        Create a new board
+        {t('boards.createBoard')}
       </SidebarItem>
 
       <Modal
@@ -100,7 +101,7 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
           </Box>
           <Box id="modal-modal-title" sx={{ display: 'flex', alignItems: 'center', gap: 1.2, mb: 1 }}>
             <LibraryAddIcon color="primary" />
-            <Typography variant="h6" component="h2" fontWeight={700}>Create a new board</Typography>
+            <Typography variant="h6" component="h2" fontWeight={700}>{t('boards.createBoardTitle')}</Typography>
           </Box>
           <Box id="modal-modal-description" sx={{ my: 2 }}>
             <form onSubmit={handleSubmit(submitCreateNewBoard)}>
@@ -108,10 +109,10 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                 <Box>
                   <TextField
                     fullWidth
-                    label="Title"
+                    label={t('common.title')}
                     type="text"
                     variant="outlined"
-                    placeholder="e.g. Project Roadmap, Marketing Campaign..."
+                    placeholder={t('boards.boardTitlePlaceholder')}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -120,9 +121,9 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                       )
                     }}
                     {...register('title', {
-                      required: FIELD_REQUIRED_MESSAGE,
-                      minLength: { value: 3, message: 'Min Length is 3 characters' },
-                      maxLength: { value: 50, message: 'Max Length is 50 characters' }
+                      required: t('validation.required'),
+                      minLength: { value: 3, message: t('validation.minLength3') },
+                      maxLength: { value: 50, message: t('validation.minLength50') }
                     })}
                     error={!!errors['title']}
                   />
@@ -132,12 +133,12 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                 <Box>
                   <TextField
                     fullWidth
-                    label="Description"
+                    label={t('common.description')}
                     type="text"
                     variant="outlined"
                     multiline
                     rows={3}
-                    placeholder="Brief description about the purpose of this board..."
+                    placeholder={t('boards.boardDescriptionPlaceholder')}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -146,9 +147,9 @@ function SidebarCreateBoardModal({ afterCreateNewBoard }) {
                       )
                     }}
                     {...register('description', {
-                      required: FIELD_REQUIRED_MESSAGE,
-                      minLength: { value: 3, message: 'Min Length is 3 characters' },
-                      maxLength: { value: 255, message: 'Max Length is 255 characters' }
+                      required: t('validation.required'),
+                      minLength: { value: 3, message: t('validation.minLength3') },
+                      maxLength: { value: 255, message: t('validation.maxLength255') }
                     })}
                     error={!!errors['description']}
                   />

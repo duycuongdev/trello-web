@@ -13,11 +13,13 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
+import { useTranslation } from 'react-i18next'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 
 function Auth() {
+  const { t } = useTranslation()
   const location = useLocation()
   const isLogin = location.pathname === '/login'
   const isRegister = location.pathname === '/register'
@@ -193,13 +195,13 @@ function Auth() {
         fontSize: '13px'
       }}>
         <Stack direction="row" spacing={2} justifyContent="center" sx={{ mb: 0.5 }}>
-          <Link to="/" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 500 }}>Home</Link>
+          <Link to="/" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 500 }}>{t('auth.footerHome')}</Link>
           <span>•</span>
-          <Link to="/boards" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 500 }}>Boards</Link>
+          <Link to="/boards" style={{ color: 'inherit', textDecoration: 'none', fontWeight: 500 }}>{t('auth.footerBoards')}</Link>
           <span>•</span>
-          <span>Privacy Policy</span>
+          <span>{t('auth.footerPrivacy')}</span>
           <span>•</span>
-          <span>Terms of Service</span>
+          <span>{t('auth.footerTerms')}</span>
         </Stack>
         <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.75)' }}>
           © 2026 Trello || All rights reserved.

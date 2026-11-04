@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser, logoutUserAPI } from '~/redux/user/userSlice'
 import { useConfirm } from 'material-ui-confirm'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function Profile({ onOpenTour, onOpenShortcuts }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -26,22 +27,23 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
     setAnchorEl(null)
   }
 
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const currentUser = useSelector(selectCurrentUser)
 
   const confirmLogout = useConfirm()
   const handleLogout = () => {
     confirmLogout({
-      title: 'Log out of your account?',
-      confirmationText: 'Confirm',
-      cancellationText: 'Cancel'
+      title: t('profileMenu.logoutTitle'),
+      confirmationText: t('common.confirm'),
+      cancellationText: t('common.cancel')
     }).then(() => {
       dispatch(logoutUserAPI())
     }).catch(() => { })
   }
   return (
     <Box>
-      <Tooltip title="Account settings">
+      <Tooltip title={t('profileMenu.accountSettings')}>
         <IconButton
           onClick={handleClick}
           size="small"
@@ -72,7 +74,7 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
             <Avatar
               sx={{ width: 28, height: 28, mr: 2 }}
               src={currentUser?.avatar}
-            /> Profile
+            /> {t('profileMenu.profile')}
           </MenuItem>
         </Link>
         <Divider />
@@ -83,7 +85,7 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
           <ListItemIcon>
             <HelpOutlineIcon fontSize="small" sx={{ color: '#0052cc' }} />
           </ListItemIcon>
-          Product Tour
+          {t('profileMenu.productTour')}
         </MenuItem>
         <MenuItem onClick={() => {
           handleClose()
@@ -92,14 +94,14 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
           <ListItemIcon>
             <KeyboardOutlinedIcon fontSize="small" sx={{ color: '#0ea5e9' }} />
           </ListItemIcon>
-          Shortcuts (?)
+          {t('profileMenu.shortcuts')}
         </MenuItem>
         <Link to='/settings/account' style={{ color: 'inherit', textDecoration: 'none' }}>
           <MenuItem>
             <ListItemIcon>
               <Settings fontSize="small" sx={{ color: '#6366f1' }} />
             </ListItemIcon>
-            Settings
+            {t('profileMenu.settings')}
           </MenuItem>
         </Link>
         <MenuItem onClick={handleLogout} sx={{
@@ -111,7 +113,7 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
           <ListItemIcon>
             <Logout className='icon-logout' fontSize="small" sx={{ color: '#ef4444' }} />
           </ListItemIcon>
-          Logout
+          {t('profileMenu.logout')}
         </MenuItem>
       </Menu>
     </Box>

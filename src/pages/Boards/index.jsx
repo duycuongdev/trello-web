@@ -24,6 +24,7 @@ import { DEFAULT_PAGE, DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants.js'
 import { useConfirm } from 'material-ui-confirm'
 import { toast } from 'react-toastify'
 import { slugify } from '~/utils/formatter'
+import { useTranslation } from 'react-i18next'
 
 // Styles của các Sidebar item menu theo chuẩn Atlassian Surface
 const SidebarItem = styled(Box)(({ theme }) => ({
@@ -50,6 +51,7 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 }))
 
 function Boards() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const confirm = useConfirm()
   // Số lượng bản ghi boards hiển thị tối đa trên 1 page tùy dự án (thường sẽ là 12 cái)
@@ -74,47 +76,47 @@ function Boards() {
     setLoadError('')
     fetchBoardsAPI(location.search)
       .then(updateStateData)
-      .catch(() => setLoadError('Unable to load boards. Please try again.'))
-  }, [location.search])
+      .catch(() => setLoadError(t('boards.loadError')))
+  }, [location.search, t])
 
   const afterCreateNewBoard = () => {
     setLoadError('')
     setBoards(null)
     fetchBoardsAPI(location.search)
       .then(updateStateData)
-      .catch(() => setLoadError('Unable to refresh boards. Please try again.'))
+      .catch(() => setLoadError(t('boards.refreshError')))
   }
 
   const handleReopenBoard = async (boardId) => {
     try {
       await reopenBoardAPI(boardId)
-      toast.success('Board reopened!')
+      toast.success(t('boards.reopened'))
       fetchBoardsAPI(location.search).then(updateStateData)
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to reopen board')
+      toast.error(error?.response?.data?.message || t('boards.reopenFailed'))
     }
   }
 
   const handleDeleteBoard = (b) => {
     confirm({
-      title: 'Delete Board Permanently?',
-      description: `Are you sure you want to permanently delete "${b.title}"? All lists, cards, and invitations will be permanently removed. This action cannot be undone.`,
-      confirmationText: 'Delete permanently',
-      cancellationText: 'Cancel'
+      title: t('boards.deleteConfirmTitle'),
+      description: t('boards.deleteConfirmDescription', { title: b.title }),
+      confirmationText: t('boards.deletePermanently'),
+      cancellationText: t('common.cancel')
     }).then(async () => {
       try {
         await deleteBoardDetailsAPI(b._id)
-        toast.success('Board permanently deleted!')
+        toast.success(t('boards.permanentlyDeleted'))
         fetchBoardsAPI(location.search).then(updateStateData)
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to delete board')
+        toast.error(error?.response?.data?.message || t('boards.deleteFailed'))
       }
     }).catch(() => { })
   }
 
   // Lúc chưa tồn tại boards > đang chờ gọi api thì hiện loading
   if (!boards && !loadError) {
-    return <PageLoadingSpinner caption="Loading Boards..." />
+    return <PageLoadingSpinner caption={t('boards.loadingBoards')} />
   }
 
   if (loadError) {
@@ -152,7 +154,7 @@ function Boards() {
                 sx={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <SpaceDashboardIcon fontSize="small" />
-                Boards
+                {t('boards.sidebarBoards')}
               </SidebarItem>
 
               <SidebarItem
@@ -162,7 +164,7 @@ function Boards() {
                 sx={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <FolderOffOutlinedIcon fontSize="small" />
-                Closed boards
+                {t('boards.sidebarClosedBoards')}
               </SidebarItem>
             </Stack>
             {!isClosedView && (
@@ -178,13 +180,13 @@ function Boards() {
           {/* Main Content */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-              {isClosedView ? 'Closed boards:' : 'Your boards:'}
+              {isClosedView ? t('boards.closedBoards') : t('boards.yourBoards')}
             </Typography>
 
             {/* Trường hợp gọi API nhưng không tồn tại cái board nào trong Database trả về */}
             {boards?.length === 0 && (
               <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
-                {isClosedView ? 'No closed boards found.' : 'No result found!'}
+                {isClosedView ? t('boards.noClosedBoards') : t('boards.noResults')}
               </Typography>
             )}
 
@@ -266,7 +268,7 @@ function Boards() {
                             }}
                             sx={{ textTransform: 'none', fontSize: '11px', py: 0.2, px: 0.8 }}
                           >
-                            Reopen
+                            {t('boards.reopen')}
                           </Button>
                           <Button
                             size="small"
@@ -279,13 +281,13 @@ function Boards() {
                             }}
                             sx={{ textTransform: 'none', fontSize: '11px', py: 0.2, px: 0.8 }}
                           >
-                            Delete
+                            {t('boards.delete')}
                           </Button>
                         </Box>
                       ) : (
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 0.8, borderTop: '1px solid', borderColor: 'divider' }}>
                           <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'capitalize', fontSize: '11px' }}>
-                            Workspace
+                            {t('boards.workspace')}
                           </Typography>
                         </Box>
                       )}

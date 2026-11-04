@@ -1,4 +1,5 @@
 import { useColorScheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -10,6 +11,7 @@ import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness'
 
 function ModeSelect() {
   const { mode, setMode } = useColorScheme()
+  const { t } = useTranslation()
   const handleChange = (event) => {
     const selectedMode = event.target.value
     setMode(selectedMode)
@@ -25,13 +27,12 @@ function ModeSelect() {
           '&.Mui-focused': { color: 'white' }
         }}
       >
-        Mode
       </InputLabel>
       <Select
         labelId="label-select-dark-light-mode"
         id="select-dark-light-mode"
         value={mode}
-        label="Mode"
+        label={t('mode.label')}
         onChange={handleChange}
         sx={{
           color: 'white',
@@ -44,17 +45,17 @@ function ModeSelect() {
       >
         <MenuItem value="light">
           <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <LightModeIcon fontSize='small' /> Light
+            <LightModeIcon fontSize='small' /> {t('mode.light')}
           </Box>
         </MenuItem>
         <MenuItem value="dark">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <DarkModeOutlinedIcon fontSize='small' /> Dark
+            <DarkModeOutlinedIcon fontSize='small' /> {t('mode.dark')}
           </Box>
         </MenuItem>
         <MenuItem value="system">
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SettingsBrightnessIcon fontSize='small' /> System
+            <SettingsBrightnessIcon fontSize='small' /> {t('mode.system')}
           </Box>
         </MenuItem>
       </Select>
