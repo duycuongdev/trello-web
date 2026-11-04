@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
@@ -17,6 +18,7 @@ import dayjs from 'dayjs'
 import { updateCurrentActiveCard, showModalActiveCard } from '~/redux/activeCard/activeCardSlice'
 import { useSearchParams } from 'react-router-dom'
 
+// eslint-disable-next-line react-refresh/only-export-components -- export qua memo() là pattern chuẩn, plugin react-refresh 0.3.x không nhận diện
 function Card({ card }) {
   const dispatch = useDispatch()
   const [, setSearchParams] = useSearchParams()
@@ -152,4 +154,5 @@ function Card({ card }) {
   )
 }
 
-export default Card
+// eslint-disable-next-line react-refresh/only-export-components -- export qua memo() là pattern chuẩn, plugin react-refresh 0.3.x không nhận diện
+export default memo(Card)

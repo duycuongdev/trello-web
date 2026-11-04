@@ -51,7 +51,7 @@ import {
 } from '~/redux/activeCard/activeCardSlice'
 import { updateCardInBoard, removeCardFromBoard, selectCurrentActiveBoard, updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { styled } from '@mui/material/styles'
-import { cloneDeep } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { generatePlaceholderCard } from '~/utils/formatter'
 import {
   updateCardDetailsAPI,

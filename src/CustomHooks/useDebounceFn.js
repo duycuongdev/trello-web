@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback } from 'react'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 /**
  * Custom một cái hook để dùng cho việc debounce function, nhận vào 2 tham số là function và thời gian delay
  * Bài viết tham khảo tại đây:
