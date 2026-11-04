@@ -280,7 +280,9 @@ function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescript
                   }
                 }}
               >
-                <MDEditor.Markdown source={cardDescription} />
+                {/* Bắt buộc sanitize HTML output để chặn stored XSS qua nội dung markdown
+                    (rehypeSanitize loại bỏ thẻ script/onerror/onclick... trước khi render) */}
+                <MDEditor.Markdown source={cardDescription} rehypePlugins={[[rehypeSanitize]]} />
               </Box>
             </Box>
           ) : (
