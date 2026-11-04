@@ -44,7 +44,7 @@ function LanguageSelect() {
           '& fieldset': { borderColor: 'white' }
         }}
       >
-        {SUPPORTED_LANGUAGES.map(({ code, label, flag }) => (
+        {SUPPORTED_LANGUAGES.map(({ code, label }) => (
           <MenuItem key={code} value={code}>
             <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               {label}

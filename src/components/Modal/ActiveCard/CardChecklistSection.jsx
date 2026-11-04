@@ -355,312 +355,317 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
               </Box>
             </Box>
 
-            {/* Danh sách các item trong checklist */}
+            {/* Danh sách các item trong checklist
+                Item đã hoàn thành (isDone) tự động chìm xuống CUỐI danh sách
+                (stable sort nên thứ tự tương đối của các item cùng trạng thái được giữ nguyên),
+                giúp các việc CHƯA làm luôn nằm gọn phía trên */}
             <Stack spacing={0.5} sx={{ pl: 3.5, mb: 1 }}>
-              {checklist.items?.map((item) => {
-                const isEditingThisItem = editingItemId === item._id
-                const itemAttachments = getItemAttachments(item)
+              {[...(checklist.items || [])]
+                .sort((a, b) => Number(Boolean(a.isDone)) - Number(Boolean(b.isDone)))
+                .map((item) => {
+                  const isEditingThisItem = editingItemId === item._id
+                  const itemAttachments = getItemAttachments(item)
 
-                if (isEditingThisItem) {
+                  if (isEditingThisItem) {
+                    return (
+                      <Box
+                        key={item._id}
+                        sx={{
+                          p: 1.5,
+                          borderRadius: 1.5,
+                          bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : '#f8fafc',
+                          border: (theme) => `1px solid ${theme.palette.divider}`,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 1.25,
+                          my: 0.5
+                        }}
+                      >
+                        <TextField
+                          fullWidth
+                          autoFocus
+                          size="small"
+                          placeholder={t('card.taskTitle')}
+                          value={editingItemTitle}
+                          onChange={(e) => setEditingItemTitle(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault()
+                              handleSaveEditItem(checklist._id, item._id)
+                            }
+                            if (e.key === 'Escape') {
+                              handleCancelEditItem()
+                            }
+                          }}
+                        />
+
+                        {/* Danh sách các chip tệp/link của item đang sửa */}
+                        {editingItemAttachments.length > 0 && (
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
+                            {editingItemAttachments.map(att => (
+                              <Chip
+                                key={att._id}
+                                size="small"
+                                icon={att.isFile ? <AttachFileIcon sx={{ fontSize: '14px !important' }} /> : <LinkIcon sx={{ fontSize: '14px !important' }} />}
+                                label={att.fileName || (att.url.replace(/^https?:\/\//, '').length > 25 ? `${att.url.replace(/^https?:\/\//, '').substring(0, 22)}...` : att.url.replace(/^https?:\/\//, ''))}
+                                onDelete={() => handleRemoveEditItemAttachment(att._id)}
+                                color={att.isFile ? 'success' : 'primary'}
+                                variant="outlined"
+                                sx={{ maxWidth: 220, height: 26, fontSize: '0.75rem', fontWeight: 600 }}
+                              />
+                            ))}
+                          </Box>
+                        )}
+
+                        {/* Hộp nhập thêm link hoặc tải tệp khi sửa */}
+                        {showEditItemAttachBox && (
+                          <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1,
+                            p: 1,
+                            borderRadius: 1,
+                            bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : '#ffffff',
+                            border: (theme) => `1px dashed ${theme.palette.divider}`
+                          }}>
+                            <TextField
+                              fullWidth
+                              size="small"
+                              placeholder="Dán link web và nhấn Enter (hoặc bấm icon kẹp giấy để tải tệp)..."
+                              value={editingItemCurrentUrl}
+                              onChange={(e) => setEditingItemCurrentUrl(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault()
+                                  handleAddEditItemLink()
+                                }
+                              }}
+                              InputProps={{
+                                startAdornment: <LinkIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />,
+                                endAdornment: (
+                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                    {onUploadAttachment && (
+                                      <Tooltip title="Tải tệp từ máy tính">
+                                        <span>
+                                          <IconButton
+                                            size="small"
+                                            component="label"
+                                            disabled={isUploadingEditItemFile}
+                                            sx={{
+                                              color: isUploadingEditItemFile ? 'primary.main' : 'text.secondary',
+                                              '&:hover': { color: 'primary.main' }
+                                            }}
+                                          >
+                                            {isUploadingEditItemFile ? (
+                                              <CircularProgress size={18} />
+                                            ) : (
+                                              <AttachFileIcon fontSize="small" />
+                                            )}
+                                            <input
+                                              type="file"
+                                              hidden
+                                              onChange={(e) => {
+                                                const file = e.target?.files?.[0]
+                                                if (file) handleUploadFileForEditItem(file)
+                                                e.target.value = ''
+                                              }}
+                                            />
+                                          </IconButton>
+                                        </span>
+                                      </Tooltip>
+                                    )}
+                                  </Box>
+                                )
+                              }}
+                            />
+                            {editingItemCurrentUrl.trim() && (
+                              <Button
+                                size="small"
+                                variant="outlined"
+                                onClick={handleAddEditItemLink}
+                                sx={{ textTransform: 'none', whiteSpace: 'nowrap' }}
+                              >
+                              Add
+                              </Button>
+                            )}
+                          </Box>
+                        )}
+
+                        {/* Hàng nút Save, Cancel, và Nút Đính kèm thêm */}
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 0.5 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Button
+                              size="small"
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleSaveEditItem(checklist._id, item._id)}
+                              disabled={!editingItemTitle.trim()}
+                              sx={{ textTransform: 'none', fontWeight: 600 }}
+                            >
+                            Save
+                            </Button>
+                            <Button
+                              size="small"
+                              variant="text"
+                              color="inherit"
+                              onClick={handleCancelEditItem}
+                              sx={{ textTransform: 'none' }}
+                            >
+                            Cancel
+                            </Button>
+                          </Box>
+
+                          <Button
+                            size="small"
+                            variant={showEditItemAttachBox || editingItemAttachments.length > 0 ? 'outlined' : 'text'}
+                            color={editingItemAttachments.length > 0 ? 'success' : 'inherit'}
+                            startIcon={<AttachFileIcon sx={{ fontSize: '18px !important' }} />}
+                            onClick={() => setShowEditItemAttachBox(!showEditItemAttachBox)}
+                            sx={{
+                              textTransform: 'none',
+                              fontSize: '0.8rem',
+                              fontWeight: 500,
+                              color: (theme) => editingItemAttachments.length > 0 ? 'success.main' : theme.palette.text.secondary
+                            }}
+                          >
+                            {editingItemAttachments.length > 0 ? `Đính kèm (${editingItemAttachments.length})` : 'Đính kèm link / tệp'}
+                          </Button>
+                        </Box>
+                      </Box>
+                    )
+                  }
+
                   return (
                     <Box
                       key={item._id}
                       sx={{
-                        p: 1.5,
-                        borderRadius: 1.5,
-                        bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : '#f8fafc',
-                        border: (theme) => `1px solid ${theme.palette.divider}`,
                         display: 'flex',
-                        flexDirection: 'column',
-                        gap: 1.25,
-                        my: 0.5
+                        alignItems: 'flex-start',
+                        justifyContent: 'space-between',
+                        py: 0.6,
+                        px: 1,
+                        borderRadius: 1,
+                        '&:hover': {
+                          bgcolor: 'action.hover',
+                          '& .action-item-btn': { opacity: 1 }
+                        }
                       }}
                     >
-                      <TextField
-                        fullWidth
-                        autoFocus
-                        size="small"
-                        placeholder={t('card.taskTitle')}
-                        value={editingItemTitle}
-                        onChange={(e) => setEditingItemTitle(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault()
-                            handleSaveEditItem(checklist._id, item._id)
-                          }
-                          if (e.key === 'Escape') {
-                            handleCancelEditItem()
-                          }
-                        }}
-                      />
-
-                      {/* Danh sách các chip tệp/link của item đang sửa */}
-                      {editingItemAttachments.length > 0 && (
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap' }}>
-                          {editingItemAttachments.map(att => (
-                            <Chip
-                              key={att._id}
-                              size="small"
-                              icon={att.isFile ? <AttachFileIcon sx={{ fontSize: '14px !important' }} /> : <LinkIcon sx={{ fontSize: '14px !important' }} />}
-                              label={att.fileName || (att.url.replace(/^https?:\/\//, '').length > 25 ? `${att.url.replace(/^https?:\/\//, '').substring(0, 22)}...` : att.url.replace(/^https?:\/\//, ''))}
-                              onDelete={() => handleRemoveEditItemAttachment(att._id)}
-                              color={att.isFile ? 'success' : 'primary'}
-                              variant="outlined"
-                              sx={{ maxWidth: 220, height: 26, fontSize: '0.75rem', fontWeight: 600 }}
-                            />
-                          ))}
-                        </Box>
-                      )}
-
-                      {/* Hộp nhập thêm link hoặc tải tệp khi sửa */}
-                      {showEditItemAttachBox && (
-                        <Box sx={{
+                      <Box
+                        sx={{
                           display: 'flex',
-                          alignItems: 'center',
+                          alignItems: 'flex-start',
                           gap: 1,
-                          p: 1,
-                          borderRadius: 1,
-                          bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : '#ffffff',
-                          border: (theme) => `1px dashed ${theme.palette.divider}`
-                        }}>
-                          <TextField
-                            fullWidth
-                            size="small"
-                            placeholder="Dán link web và nhấn Enter (hoặc bấm icon kẹp giấy để tải tệp)..."
-                            value={editingItemCurrentUrl}
-                            onChange={(e) => setEditingItemCurrentUrl(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault()
-                                handleAddEditItemLink()
-                              }
+                          flexGrow: 1,
+                          minWidth: 0
+                        }}
+                      >
+                        <Checkbox
+                          checked={Boolean(item.isDone)}
+                          size="small"
+                          sx={{ p: 0.25, mt: '2px' }}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleToggleItem(checklist._id, item._id)
+                          }}
+                        />
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, flexGrow: 1, minWidth: 0 }}>
+                          {/* Dòng 1: Tiêu đề công việc */}
+                          <Typography
+                            variant="body2"
+                            onClick={() => handleToggleItem(checklist._id, item._id)}
+                            sx={{
+                              textDecoration: item.isDone ? 'line-through' : 'none',
+                              color: item.isDone ? 'text.secondary' : 'text.primary',
+                              fontWeight: item.isDone ? 400 : 500,
+                              lineHeight: 1.4,
+                              wordBreak: 'break-word',
+                              cursor: 'pointer'
                             }}
-                            InputProps={{
-                              startAdornment: <LinkIcon fontSize="small" sx={{ mr: 1, color: 'text.secondary' }} />,
-                              endAdornment: (
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                  {onUploadAttachment && (
-                                    <Tooltip title="Tải tệp từ máy tính">
-                                      <span>
-                                        <IconButton
-                                          size="small"
-                                          component="label"
-                                          disabled={isUploadingEditItemFile}
-                                          sx={{
-                                            color: isUploadingEditItemFile ? 'primary.main' : 'text.secondary',
-                                            '&:hover': { color: 'primary.main' }
-                                          }}
-                                        >
-                                          {isUploadingEditItemFile ? (
-                                            <CircularProgress size={18} />
-                                          ) : (
-                                            <AttachFileIcon fontSize="small" />
-                                          )}
-                                          <input
-                                            type="file"
-                                            hidden
-                                            onChange={(e) => {
-                                              const file = e.target?.files?.[0]
-                                              if (file) handleUploadFileForEditItem(file)
-                                              e.target.value = ''
-                                            }}
-                                          />
-                                        </IconButton>
-                                      </span>
-                                    </Tooltip>
-                                  )}
-                                </Box>
-                              )
-                            }}
-                          />
-                          {editingItemCurrentUrl.trim() && (
-                            <Button
-                              size="small"
-                              variant="outlined"
-                              onClick={handleAddEditItemLink}
-                              sx={{ textTransform: 'none', whiteSpace: 'nowrap' }}
-                            >
-                              Add
-                            </Button>
+                          >
+                            {item.title}
+                          </Typography>
+
+                          {/* Dòng 2: Xuống dòng hoàn toàn, hiển thị các Chip link / tệp đính kèm */}
+                          {itemAttachments.length > 0 && (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap', pt: 0.25 }}>
+                              {itemAttachments.map(att => (
+                                <Tooltip
+                                  key={att._id}
+                                  title={att.fileName ? `Tệp: ${att.fileName} (Nhấp để mở)` : `Mở: ${att.url}`}
+                                >
+                                  <Chip
+                                    size="small"
+                                    icon={att.isFile ? <AttachFileIcon sx={{ fontSize: '13px !important' }} /> : <OpenInNewIcon sx={{ fontSize: '13px !important' }} />}
+                                    label={att.fileName
+                                      ? (att.fileName.length > 25 ? `${att.fileName.substring(0, 22)}...` : att.fileName)
+                                      : (att.url.replace(/^https?:\/\//, '').length > 25
+                                        ? `${att.url.replace(/^https?:\/\//, '').substring(0, 22)}...`
+                                        : att.url.replace(/^https?:\/\//, ''))
+                                    }
+                                    clickable
+                                    color={att.isFile ? 'success' : 'primary'}
+                                    variant="outlined"
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      window.open(getValidUrl(att.url), '_blank', 'noopener,noreferrer')
+                                    }}
+                                    sx={{
+                                      height: 22,
+                                      fontSize: '0.72rem',
+                                      fontWeight: 600,
+                                      cursor: 'pointer',
+                                      maxWidth: 220,
+                                      '&:hover': {
+                                        bgcolor: att.isFile ? 'success.light' : 'primary.light',
+                                        color: 'white'
+                                      }
+                                    }}
+                                  />
+                                </Tooltip>
+                              ))}
+                            </Box>
                           )}
                         </Box>
-                      )}
+                      </Box>
 
-                      {/* Hàng nút Save, Cancel, và Nút Đính kèm thêm */}
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 0.5 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Button
+                      {/* Các nút Sửa và Xóa khi hover */}
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: '2px', flexShrink: 0 }}>
+                        <Tooltip title={t('card.editItem')}>
+                          <IconButton
+                            className="action-item-btn"
                             size="small"
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleSaveEditItem(checklist._id, item._id)}
-                            disabled={!editingItemTitle.trim()}
-                            sx={{ textTransform: 'none', fontWeight: 600 }}
+                            onClick={() => handleStartEditItem(item)}
+                            sx={{
+                              opacity: 0,
+                              transition: 'opacity 0.2s',
+                              color: 'text.secondary',
+                              '&:hover': { color: 'primary.main' }
+                            }}
                           >
-                            Save
-                          </Button>
-                          <Button
-                            size="small"
-                            variant="text"
-                            color="inherit"
-                            onClick={handleCancelEditItem}
-                            sx={{ textTransform: 'none' }}
-                          >
-                            Cancel
-                          </Button>
-                        </Box>
+                            <EditOutlinedIcon fontSize="small" sx={{ fontSize: 18 }} />
+                          </IconButton>
+                        </Tooltip>
 
-                        <Button
-                          size="small"
-                          variant={showEditItemAttachBox || editingItemAttachments.length > 0 ? 'outlined' : 'text'}
-                          color={editingItemAttachments.length > 0 ? 'success' : 'inherit'}
-                          startIcon={<AttachFileIcon sx={{ fontSize: '18px !important' }} />}
-                          onClick={() => setShowEditItemAttachBox(!showEditItemAttachBox)}
-                          sx={{
-                            textTransform: 'none',
-                            fontSize: '0.8rem',
-                            fontWeight: 500,
-                            color: (theme) => editingItemAttachments.length > 0 ? 'success.main' : theme.palette.text.secondary
-                          }}
-                        >
-                          {editingItemAttachments.length > 0 ? `Đính kèm (${editingItemAttachments.length})` : 'Đính kèm link / tệp'}
-                        </Button>
+                        <Tooltip title={t('card.deleteItem')}>
+                          <IconButton
+                            className="action-item-btn"
+                            size="small"
+                            onClick={() => handleDeleteItem(checklist._id, item._id)}
+                            sx={{
+                              opacity: 0,
+                              transition: 'opacity 0.2s',
+                              color: 'text.secondary',
+                              '&:hover': { color: 'error.main' }
+                            }}
+                          >
+                            <DeleteOutlineIcon fontSize="small" sx={{ fontSize: 18 }} />
+                          </IconButton>
+                        </Tooltip>
                       </Box>
                     </Box>
                   )
-                }
-
-                return (
-                  <Box
-                    key={item._id}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      justifyContent: 'space-between',
-                      py: 0.6,
-                      px: 1,
-                      borderRadius: 1,
-                      '&:hover': {
-                        bgcolor: 'action.hover',
-                        '& .action-item-btn': { opacity: 1 }
-                      }
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: 1,
-                        flexGrow: 1,
-                        minWidth: 0
-                      }}
-                    >
-                      <Checkbox
-                        checked={Boolean(item.isDone)}
-                        size="small"
-                        sx={{ p: 0.25, mt: '2px' }}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleToggleItem(checklist._id, item._id)
-                        }}
-                      />
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, flexGrow: 1, minWidth: 0 }}>
-                        {/* Dòng 1: Tiêu đề công việc */}
-                        <Typography
-                          variant="body2"
-                          onClick={() => handleToggleItem(checklist._id, item._id)}
-                          sx={{
-                            textDecoration: item.isDone ? 'line-through' : 'none',
-                            color: item.isDone ? 'text.secondary' : 'text.primary',
-                            fontWeight: item.isDone ? 400 : 500,
-                            lineHeight: 1.4,
-                            wordBreak: 'break-word',
-                            cursor: 'pointer'
-                          }}
-                        >
-                          {item.title}
-                        </Typography>
-
-                        {/* Dòng 2: Xuống dòng hoàn toàn, hiển thị các Chip link / tệp đính kèm */}
-                        {itemAttachments.length > 0 && (
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap', pt: 0.25 }}>
-                            {itemAttachments.map(att => (
-                              <Tooltip
-                                key={att._id}
-                                title={att.fileName ? `Tệp: ${att.fileName} (Nhấp để mở)` : `Mở: ${att.url}`}
-                              >
-                                <Chip
-                                  size="small"
-                                  icon={att.isFile ? <AttachFileIcon sx={{ fontSize: '13px !important' }} /> : <OpenInNewIcon sx={{ fontSize: '13px !important' }} />}
-                                  label={att.fileName
-                                    ? (att.fileName.length > 25 ? `${att.fileName.substring(0, 22)}...` : att.fileName)
-                                    : (att.url.replace(/^https?:\/\//, '').length > 25
-                                      ? `${att.url.replace(/^https?:\/\//, '').substring(0, 22)}...`
-                                      : att.url.replace(/^https?:\/\//, ''))
-                                  }
-                                  clickable
-                                  color={att.isFile ? 'success' : 'primary'}
-                                  variant="outlined"
-                                  onClick={(e) => {
-                                    e.stopPropagation()
-                                    window.open(getValidUrl(att.url), '_blank', 'noopener,noreferrer')
-                                  }}
-                                  sx={{
-                                    height: 22,
-                                    fontSize: '0.72rem',
-                                    fontWeight: 600,
-                                    cursor: 'pointer',
-                                    maxWidth: 220,
-                                    '&:hover': {
-                                      bgcolor: att.isFile ? 'success.light' : 'primary.light',
-                                      color: 'white'
-                                    }
-                                  }}
-                                />
-                              </Tooltip>
-                            ))}
-                          </Box>
-                        )}
-                      </Box>
-                    </Box>
-
-                    {/* Các nút Sửa và Xóa khi hover */}
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: '2px', flexShrink: 0 }}>
-                      <Tooltip title={t('card.editItem')}>
-                        <IconButton
-                          className="action-item-btn"
-                          size="small"
-                          onClick={() => handleStartEditItem(item)}
-                          sx={{
-                            opacity: 0,
-                            transition: 'opacity 0.2s',
-                            color: 'text.secondary',
-                            '&:hover': { color: 'primary.main' }
-                          }}
-                        >
-                          <EditOutlinedIcon fontSize="small" sx={{ fontSize: 18 }} />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title={t('card.deleteItem')}>
-                        <IconButton
-                          className="action-item-btn"
-                          size="small"
-                          onClick={() => handleDeleteItem(checklist._id, item._id)}
-                          sx={{
-                            opacity: 0,
-                            transition: 'opacity 0.2s',
-                            color: 'text.secondary',
-                            '&:hover': { color: 'error.main' }
-                          }}
-                        >
-                          <DeleteOutlineIcon fontSize="small" sx={{ fontSize: 18 }} />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  </Box>
-                )
-              })}
+                })}
             </Stack>
 
             {/* Thêm mục mới vào checklist */}
