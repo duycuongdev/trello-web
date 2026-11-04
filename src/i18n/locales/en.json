@@ -214,10 +214,90 @@
     "editLabel": "Edit label",
     "labelTitlePlaceholder": "e.g. Urgent, Bug, Review...",
     "dueTomorrow": "Due: Tomorrow",
-    "uploadFile": "Upload file from your computer"
+    "uploadFile": "Upload file from your computer",
+    "addItem": "Add an item",
+    "descEmptyTitle": "Add a detailed description...",
+    "descEmptySubtitle": "Supports rich Markdown: headings, checklists, code blocks, tables, and quotes. Click to edit.",
+    "saveDescription": "Save Description",
+    "addMember": "Add new member"
   },
   "notFound": {
     "message": "The content you are looking for was not found",
     "returnHome": "Return to Home"
+  },
+  "cardModal": {
+    "addToCard": "Add To Card",
+    "actions": "Actions",
+    "join": "Join",
+    "leave": "Leave",
+    "cover": "Cover",
+    "generalAttachment": "General Attachment",
+    "dates": "Dates",
+    "move": "Move",
+    "copy": "Copy",
+    "archive": "Archive",
+    "sendToBoard": "Send to board",
+    "deleteCard": "Delete Card",
+    "deleteCardConfirmTitle": "Delete Card?",
+    "deleteCardConfirmDesc": "Are you sure you want to permanently delete this card? This action cannot be undone.",
+    "archivedBanner": "This card is archived.",
+    "membersTitle": "Members",
+    "labelsTitle": "Labels",
+    "dueDateTitle": "Due Date",
+    "descriptionTitle": "Description",
+    "activityTitle": "Activity",
+    "uploadingAttachment": "Uploading attachment...",
+    "attachmentUploaded": "Attachment uploaded!",
+    "moving": "Moving...",
+    "creating": "Creating...",
+    "createCard": "Create card",
+    "position": "Position",
+    "selectColor": "Select a color",
+    "addChecklist": "Add checklist",
+    "enterTitleForThisCard": "Enter a title for this card...",
+    "generalAttachments": "General Attachments"
+  },
+  "column": {
+    "deleteColumnTitle": "Delete Column ?",
+    "deleteColumnDesc": "Are you sure you want to permanently delete this column? All cards in it will be permanently removed. This action cannot be undone.",
+    "deleteThisColumn": "Delete this column",
+    "archiveColumnTitle": "Archive Column?",
+    "archiveColumnDesc": "This column will be moved to the archive. You can restore it anytime from Archived Items."
+  },
+  "settings": {
+    "account": "Account",
+    "security": "Security",
+    "changePassword": "Change Password",
+    "securityDashboard": "Security Dashboard",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "newPasswordConfirmation": "New Password Confirmation",
+    "update": "Update",
+    "updatePassword": "Update Password"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllAsRead": "Mark all as read",
+    "allCaughtUp": "You're all caught up!",
+    "accept": "Accept",
+    "reject": "Reject",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "boardBar": {
+    "closeBoardTitle": "Close Board?",
+    "closeBoardDesc": "Are you sure you want to close this board? You can reopen it later from Closed boards.",
+    "close": "Close",
+    "boardClosed": "Board closed!",
+    "closeFailed": "Failed to close board",
+    "leftBoard": "You have left board \"{{title}}\"!",
+    "leaveFailed": "Failed to leave board",
+    "onlineOnBoard": "Online on this board: {{users}}"
+  },
+  "background": {
+    "photos": "Photos",
+    "gradients": "Gradients",
+    "colors": "Colors",
+    "upload": "Upload"
   }
 }

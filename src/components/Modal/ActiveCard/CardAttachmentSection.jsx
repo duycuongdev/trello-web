@@ -9,6 +9,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import WallpaperIcon from '@mui/icons-material/Wallpaper'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useTranslation } from 'react-i18next'
 
 dayjs.extend(relativeTime)
 
@@ -20,6 +21,7 @@ const formatBytes = (bytes) => {
 }
 
 function CardAttachmentSection({ attachments = [], cardCover, onDeleteAttachment, onMakeCover }) {
+  const { t } = useTranslation()
   if (!attachments || attachments.length === 0) return null
 
   return (
@@ -27,7 +29,7 @@ function CardAttachmentSection({ attachments = [], cardCover, onDeleteAttachment
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5 }}>
         <AttachFileOutlinedIcon sx={{ color: '#0d9488' }} />
         <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>
-          General Attachments
+          {t('cardModal.generalAttachments')}
         </Typography>
       </Box>
 

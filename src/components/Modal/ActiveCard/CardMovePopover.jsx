@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import Select from '@mui/material/Select'
+import { useTranslation } from 'react-i18next'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
@@ -19,6 +20,7 @@ import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 import { generatePlaceholderCard } from '~/utils/formatter'
 
 function CardMovePopover({ anchorEl, isOpen, onClose, card, board }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const columns = useMemo(() => board?.columns || [], [board?.columns])
 
@@ -199,7 +201,7 @@ function CardMovePopover({ anchorEl, isOpen, onClose, card, board }) {
 
       {/* Select Position */}
       <FormControl fullWidth size="small" sx={{ mb: 2.5 }}>
-        <InputLabel id="move-card-select-position-label">Position</InputLabel>
+        <InputLabel id="move-card-select-position-label">{t('cardModal.position')}</InputLabel>
         <Select
           labelId="move-card-select-position-label"
           value={targetPosition}
@@ -223,7 +225,7 @@ function CardMovePopover({ anchorEl, isOpen, onClose, card, board }) {
         disabled={isSubmitting}
         sx={{ fontWeight: 600, py: 0.8 }}
       >
-        {isSubmitting ? 'Moving...' : 'Move'}
+        {isSubmitting ? t('cardModal.moving') : t('cardModal.move')}
       </Button>
     </Popover>
   )

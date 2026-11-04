@@ -28,9 +28,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createNewCardAPI, deleteColumnDetailsAPI, updateColumnDetailsAPI, archiveColumnAPI } from '~/apis/index'
 import ToggleFocusInput from '~/components/Form/ToggleFocusInput'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
+import { useTranslation } from 'react-i18next'
 
 // eslint-disable-next-line react-refresh/only-export-components -- export qua memo() là pattern chuẩn, plugin react-refresh 0.3.x không nhận diện
 function Column({ column }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const board = useSelector(selectCurrentActiveBoard)
   const currentUser = useSelector(selectCurrentUser)
@@ -119,7 +121,7 @@ function Column({ column }) {
   const confirmDeleteColumn = useConfirm()
   const handleDeleteColumn = () => {
     confirmDeleteColumn({
-      title: 'Delete Column ?',
+      title: t('column.deleteColumnTitle'),
       description: 'This action will permanent delete your Column and its Cards! Are you sure ?',
       confirmationText: 'Confirm',
       cancellationText: 'Cancel'
@@ -146,9 +148,9 @@ function Column({ column }) {
 
   const handleArchiveColumn = () => {
     confirmDeleteColumn({
-      title: 'Archive Column?',
-      description: 'This column will be moved to the archive. You can restore it anytime from Archived Items.',
-      confirmationText: 'Archive',
+      title: t('column.archiveColumnTitle'),
+      description: t('column.archiveColumnDesc'),
+      confirmationText: t('cardModal.archive'),
       cancellationText: 'Cancel'
     }).then(async () => {
       try {
@@ -259,7 +261,7 @@ function Column({ column }) {
                 '&:hover .delete-forever-icon': { color: 'warning.dark' }
               }}>
                 <ListItemIcon><DeleteForeverIcon className='delete-forever-icon' fontSize="small" /></ListItemIcon>
-                <ListItemText>Delete this column</ListItemText>
+                <ListItemText>{t('column.deleteThisColumn')}</ListItemText>
               </MenuItem>
               <MenuItem onClick={handleArchiveColumn} sx={{
                 '&:hover': { color: 'warning.light' },
@@ -297,7 +299,7 @@ function Column({ column }) {
               gap: 1
             }}>
               <TextField
-                label="Enter card title ..."
+                label={t('board.enterCardTitle')}
                 type="text"
                 size='small'
                 variant='outlined'

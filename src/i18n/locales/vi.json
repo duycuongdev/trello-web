@@ -214,10 +214,90 @@
     "editLabel": "Sửa nhãn",
     "labelTitlePlaceholder": "VD: Khẩn cấp, Lỗi, Đang xem lại...",
     "dueTomorrow": "Hạn: Ngày mai",
-    "uploadFile": "Tải tệp từ máy tính"
+    "uploadFile": "Tải tệp từ máy tính",
+    "addItem": "Thêm một mục",
+    "descEmptyTitle": "Thêm mô tả chi tiết...",
+    "descEmptySubtitle": "Hỗ trợ Markdown đầy đủ: tiêu đề, việc cần làm, khối mã, bảng và trích dẫn. Bấm để chỉnh sửa.",
+    "saveDescription": "Lưu mô tả",
+    "addMember": "Thêm thành viên mới"
   },
   "notFound": {
     "message": "Không tìm thấy nội dung bạn đang tìm kiếm",
     "returnHome": "Về trang chủ"
+  },
+  "cardModal": {
+    "addToCard": "Thêm vào thẻ",
+    "actions": "Thao tác",
+    "join": "Tham gia",
+    "leave": "Rời thẻ",
+    "cover": "Ảnh bìa",
+    "generalAttachment": "Tệp đính kèm chung",
+    "dates": "Ngày",
+    "move": "Di chuyển",
+    "copy": "Sao chép",
+    "archive": "Lưu trữ",
+    "sendToBoard": "Gửi về bảng",
+    "deleteCard": "Xóa thẻ",
+    "deleteCardConfirmTitle": "Xóa thẻ?",
+    "deleteCardConfirmDesc": "Bạn có chắc muốn xóa vĩnh viễn thẻ này? Hành động này không thể hoàn tác.",
+    "archivedBanner": "Thẻ này đã được lưu trữ.",
+    "membersTitle": "Thành viên",
+    "labelsTitle": "Nhãn",
+    "dueDateTitle": "Hạn chót",
+    "descriptionTitle": "Mô tả",
+    "activityTitle": "Hoạt động",
+    "uploadingAttachment": "Đang tải tệp lên...",
+    "attachmentUploaded": "Đã tải tệp lên!",
+    "moving": "Đang di chuyển...",
+    "creating": "Đang tạo...",
+    "createCard": "Tạo thẻ",
+    "position": "Vị trí",
+    "selectColor": "Chọn màu",
+    "addChecklist": "Thêm việc cần làm",
+    "enterTitleForThisCard": "Nhập tiêu đề cho thẻ này...",
+    "generalAttachments": "Tệp đính kèm chung"
+  },
+  "column": {
+    "deleteColumnTitle": "Xóa cột?",
+    "deleteColumnDesc": "Bạn có chắc muốn xóa vĩnh viễn cột này? Toàn bộ thẻ bên trong sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.",
+    "deleteThisColumn": "Xóa cột này",
+    "archiveColumnTitle": "Lưu trữ cột?",
+    "archiveColumnDesc": "Cột này sẽ được chuyển vào kho lưu trữ. Bạn có thể khôi phục bất cứ lúc nào từ mục Mục đã lưu trữ."
+  },
+  "settings": {
+    "account": "Tài khoản",
+    "security": "Bảo mật",
+    "changePassword": "Đổi mật khẩu",
+    "securityDashboard": "Bảng điều khiển bảo mật",
+    "currentPassword": "Mật khẩu hiện tại",
+    "newPassword": "Mật khẩu mới",
+    "newPasswordConfirmation": "Xác nhận mật khẩu mới",
+    "update": "Cập nhật",
+    "updatePassword": "Cập nhật mật khẩu"
+  },
+  "notifications": {
+    "title": "Thông báo",
+    "markAllAsRead": "Đánh dấu tất cả là đã đọc",
+    "allCaughtUp": "Bạn đã xem hết thông báo!",
+    "accept": "Chấp nhận",
+    "reject": "Từ chối",
+    "accepted": "Đã chấp nhận",
+    "rejected": "Đã từ chối"
+  },
+  "boardBar": {
+    "closeBoardTitle": "Đóng bảng?",
+    "closeBoardDesc": "Bạn có chắc muốn đóng bảng này? Bạn có thể mở lại sau từ mục Bảng đã đóng.",
+    "close": "Đóng",
+    "boardClosed": "Đã đóng bảng!",
+    "closeFailed": "Đóng bảng thất bại",
+    "leftBoard": "Bạn đã rời bảng \"{{title}}\"!",
+    "leaveFailed": "Rời bảng thất bại",
+    "onlineOnBoard": "Đang trực tuyến trên bảng: {{users}}"
+  },
+  "background": {
+    "photos": "Ảnh",
+    "gradients": "Chuyển sắc",
+    "colors": "Màu",
+    "upload": "Tải lên"
   }
 }

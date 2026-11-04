@@ -22,8 +22,10 @@ import {
   clearCardFilter
 } from '~/redux/activeBoard/activeBoardSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
+import { useTranslation } from 'react-i18next'
 
 function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const cardFilter = useSelector(selectCardFilter)
   const currentUser = useSelector(selectCurrentUser)
@@ -180,7 +182,7 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
         <TextField
           fullWidth
           size="small"
-          placeholder="Search card title or description..."
+          placeholder={t('board.filterSearchPlaceholder')}
           value={cardFilter.search || ''}
           onChange={(e) => dispatch(setCardFilter({ search: e.target.value }))}
           InputProps={{

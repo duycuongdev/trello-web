@@ -11,8 +11,10 @@ import EditNoteIcon from '@mui/icons-material/EditNote'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
+import { useTranslation } from 'react-i18next'
 
 function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescription }) {
+  const { t } = useTranslation()
   const { mode } = useColorScheme()
 
   // State xử lý chế độ Edit và chế độ View
@@ -113,7 +115,7 @@ function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescript
                 '&:hover': { bgcolor: '#0747a6' }
               }}
             >
-              Save Description
+              {t('card.saveDescription')}
             </Button>
           </Stack>
         </Box>
@@ -315,10 +317,10 @@ function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescript
                 }}
               />
               <Typography variant="body2" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
-                Add a detailed description...
+                {t('card.descEmptyTitle')}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
-                Supports rich Markdown: headings, checklists, code blocks, tables, and quotes. Click to edit.
+                {t('card.descEmptySubtitle')}
               </Typography>
             </Box>
           )}

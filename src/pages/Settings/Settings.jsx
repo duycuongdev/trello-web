@@ -11,6 +11,7 @@ import PersonIcon from '@mui/icons-material/Person'
 import { Link, useLocation } from 'react-router-dom'
 import AccountTab from './AccountTab'
 import SecurityTab from './SecurityTab'
+import { useTranslation } from 'react-i18next'
 
 // Khai báo đống tabs ra biến const để dùng lại cho gọn
 const TABS = {
@@ -19,6 +20,7 @@ const TABS = {
 }
 
 function Settings() {
+  const { t } = useTranslation()
   const location = useLocation()
   // Function đơn giản có nhiệm vụ lấy ra cái tab mặc định dựa theo url.
   const getDefaultTab = () => {
@@ -42,14 +44,14 @@ function Settings() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <TabList onChange={handleChangeTab}>
             <Tab
-              label="Account"
+              label={t('settings.account')}
               value={TABS.ACCOUNT}
               icon={<PersonIcon />}
               iconPosition="start"
               component={Link}
               to="/settings/account" />
             <Tab
-              label="Security"
+              label={t('settings.security')}
               value={TABS.SECURITY}
               icon={<SecurityIcon />}
               iconPosition="start"

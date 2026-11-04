@@ -16,8 +16,10 @@ import { selectCurrentUser, updateUserAPI } from '~/redux/user/userSlice'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import VisuallyHiddenInput from '~/components/Form/VisuallyHiddenInput'
+import { useTranslation } from 'react-i18next'
 
 function AccountTab() {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const currentUser = useSelector(selectCurrentUser)
 
@@ -42,7 +44,7 @@ function AccountTab() {
     }).then((res) => {
       // Nếu update thành công thì điều hướng về trang dashboard
       if (!res.error) {
-        toast.success('Update successfully!')
+        toast.success(t('card.updateSuccess'))
       }
     })
   }
@@ -71,7 +73,7 @@ function AccountTab() {
     }).then((res) => {
       // Nếu update thành công thì điều hướng về trang dashboard
       if (!res.error) {
-        toast.success('Update successfully!')
+        toast.success(t('card.updateSuccess'))
       }
       // Lưu ý, dù có lỗi hoặc thành công thì cũng phải clear giá trị của file input, nếu không thì sẽ không thể chọn cùng một file liên tiếp được
       e.target.value = ''
@@ -184,7 +186,7 @@ function AccountTab() {
                 variant="contained"
                 color="primary"
                 fullWidth>
-                Update
+                {t('settings.update')}
               </Button>
             </Box>
           </Box>

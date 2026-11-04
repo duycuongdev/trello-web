@@ -9,8 +9,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { useSelector } from 'react-redux'
 import { selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { CARD_MEMBER_ACTION } from '~/utils/constants'
+import { useTranslation } from 'react-i18next'
 
 function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
+  const { t } = useTranslation()
   /**
    * Xử lý Popover để ẩn hoặc hiện toàn bộ user trên một cái popup, tương tự docs để tham khảo ở đây:
    * https://mui.com/material-ui/react-popover/
@@ -50,7 +52,7 @@ function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
       )}
 
       {/* Nút này để mở popover thêm member */}
-      <Tooltip title="Add new member">
+      <Tooltip title={t('card.addMember')}>
         <Box
           aria-describedby={popoverId}
           onClick={handleTogglePopover}
