@@ -32,6 +32,7 @@ import { socketIoInstance } from '~/socketClient'
 import { toast } from 'react-toastify'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const BOARD_INVITATION_STATUS = {
   PENDING: 'PENDING',
@@ -40,6 +41,7 @@ const BOARD_INVITATION_STATUS = {
 }
 
 function Notifications() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -280,7 +282,7 @@ function Notifications() {
 
           {activeNotifications.length > 0 && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              <Tooltip title="Mark all as read">
+              <Tooltip title={t('notifications.markAllAsRead')}>
                 <span>
                   <IconButton
                     size="small"
@@ -321,7 +323,7 @@ function Notifications() {
             }}>
               <CheckCircleOutlineIcon sx={{ fontSize: 44, color: 'success.main', opacity: 0.85 }} />
               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                You&apos;re all caught up!
+                {t('notifications.allCaughtUp')}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', maxWidth: 260 }}>
                 No active task deadlines or board invitations at this time.
@@ -477,7 +479,7 @@ function Notifications() {
                               }}
                               sx={{ textTransform: 'none', fontWeight: 600, py: 0.3, px: 1.5, fontSize: '0.78rem' }}
                             >
-                              Accept
+                              {t('notifications.accept')}
                             </Button>
                             <Button
                               className="interceptor-loading"
@@ -496,7 +498,7 @@ function Notifications() {
                         ) : (
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pt: 0.3 }}>
                             {notification.boardInvitation?.status === BOARD_INVITATION_STATUS.ACCEPTED && (
-                              <Chip icon={<DoneIcon />} label="Accepted" color="success" size="small" sx={{ height: 22, fontSize: '0.7rem' }} />
+                              <Chip icon={<DoneIcon />} label={t('notifications.accepted')} color="success" size="small" sx={{ height: 22, fontSize: '0.7rem' }} />
                             )}
                             {notification.boardInvitation?.status === BOARD_INVITATION_STATUS.REJECTED && (
                               <Chip icon={<NotInterestedIcon />} label="Declined" size="small" sx={{ height: 22, fontSize: '0.7rem' }} />

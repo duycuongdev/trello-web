@@ -19,6 +19,7 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
 import VisuallyHiddenInput from '~/components/Form/VisuallyHiddenInput'
 import { singleFileValidator } from '~/utils/validators'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 const PRESET_PHOTOS = [
   {
@@ -89,6 +90,7 @@ function ChangeBoardBackgroundPopover({
   onSelectBackground,
   onUploadBackgroundFile
 }) {
+  const { t } = useTranslation()
   const [tabIndex, setTabIndex] = useState(0)
   const [customUrl, setCustomUrl] = useState('')
 
@@ -99,11 +101,11 @@ function ChangeBoardBackgroundPopover({
   const handleApplyCustomUrl = () => {
     const trimmed = customUrl.trim()
     if (!trimmed) {
-      toast.error('Please enter an image URL!')
+      toast.error(t('card.imageUrlRequired'))
       return
     }
     if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
-      toast.error('Image URL must start with http:// or https://')
+      toast.error(t('card.imageUrlInvalid'))
       return
     }
     onSelectBackground(trimmed)
@@ -181,10 +183,10 @@ function ChangeBoardBackgroundPopover({
           }
         }}
       >
-        <Tab icon={<WallpaperIcon sx={{ fontSize: 17 }} />} iconPosition="start" label="Photos" />
-        <Tab icon={<GradientIcon sx={{ fontSize: 17 }} />} iconPosition="start" label="Gradients" />
-        <Tab icon={<PaletteIcon sx={{ fontSize: 17 }} />} iconPosition="start" label="Colors" />
-        <Tab icon={<CloudUploadOutlinedIcon sx={{ fontSize: 17 }} />} iconPosition="start" label="Upload" />
+        <Tab icon={<WallpaperIcon sx={{ fontSize: 17 }} />} iconPosition="start" label={t('background.photos')} />
+        <Tab icon={<GradientIcon sx={{ fontSize: 17 }} />} iconPosition="start" label={t('background.gradients')} />
+        <Tab icon={<PaletteIcon sx={{ fontSize: 17 }} />} iconPosition="start" label={t('background.colors')} />
+        <Tab icon={<CloudUploadOutlinedIcon sx={{ fontSize: 17 }} />} iconPosition="start" label={t('background.upload')} />
       </Tabs>
 
       {/* Tab 0: Photos */}

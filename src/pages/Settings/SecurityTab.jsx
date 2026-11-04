@@ -15,8 +15,10 @@ import { useConfirm } from 'material-ui-confirm'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { updateUserAPI, logoutUserAPI } from '~/redux/user/userSlice'
+import { useTranslation } from 'react-i18next'
 
 function SecurityTab() {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
@@ -26,7 +28,7 @@ function SecurityTab() {
     confirmChangePassword({
       // Title, Description, Content...vv của gói material-ui-confirm đều có type là ReactNode nên có thể thoải sử dụng MUI components, rất tiện lợi khi cần custom styles
       title: <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <LogoutIcon sx={{ color: 'warning.dark' }} /> Change Password
+        <LogoutIcon sx={{ color: 'warning.dark' }} /> {t('settings.changePassword')}
       </Box>,
       description: 'You have to login again after successfully changing your password. Continue?',
       confirmationText: 'Confirm',
@@ -40,7 +42,7 @@ function SecurityTab() {
       }).then((res) => {
         // Nếu update thành công thì điều hướng về trang dashboard
         if (!res.error) {
-          toast.success('successfully changed password! Please login again.')
+          toast.success(t('card.passwordChanged'))
           dispatch(logoutUserAPI(false))
         }
       })
@@ -64,14 +66,14 @@ function SecurityTab() {
         gap: 3
       }}>
         <Box>
-          <Typography variant="h5">Security Dashboard</Typography>
+          <Typography variant="h5">{t('settings.securityDashboard')}</Typography>
         </Box>
         <form onSubmit={handleSubmit(submitChangePassword)}>
           <Box sx={{ width: { xs: '100%', sm: '400px' }, maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Box>
               <TextField
                 fullWidth
-                label="Current Password"
+                label={t('settings.currentPassword')}
                 type="password"
                 variant="outlined"
                 InputProps={{
@@ -96,7 +98,7 @@ function SecurityTab() {
             <Box>
               <TextField
                 fullWidth
-                label="New Password"
+                label={t('settings.newPassword')}
                 type="password"
                 variant="outlined"
                 InputProps={{
@@ -121,7 +123,7 @@ function SecurityTab() {
             <Box>
               <TextField
                 fullWidth
-                label="New Password Confirmation"
+                label={t('settings.newPasswordConfirmation')}
                 type="password"
                 variant="outlined"
                 InputProps={{

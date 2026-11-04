@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { API_ROOT } from '~/utils/constants'
 import authorizedAxiosInstance from '~/utils/authorizeAxios'
 import { toast } from 'react-toastify'
+import i18n from '~/i18n'
 
 const initialState = {
   currentUser: null
@@ -42,7 +43,7 @@ export const logoutUserAPI = createAsyncThunk(
       // Dù API logout có bị lỗi mạng hay gì đi chăng nữa, thì client vẫn phải logout thành công
     }
     if (showSuccessMessage) {
-      toast.success('Logged out successfully!')
+      toast.success(i18n.t('profileMenu.logoutSuccess'))
     }
     return responseData
   }

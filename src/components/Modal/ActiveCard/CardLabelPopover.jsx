@@ -13,6 +13,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import { useTranslation } from 'react-i18next'
 
 const LABEL_PALETTE = [
   '#2e7d32', // Green
@@ -28,6 +29,7 @@ const LABEL_PALETTE = [
 ]
 
 function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], onUpdateCardLabels }) {
+  const { t } = useTranslation()
   const activeBoard = useSelector(selectCurrentActiveBoard)
 
   // Danh sách các nhãn thực tế do người dùng tạo (không dùng nhãn mẫu có sẵn)
@@ -321,7 +323,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
             <TextField
               size="small"
               fullWidth
-              placeholder="e.g. Urgent, Bug, Review..."
+              placeholder={t('card.labelTitlePlaceholder')}
               value={inputTitle}
               onChange={(e) => setInputTitle(e.target.value)}
               sx={{ mb: 2 }}
@@ -329,7 +331,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
             />
 
             <Typography sx={{ fontSize: '12px', fontWeight: 600, color: 'text.secondary', mb: 1 }}>
-              Select a color
+              {t('cardModal.selectColor')}
             </Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 1, mb: 2.5 }}>
               {LABEL_PALETTE.map((color) => {

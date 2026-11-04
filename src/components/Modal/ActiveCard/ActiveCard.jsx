@@ -65,6 +65,7 @@ import {
 } from '~/apis'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { CARD_MEMBER_ACTION } from '~/utils/constants'
+import { useTranslation } from 'react-i18next'
 import { fetchInvitationsAPI } from '~/redux/notifications/notificationsSlice'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
 import { socketIoInstance } from '~/socketClient'
@@ -90,6 +91,7 @@ const SidebarItem = styled(Box)(({ theme }) => ({
 }))
 
 function ActiveCard() {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const currentUser = useSelector(selectCurrentUser)
   const activeCard = useSelector(selectCurrentActiveCard)
@@ -190,7 +192,7 @@ function ActiveCard() {
   const confirmDeleteCard = useConfirm()
   const handleDeleteCard = () => {
     confirmDeleteCard({
-      title: 'Delete Card?',
+      title: t('cardModal.deleteCardConfirmTitle'),
       description: 'This action will permanently delete this Card! Are you sure?',
       confirmationText: 'Confirm',
       cancellationText: 'Cancel'
@@ -346,7 +348,7 @@ function ActiveCard() {
       }).finally(() => {
         event.target.value = ''
       }),
-      { pending: 'Uploading attachment...', success: 'Attachment uploaded!' }
+      { pending: t('cardModal.uploadingAttachment'), success: t('cardModal.attachmentUploaded') }
     )
   }
 
@@ -381,7 +383,7 @@ function ActiveCard() {
         payload: updatedCard,
         currentUser
       })
-      toast.success('Attachment deleted!')
+      toast.success(t('card.attachmentDeleted'))
     })
   }
 
@@ -420,7 +422,7 @@ function ActiveCard() {
     dispatch(fetchInvitationsAPI())
     if (incomingMemberInfor?.userId === currentUser._id) {
       if (incomingMemberInfor.action === CARD_MEMBER_ACTION.ADD) {
-        toast.success('Joined card successfully!')
+        toast.success(t('card.joinedCard'))
       } else {
         toast.info('Left card successfully!')
       }
@@ -469,11 +471,11 @@ function ActiveCard() {
           }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <ArchiveOutlinedIcon fontSize="small" />
-              <Typography variant="body2" fontWeight={600}>This card is archived.</Typography>
+              <Typography variant="body2" fontWeight={600}>{t('cardModal.archivedBanner')}</Typography>
             </Box>
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Button size="small" variant="contained" onClick={handleRestoreCard} sx={{ textTransform: 'none' }}>
-                Send to board
+                {t('cardModal.sendToBoard')}
               </Button>
               <Button size="small" color="error" variant="outlined" onClick={handleDeleteCard} sx={{ textTransform: 'none' }}>
                 Delete
@@ -507,7 +509,7 @@ function ActiveCard() {
           <Grid xs={12} sm={9}>
             <Box sx={{ display: 'flex', gap: 4, mb: 3, flexWrap: 'wrap' }}>
               <Box>
-                <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Members</Typography>
+                <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.membersTitle')}</Typography>
                 <CardUserGroup
                   cardMemberIds={activeCard?.memberIds}
                   onUpdateCardMembers={onUpdateCardMembers}
@@ -516,7 +518,7 @@ function ActiveCard() {
 
               {!!activeCard?.labels?.length && (
                 <Box>
-                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Labels</Typography>
+                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.labelsTitle')}</Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                     {activeCard.labels.map((label, idx) => (
                       <Chip
@@ -540,7 +542,7 @@ function ActiveCard() {
               {/* Feature 09: Hiển thị Khối Hạn chót (Due Date) */}
               {activeCard?.dueDate && (
                 <Box>
-                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Due Date</Typography>
+                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.dueDateTitle')}</Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
                     <Button
                       size="small"
@@ -563,11 +565,11 @@ function ActiveCard() {
                     </Button>
 
                     {activeCard?.isDueDateComplete ? (
-                      <Chip label="COMPLETED" size="small" color="success" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
+                      <Chip label={t('card.completed')} size="small" color="success" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
                     ) : dayjs(activeCard.dueDate).isBefore(dayjs()) ? (
-                      <Chip label="OVERDUE" size="small" color="error" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
+                      <Chip label={t('card.overdue')} size="small" color="error" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
                     ) : (activeCard?.reminderMinutes !== null && activeCard?.reminderMinutes !== undefined ? dayjs(activeCard.dueDate).diff(dayjs(), 'minute') <= activeCard.reminderMinutes : dayjs(activeCard.dueDate).diff(dayjs(), 'hour') <= 24) ? (
-                      <Chip label="DUE SOON" size="small" color="warning" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
+                      <Chip label={t('card.dueSoon')} size="small" color="warning" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
                     ) : null}
                   </Box>
                 </Box>
@@ -577,7 +579,7 @@ function ActiveCard() {
             <Box sx={{ mb: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <SubjectRoundedIcon sx={{ color: '#0052cc' }} />
-                <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>Description</Typography>
+                <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>{t('cardModal.descriptionTitle')}</Typography>
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
@@ -612,7 +614,7 @@ function ActiveCard() {
             <Box sx={{ mb: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <DvrOutlinedIcon sx={{ color: '#9333ea' }} />
-                <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>Activity</Typography>
+                <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>{t('cardModal.activityTitle')}</Typography>
               </Box>
 
               {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
@@ -628,7 +630,7 @@ function ActiveCard() {
 
           {/* Right side */}
           <Grid xs={12} sm={3}>
-            <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Add To Card</Typography>
+            <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.addToCard')}</Typography>
             <Stack direction="column" spacing={1}>
               {/* Feature 05: Xử lý hành động bản thân user tự join / leave khỏi card */}
               {!activeCard?.memberIds?.includes(currentUser._id) ? (
@@ -637,7 +639,7 @@ function ActiveCard() {
                   onClick={() => onUpdateCardMembers({ userId: currentUser._id, action: CARD_MEMBER_ACTION.ADD })}
                 >
                   <PersonOutlineOutlinedIcon fontSize="small" sx={{ color: '#16a34a' }} />
-                  Join
+                  {t('cardModal.join')}
                 </SidebarItem>
               ) : (
                 <SidebarItem
@@ -651,27 +653,27 @@ function ActiveCard() {
                   }}
                 >
                   <ExitToAppIcon fontSize="small" sx={{ color: '#ef4444' }} />
-                  Leave
+                  {t('cardModal.leave')}
                 </SidebarItem>
               )}
               {/* Feature 06: Xử lý hành động cập nhật ảnh Cover của Card */}
               <SidebarItem className="active" component="label">
                 <ImageOutlinedIcon fontSize="small" sx={{ color: '#ec4899' }} />
-                Cover
+                {t('cardModal.cover')}
                 <VisuallyHiddenInput type="file" onChange={onUploadCardCover} />
               </SidebarItem>
 
               {/* Feature 10: Nút Upload tệp đính kèm */}
               <SidebarItem className="active" component="label">
                 <AttachFileOutlinedIcon fontSize="small" sx={{ color: '#0d9488' }} />
-                General Attachment
+                {t('cardModal.generalAttachment')}
                 <VisuallyHiddenInput type="file" onChange={onUploadCardAttachment} />
               </SidebarItem>
 
               {/* Feature 07: Xử lý chọn & custom nhãn cho Card */}
               <SidebarItem className="active" onClick={handleOpenLabelPopover}>
                 <LocalOfferOutlinedIcon fontSize="small" sx={{ color: '#8b5cf6' }} />
-                Labels
+                {t('cardModal.labels')}
               </SidebarItem>
 
               <CardLabelPopover
@@ -685,7 +687,7 @@ function ActiveCard() {
               {/* Feature 08: Thêm Checklist */}
               <SidebarItem className="active" onClick={handleOpenChecklistPopover}>
                 <TaskAltOutlinedIcon fontSize="small" sx={{ color: '#16a34a' }} />
-                Checklist
+                {t('cardModal.checklist')}
               </SidebarItem>
 
               <CardChecklistPopover
@@ -698,7 +700,7 @@ function ActiveCard() {
               {/* Feature 09: Chọn Hạn chót Dates */}
               <SidebarItem className="active" onClick={handleOpenDueDatePopover}>
                 <WatchLaterOutlinedIcon fontSize="small" sx={{ color: '#f59e0b' }} />
-                Dates
+                {t('cardModal.dates')}
               </SidebarItem>
 
               <CardDueDatePopover
@@ -714,7 +716,7 @@ function ActiveCard() {
 
             <Divider sx={{ my: 2 }} />
 
-            <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Actions</Typography>
+            <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.actions')}</Typography>
             <Stack direction="column" spacing={1}>
               <SidebarItem
                 className="active"
@@ -727,12 +729,12 @@ function ActiveCard() {
                 }}
               >
                 <DeleteForeverIcon fontSize="small" sx={{ color: '#ef4444' }} />
-                Delete Card
+                {t('cardModal.deleteCard')}
               </SidebarItem>
 
               <SidebarItem className="active" onClick={handleOpenMovePopover}>
                 <ArrowForwardOutlinedIcon fontSize="small" sx={{ color: '#6366f1' }} />
-                Move
+                {t('cardModal.move')}
               </SidebarItem>
               <CardMovePopover
                 anchorEl={moveAnchorEl}
@@ -744,7 +746,7 @@ function ActiveCard() {
 
               <SidebarItem className="active" onClick={handleOpenCopyPopover}>
                 <ContentCopyOutlinedIcon fontSize="small" sx={{ color: '#0ea5e9' }} />
-                Copy
+                {t('cardModal.copy')}
               </SidebarItem>
               <CardCopyPopover
                 anchorEl={copyAnchorEl}
@@ -757,12 +759,12 @@ function ActiveCard() {
               {activeCard?._destroy ? (
                 <SidebarItem className="active" onClick={handleRestoreCard}>
                   <UndoIcon fontSize="small" sx={{ color: '#16a34a' }} />
-                  Send to board
+                  {t('cardModal.sendToBoard')}
                 </SidebarItem>
               ) : (
                 <SidebarItem className="active" onClick={handleArchiveCard}>
                   <ArchiveOutlinedIcon fontSize="small" sx={{ color: '#f43f5e' }} />
-                  Archive
+                  {t('cardModal.archive')}
                 </SidebarItem>
               )}
             </Stack>

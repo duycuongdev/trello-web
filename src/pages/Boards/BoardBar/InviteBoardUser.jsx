@@ -10,9 +10,11 @@ import { useForm } from 'react-hook-form'
 import { EMAIL_RULE, FIELD_REQUIRED_MESSAGE, EMAIL_RULE_MESSAGE } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { inviteUserToBoardAPI } from '~/apis'
+import { useTranslation } from 'react-i18next'
 import { socketIoInstance } from '~/socketClient'
 
 function InviteBoardUser({ boardId }) {
+  const { t } = useTranslation()
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
    * https://mui.com/material-ui/react-popover/
@@ -43,7 +45,7 @@ function InviteBoardUser({ boardId }) {
 
   return (
     <Box>
-      <Tooltip title="Invite user to this board!">
+      <Tooltip title={t('board.inviteUser')}>
         <Button
           aria-describedby={popoverId}
           onClick={handleTogglePopover}
@@ -66,12 +68,12 @@ function InviteBoardUser({ boardId }) {
       >
         <form onSubmit={handleSubmit(submitInviteUserToBoard)} style={{ width: '320px', maxWidth: 'calc(100vw - 32px)' }}>
           <Box sx={{ p: '15px 20px 20px 20px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Typography variant="span" sx={{ fontWeight: 'bold', fontSize: '16px' }}>Invite User To This Board!</Typography>
+            <Typography variant="span" sx={{ fontWeight: 'bold', fontSize: '16px' }}>{t('board.inviteUser')}</Typography>
             <Box>
               <TextField
                 autoFocus
                 fullWidth
-                label="Enter email to invite..."
+                label={t('board.inviteEmailPlaceholder')}
                 type="text"
                 variant="outlined"
                 {...register('inviteeEmail', {

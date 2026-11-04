@@ -9,9 +9,10 @@ import Button from '@mui/material/Button'
 import Zoom from '@mui/material/Zoom'
 import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
-import { EMAIL_RULE, EMAIL_RULE_MESSAGE, FIELD_REQUIRED_MESSAGE } from '~/utils/validators'
+import { EMAIL_RULE } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { forgotPasswordAPI } from '~/apis'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Trang "Quên mật khẩu": nhập email để nhận link đặt lại mật khẩu.
@@ -19,6 +20,7 @@ import { forgotPasswordAPI } from '~/apis'
  * thông báo hiển thị luôn giống nhau.
  */
 function ForgotPassword() {
+  const { t } = useTranslation()
   const [submitted, setSubmitted] = useState(false)
   const { handleSubmit, register, formState: { errors, isSubmitting } } = useForm()
 
@@ -54,10 +56,10 @@ function ForgotPassword() {
               <TrelloIcon fontSize="medium" sx={{ color: 'white' }} />
             </Box>
             <Typography component="h1" variant="h5" fontWeight={800} sx={{ letterSpacing: '-0.5px' }}>
-              Forgot your password?
+              {t('forgotPassword.title')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              Enter your email and we&apos;ll send you a link to reset your password.
+              {t('forgotPassword.subtitle')}
             </Typography>
           </Box>
 
@@ -73,13 +75,13 @@ function ForgotPassword() {
                   <TextField
                     autoFocus
                     fullWidth
-                    label="Email"
+                    label={t('auth.email')}
                     type="text"
                     variant="outlined"
                     error={!!errors.email}
                     {...register('email', {
-                      required: FIELD_REQUIRED_MESSAGE,
-                      pattern: { value: EMAIL_RULE, message: EMAIL_RULE_MESSAGE }
+                      required: t('validation.required'),
+                      pattern: { value: EMAIL_RULE, message: t('validation.emailInvalid') }
                     })}
                   />
                   <FieldErrorAlert errors={errors} fieldName="email" />
@@ -93,7 +95,7 @@ function ForgotPassword() {
                   disabled={isSubmitting}
                   sx={{ py: 1.3, borderRadius: 2, fontWeight: 700, textTransform: 'none' }}
                 >
-                  Send reset link
+                  {t('forgotPassword.sendLink')}
                 </Button>
               </Box>
             </form>
@@ -101,9 +103,9 @@ function ForgotPassword() {
 
           <Box sx={{ mt: 2.5, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
-              Remembered it?{' '}
+              {t('forgotPassword.remembered')}{' '}
               <Link to="/login" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
-                Back to log in
+                {t('forgotPassword.backToLogin')}
               </Link>
             </Typography>
           </Box>

@@ -19,6 +19,7 @@ import UndoIcon from '@mui/icons-material/Undo'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useConfirm } from 'material-ui-confirm'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 import {
   fetchArchivedItemsAPI,
   restoreCardAPI,
@@ -35,6 +36,7 @@ import {
 } from '~/redux/activeBoard/activeBoardSlice'
 
 function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const board = useSelector(selectCurrentActiveBoard)
   const currentUser = useSelector(selectCurrentUser)
@@ -112,7 +114,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
       }
 
       setArchivedCards(prev => prev.filter(c => c._id !== card._id))
-      toast.success('Card restored to board!')
+      toast.success(t('board.cardRestored'))
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to restore card')
     }
@@ -135,7 +137,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
           currentUser
         })
         setArchivedCards(prev => prev.filter(c => c._id !== card._id))
-        toast.success('Card permanently deleted!')
+        toast.success(t('board.cardPermanentlyDeleted'))
       } catch (error) {
         toast.error(error?.response?.data?.message || 'Failed to delete card')
       }
@@ -154,7 +156,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
         currentUser
       })
       setArchivedColumns(prev => prev.filter(c => c._id !== column._id))
-      toast.success('List restored to board!')
+      toast.success(t('board.listRestored'))
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to restore list')
     }
@@ -177,7 +179,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
           currentUser
         })
         setArchivedColumns(prev => prev.filter(c => c._id !== column._id))
-        toast.success('List permanently deleted!')
+        toast.success(t('board.listPermanentlyDeleted'))
       } catch (error) {
         toast.error(error?.response?.data?.message || 'Failed to delete list')
       }
@@ -215,7 +217,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
       <TextField
         fullWidth
         size="small"
-        placeholder="Search archive..."
+        placeholder={t('board.archiveSearchPlaceholder')}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         InputProps={{

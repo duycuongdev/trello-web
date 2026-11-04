@@ -3,12 +3,14 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Popover from '@mui/material/Popover'
 import TextField from '@mui/material/TextField'
+import { useTranslation } from 'react-i18next'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined'
 
 function CardChecklistPopover({ anchorEl, isOpen, onClose, onAddChecklist }) {
+  const { t } = useTranslation()
   const [title, setTitle] = useState('Checklist')
 
   const handleClose = () => {
@@ -80,7 +82,7 @@ function CardChecklistPopover({ anchorEl, isOpen, onClose, onAddChecklist }) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Checklist title..."
+        placeholder={t('card.checklistTitle')}
         sx={{ mb: 2 }}
       />
 

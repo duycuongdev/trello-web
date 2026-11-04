@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useConfirm } from 'material-ui-confirm'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 function CardActivitySection({
   cardComments = [],
@@ -18,6 +19,7 @@ function CardActivitySection({
   onDeleteCardComment,
   boardOwnerIds = []
 }) {
+  const { t } = useTranslation()
   const currentUser = useSelector(selectCurrentUser)
   const confirmDeleteComment = useConfirm()
 
@@ -56,7 +58,7 @@ function CardActivitySection({
   const handleSaveEdit = (comment) => {
     const trimmed = editingContent.trim()
     if (!trimmed) {
-      toast.error('Comment content cannot be empty!')
+      toast.error(t('card.commentEmpty'))
       return
     }
 
@@ -103,7 +105,7 @@ function CardActivitySection({
         />
         <TextField
           fullWidth
-          placeholder="Write a comment..."
+          placeholder={t('card.commentPlaceholder')}
           type="text"
           variant="outlined"
           multiline

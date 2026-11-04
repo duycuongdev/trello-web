@@ -22,6 +22,7 @@ import BoardCardFilterPopover from './BoardCardFilterPopover'
 import ChangeBoardBackgroundPopover from './ChangeBoardBackgroundPopover'
 import ArchivedItemsDrawer from './ArchivedItemsDrawer'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
+import { useTranslation } from 'react-i18next'
 
 const MENU_STYLES = {
   color: 'white',
@@ -38,6 +39,7 @@ const MENU_STYLES = {
 }
 
 function BoardBar({ board, onlineUsers = [] }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const confirm = useConfirm()
   const navigate = useNavigate()
@@ -61,17 +63,17 @@ function BoardBar({ board, onlineUsers = [] }) {
 
   const handleCloseBoard = () => {
     confirm({
-      title: 'Close Board?',
+      title: t('boardBar.closeBoardTitle'),
       description: 'You can find and reopen closed boards at the bottom of your boards page.',
-      confirmationText: 'Close',
+      confirmationText: t('boardBar.close'),
       cancellationText: 'Cancel'
     }).then(async () => {
       try {
         await closeBoardAPI(board._id)
-        toast.success('Board closed!')
+        toast.success(t('boardBar.boardClosed'))
         navigate('/boards')
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to close board')
+        toast.error(error?.response?.data?.message || t('boardBar.closeFailed'))
       }
     }).catch(() => {})
   }
@@ -91,10 +93,10 @@ function BoardBar({ board, onlineUsers = [] }) {
           payload: { removedMemberId: currentUser._id },
           currentUser
         })
-        toast.success(`You have left board "${board?.title}"!`)
+        toast.success(t('boardBar.leftBoard', { title: board?.title }))
         navigate('/boards')
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to leave board')
+        toast.error(error?.response?.data?.message || t('boardBar.leaveFailed'))
       }
     }).catch(() => {})
   }
@@ -143,11 +145,11 @@ function BoardBar({ board, onlineUsers = [] }) {
 
     updateBoardDetailsAPI(board._id, { title: updatedTitle })
       .then(() => {
-        toast.success('Board title updated!')
+        toast.success(t('board.boardTitleUpdated'))
       })
       .catch(() => {
         dispatch(updateCurrentActiveBoard(board))
-        toast.error('Failed to update board title!')
+        toast.error(t('board.boardTitleUpdateFailed'))
       })
   }
 
@@ -164,11 +166,11 @@ function BoardBar({ board, onlineUsers = [] }) {
 
     updateBoardDetailsAPI(board._id, { background: newBackground })
       .then(() => {
-        toast.success('Board background updated!')
+        toast.success(t('board.boardBackgroundUpdated'))
       })
       .catch(() => {
         dispatch(updateCurrentActiveBoard(board))
-        toast.error('Failed to update board background!')
+        toast.error(t('board.boardBackgroundUpdateFailed'))
       })
   }
 
@@ -219,7 +221,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         gap: 2
       }}>
         {!isEditingTitle ? (
-          <Tooltip title="Click to edit board title">
+          <Tooltip title={t('board.clickToEditTitle')}>
             <Chip
               sx={{
                 ...MENU_STYLES,

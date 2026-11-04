@@ -15,11 +15,13 @@ import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import CloseIcon from '@mui/icons-material/Close'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { copyCardAPI } from '~/apis'
 import { updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 
 function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const columns = useMemo(() => board?.columns || [], [board?.columns])
 
@@ -178,7 +180,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
         size="small"
         multiline
         rows={2}
-        placeholder="Enter a title for this card..."
+        placeholder={t('cardModal.enterTitleForThisCard')}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         sx={{ mb: 2 }}
@@ -334,7 +336,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
         disabled={isSubmitting || !title.trim()}
         sx={{ fontWeight: 600, py: 0.8 }}
       >
-        {isSubmitting ? 'Creating...' : 'Create card'}
+        {isSubmitting ? t('cardModal.creating') : t('cardModal.createCard')}
       </Button>
     </Popover>
   )

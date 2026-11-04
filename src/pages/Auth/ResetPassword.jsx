@@ -14,12 +14,11 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useForm } from 'react-hook-form'
 import {
-  PASSWORD_RULE,
-  PASSWORD_RULE_MESSAGE,
-  FIELD_REQUIRED_MESSAGE
+  PASSWORD_RULE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { resetPasswordAPI } from '~/apis'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 
 /**
@@ -28,6 +27,7 @@ import { toast } from 'react-toastify'
  * mọi phiên đăng nhập khác đều bị đăng xuất (server thu hồi refresh token).
  */
 function ResetPassword() {
+  const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const { email, token } = Object.fromEntries([...searchParams])
@@ -41,7 +41,7 @@ function ResetPassword() {
 
   const submitResetPassword = async (data) => {
     await resetPasswordAPI({ email, token, newPassword: data.newPassword })
-    toast.success('Password has been reset successfully. Please log in with your new password.')
+    toast.success(t('resetPassword.successToast'))
     navigate(`/login?resetSuccess=${encodeURIComponent(email)}`, { replace: true })
   }
 
@@ -71,7 +71,7 @@ function ResetPassword() {
               <TrelloIcon fontSize="medium" sx={{ color: 'white' }} />
             </Box>
             <Typography component="h1" variant="h5" fontWeight={800} sx={{ letterSpacing: '-0.5px' }}>
-              Choose a new password
+              {t('resetPassword.title')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
               You&apos;re resetting the password for <strong>{email}</strong>
@@ -84,7 +84,7 @@ function ResetPassword() {
                 <TextField
                   autoFocus
                   fullWidth
-                  label="New password"
+                  label={t('resetPassword.newPassword')}
                   type={showPassword ? 'text' : 'password'}
                   variant="outlined"
                   error={!!errors.newPassword}
@@ -98,8 +98,8 @@ function ResetPassword() {
                     )
                   }}
                   {...register('newPassword', {
-                    required: FIELD_REQUIRED_MESSAGE,
-                    pattern: { value: PASSWORD_RULE, message: PASSWORD_RULE_MESSAGE }
+                    required: t('validation.required'),
+                    pattern: { value: PASSWORD_RULE, message: t('validation.passwordRule') }
                   })}
                 />
                 <FieldErrorAlert errors={errors} fieldName="newPassword" />
@@ -108,13 +108,13 @@ function ResetPassword() {
               <Box>
                 <TextField
                   fullWidth
-                  label="Confirm new password"
+                  label={t('resetPassword.confirmNewPassword')}
                   type={showPassword ? 'text' : 'password'}
                   variant="outlined"
                   error={!!errors.confirmPassword}
                   {...register('confirmPassword', {
-                    required: FIELD_REQUIRED_MESSAGE,
-                    validate: (value) => value === watch('newPassword') || 'Passwords do not match.'
+                    required: t('validation.required'),
+                    validate: (value) => value === watch('newPassword') || t('validation.passwordsDoNotMatch')
                   })}
                 />
                 <FieldErrorAlert errors={errors} fieldName="confirmPassword" />
@@ -129,19 +129,19 @@ function ResetPassword() {
                 disabled={isSubmitting}
                 sx={{ py: 1.3, borderRadius: 2, fontWeight: 700, textTransform: 'none' }}
               >
-                Reset password
+                {t('resetPassword.resetButton')}
               </Button>
             </Box>
           </form>
 
           <Alert severity="info" sx={{ borderRadius: 2, mt: 2.5 }}>
-            After resetting, all other logged-in sessions will be signed out automatically.
+            {t('resetPassword.allSessionsNotice')}
           </Alert>
 
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
               <Link to="/login" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
-                Back to log in
+                {t('forgotPassword.backToLogin')}
               </Link>
             </Typography>
           </Box>

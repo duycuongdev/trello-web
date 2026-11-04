@@ -15,8 +15,10 @@ import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/acti
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
+import { useTranslation } from 'react-i18next'
 
 function ListColumns({ columns = [] }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const board = useSelector(selectCurrentActiveBoard)
   const currentUser = useSelector(selectCurrentUser)
@@ -27,7 +29,7 @@ function ListColumns({ columns = [] }) {
   const [newColumnTitle, setNewColumnTitle] = useState('')
   const addNewColumn = async () => {
     if (!newColumnTitle.trim()) {
-      toast.error('Please enter column title')
+      toast.error(t('board.columnTitleRequired'))
       return
     }
 
@@ -116,7 +118,7 @@ function ListColumns({ columns = [] }) {
             gap: 1
           }}>
             <TextField
-              label="Enter column title ..."
+              label={t('board.enterColumnTitle')}
               type="text"
               size='small'
               variant='outlined'

@@ -17,8 +17,10 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import LinkIcon from '@mui/icons-material/Link'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import CloseIcon from '@mui/icons-material/Close'
+import { useTranslation } from 'react-i18next'
 
 function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploadAttachment }) {
+  const { t } = useTranslation()
   // State cho thêm item mới
   const [activeChecklistIdForNewItem, setActiveChecklistIdForNewItem] = useState(null)
   const [newItemTitle, setNewItemTitle] = useState('')
@@ -378,7 +380,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                         fullWidth
                         autoFocus
                         size="small"
-                        placeholder="Task title..."
+                        placeholder={t('card.taskTitle')}
                         value={editingItemTitle}
                         onChange={(e) => setEditingItemTitle(e.target.value)}
                         onKeyDown={(e) => {
@@ -624,7 +626,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
 
                     {/* Các nút Sửa và Xóa khi hover */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: '2px', flexShrink: 0 }}>
-                      <Tooltip title="Edit item">
+                      <Tooltip title={t('card.editItem')}>
                         <IconButton
                           className="action-item-btn"
                           size="small"
@@ -640,7 +642,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                         </IconButton>
                       </Tooltip>
 
-                      <Tooltip title="Delete item">
+                      <Tooltip title={t('card.deleteItem')}>
                         <IconButton
                           className="action-item-btn"
                           size="small"
@@ -677,7 +679,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                     fullWidth
                     autoFocus
                     size="small"
-                    placeholder="Add an item title..."
+                    placeholder={t('card.addItemTitle')}
                     value={newItemTitle}
                     onChange={(e) => setNewItemTitle(e.target.value)}
                     onKeyDown={(e) => {
@@ -833,7 +835,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                     '&:hover': { bgcolor: 'action.hover' }
                   }}
                 >
-                  + Add an item
+                  + {t('card.addItem')}
                 </Button>
               )}
             </Box>

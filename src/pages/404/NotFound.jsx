@@ -4,6 +4,7 @@ import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import compassSvg from '~/assets/404/compass.svg'
 import routesSvg from '~/assets/404/routes.svg'
+import { useTranslation } from 'react-i18next'
 
 // Pure CSS lightweight ambient particles with Nord color palette
 const PARTICLES = [
@@ -19,6 +20,7 @@ const PARTICLES = [
 ]
 
 export default function NotFound() {
+  const { t } = useTranslation()
   return (
     <Box
       sx={{
@@ -152,7 +154,7 @@ export default function NotFound() {
                 }
               }}
             >
-              The content you are looking for was not found
+              {t('notFound.message')}
             </Typography>
 
             <Button
@@ -170,7 +172,7 @@ export default function NotFound() {
                 }
               }}
             >
-              Return to Home
+              {t('notFound.returnHome')}
             </Button>
           </Stack>
 

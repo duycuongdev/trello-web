@@ -32,6 +32,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import cloneDeep from 'lodash/cloneDeep'
 import { useParams, useNavigate, Link, useSearchParams, useLocation } from 'react-router-dom'
 import { slugify } from '~/utils/formatter'
+import { useTranslation } from 'react-i18next'
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 import ActiveCard from '~/components/Modal/ActiveCard/ActiveCard'
 import { useConfirm } from 'material-ui-confirm'
@@ -50,6 +51,7 @@ import {
 } from '~/sockets/boardSocketClient'
 
 function Board() {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const confirm = useConfirm()
   const navigate = useNavigate()
@@ -182,7 +184,7 @@ function Board() {
             nextBoard.columnOrderIds.push(payload._id)
             dispatch(updateCurrentActiveBoard(nextBoard))
             if (senderName) {
-              toast.info(`📋 ${senderName} added column "${payload.title}"`, { autoClose: 2500, position: 'bottom-right' })
+              toast.info(t('board.addedColumn', { name: senderName, title: payload.title }), { autoClose: 2500, position: 'bottom-right' })
             }
           }
         }
@@ -224,7 +226,7 @@ function Board() {
             }
             dispatch(updateCurrentActiveBoard(nextBoard))
             if (senderName) {
-              toast.info(`📝 ${senderName} added card "${payload.title}"`, { autoClose: 2500, position: 'bottom-right' })
+              toast.info(t('board.addedCard', { name: senderName, title: payload.title }), { autoClose: 2500, position: 'bottom-right' })
             }
           }
         }
@@ -252,7 +254,7 @@ function Board() {
               next.delete('cardId')
               return next
             }, { replace: true })
-            toast.info('The card you were viewing was removed or archived by a teammate.', { position: 'bottom-right' })
+            toast.info(t('board.cardRemovedByTeammate'), { position: 'bottom-right' })
           }
         }
         break
@@ -296,7 +298,7 @@ function Board() {
       socketIoInstance.off('BE_BOARD_USERS_ONLINE', onReceiveOnlineUsers)
       socketIoInstance.off('BE_BOARD_UPDATED', onReceiveBoardUpdated)
     }
-  }, [boardId, currentUser, dispatch, setSearchParams])
+  }, [boardId, currentUser, dispatch, setSearchParams, t])
 
   const moveColumns = (dndOrderedColumns) => {
     const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
@@ -383,14 +385,14 @@ function Board() {
   }
 
   if (boardLoading || (!board && !boardError)) {
-    return <PageLoadingSpinner caption="Loading Board..." />
+    return <PageLoadingSpinner caption={t('board.loadingBoard')} />
   }
 
   if (boardError) {
     return (
       <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2, p: 3 }}>
-        <Typography color="error">Unable to load this board.</Typography>
-        <Button variant="contained" onClick={() => dispatch(fetchBoardDetailsAPI(boardId))}>Retry</Button>
+        <Typography color="error">{t('board.unableToLoad')}</Typography>
+        <Button variant="contained" onClick={() => dispatch(fetchBoardDetailsAPI(boardId))}>{t('common.retry')}</Button>
       </Box>
     )
   }
@@ -402,26 +404,26 @@ function Board() {
     const handleReopen = async () => {
       try {
         await reopenBoardAPI(boardId)
-        toast.success('Board reopened!')
+        toast.success(t('boards.reopened'))
         dispatch(fetchBoardDetailsAPI(boardId))
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to reopen board')
+        toast.error(error?.response?.data?.message || t('boards.reopenFailed'))
       }
     }
 
     const handleDeletePermanently = () => {
       confirm({
-        title: 'Delete Board Permanently?',
-        description: `Are you sure you want to permanently delete "${board.title}"? All lists, cards, and invitations will be permanently removed. This action cannot be undone.`,
-        confirmationText: 'Delete permanently',
-        cancellationText: 'Cancel'
+        title: t('boards.deleteConfirmTitle'),
+        description: t('boards.deleteConfirmDescription', { title: board.title }),
+        confirmationText: t('boards.deletePermanently'),
+        cancellationText: t('common.cancel')
       }).then(async () => {
         try {
           await deleteBoardDetailsAPI(boardId)
-          toast.success('Board permanently deleted!')
+          toast.success(t('boards.permanentlyDeleted'))
           navigate('/boards')
         } catch (error) {
-          toast.error(error?.response?.data?.message || 'Failed to delete board')
+          toast.error(error?.response?.data?.message || t('boards.deleteFailed'))
         }
       }).catch(() => {})
     }
@@ -440,10 +442,10 @@ function Board() {
         }}>
           <FolderOffOutlinedIcon sx={{ fontSize: 72, color: 'text.secondary', mb: 2 }} />
           <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
-            {board.title} is closed
+            {t('board.closedBoardTitle', { title: board.title })}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 480, mb: 3 }}>
-            This board is closed. Reopen the board to make changes, or permanently delete it.
+            {t('board.closedBoardDescription')}
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
             {isOwner ? (

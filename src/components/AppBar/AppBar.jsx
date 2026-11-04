@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
+import LanguageSelect from '~/components/LanguageSelect/LanguageSelect'
+import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import AppsIcon from '@mui/icons-material/Apps'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
@@ -16,6 +18,7 @@ import UserOnboardingModal from '~/components/Modal/UserOnboardingModal/UserOnbo
 import KeyboardShortcutsModal from '~/components/Modal/KeyboardShortcutsModal/KeyboardShortcutsModal'
 
 function AppBar() {
+  const { t } = useTranslation()
   const activeBoard = useSelector(selectCurrentActiveBoard)
   const currentUser = useSelector(selectCurrentUser)
   const [openTour, setOpenTour] = useState(false)
@@ -78,7 +81,7 @@ function AppBar() {
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
         <Link to='/boards'>
-          <Tooltip title="Board List">
+          <Tooltip title={t('appBar.boardList')}>
             <AppsIcon sx={{ color: 'white', verticalAlign: 'middle' }} />
           </Tooltip>
         </Link>
@@ -97,6 +100,10 @@ function AppBar() {
         {/* dark mode and light mode */}
         <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
           <ModeSelect />
+        </Box>
+        {/* language selector */}
+        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <LanguageSelect />
         </Box>
 
         {/* notifications */}
