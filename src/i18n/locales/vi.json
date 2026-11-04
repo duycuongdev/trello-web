@@ -74,7 +74,9 @@
     "footerBoards": "Bảng",
     "footerPrivacy": "Chính sách bảo mật",
     "footerTerms": "Điều khoản dịch vụ",
-    "footerCopyright": "© 2026 Trello || Mọi quyền được bảo lưu."
+    "footerCopyright": "© 2026 Trello || Mọi quyền được bảo lưu.",
+    "registerHeader": "Tạo tài khoản của bạn",
+    "registerHeaderSub": "Bắt đầu với không gian làm việc Trello miễn phí."
   },
   "forgotPassword": {
     "title": "Quên mật khẩu?",
@@ -95,7 +97,10 @@
   },
   "appBar": {
     "boardList": "Danh sách bảng",
-    "searchBoardPlaceholder": "Tìm kiếm bảng..."
+    "searchBoardPlaceholder": "Tìm kiếm bảng...",
+    "typeToSearch": "Nhập để tìm kiếm...",
+    "typeToSearchBoard": "Nhập để tìm bảng...",
+    "noBoardFound": "Không tìm thấy bảng!"
   },
   "profileMenu": {
     "accountSettings": "Cài đặt tài khoản",
@@ -219,7 +224,8 @@
     "descEmptyTitle": "Thêm mô tả chi tiết...",
     "descEmptySubtitle": "Hỗ trợ Markdown đầy đủ: tiêu đề, việc cần làm, khối mã, bảng và trích dẫn. Bấm để chỉnh sửa.",
     "saveDescription": "Lưu mô tả",
-    "addMember": "Thêm thành viên mới"
+    "addMember": "Thêm thành viên mới",
+    "noActivity": "Chưa có hoạt động nào!"
   },
   "notFound": {
     "message": "Không tìm thấy nội dung bạn đang tìm kiếm",
@@ -255,7 +261,9 @@
     "selectColor": "Chọn màu",
     "addChecklist": "Thêm việc cần làm",
     "enterTitleForThisCard": "Nhập tiêu đề cho thẻ này...",
-    "generalAttachments": "Tệp đính kèm chung"
+    "generalAttachments": "Tệp đính kèm chung",
+    "labels": "Nhãn",
+    "checklist": "Việc cần làm"
   },
   "column": {
     "deleteColumnTitle": "Xóa cột?",

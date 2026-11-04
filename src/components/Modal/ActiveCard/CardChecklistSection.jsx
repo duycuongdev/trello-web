@@ -328,7 +328,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                   '&:hover': { bgcolor: 'action.hover', color: 'error.main', borderColor: 'error.light' }
                 }}
               >
-                Delete
+                {t('common.delete')}
               </Button>
             </Box>
 

@@ -65,8 +65,7 @@ function ForgotPassword() {
 
           {submitted ? (
             <Alert severity="success" sx={{ borderRadius: 2, mb: 2 }}>
-              If that email address is in our database, we have sent a password reset link to it.
-              Please check your inbox (and spam folder).
+              {t('forgotPassword.success')}
             </Alert>
           ) : (
             <form onSubmit={handleSubmit(submitForgotPassword)} noValidate>

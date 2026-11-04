@@ -74,7 +74,9 @@
     "footerBoards": "Boards",
     "footerPrivacy": "Privacy Policy",
     "footerTerms": "Terms of Service",
-    "footerCopyright": "© 2026 Trello || All rights reserved."
+    "footerCopyright": "© 2026 Trello || All rights reserved.",
+    "registerHeader": "Sign up for your account",
+    "registerHeaderSub": "Get started with your free Trello workspace."
   },
   "forgotPassword": {
     "title": "Forgot your password?",
@@ -95,7 +97,10 @@
   },
   "appBar": {
     "boardList": "Board List",
-    "searchBoardPlaceholder": "Search boards..."
+    "searchBoardPlaceholder": "Search boards...",
+    "typeToSearch": "Type to search...",
+    "typeToSearchBoard": "Type to search board...",
+    "noBoardFound": "No board found!"
   },
   "profileMenu": {
     "accountSettings": "Account settings",
@@ -219,7 +224,8 @@
     "descEmptyTitle": "Add a detailed description...",
     "descEmptySubtitle": "Supports rich Markdown: headings, checklists, code blocks, tables, and quotes. Click to edit.",
     "saveDescription": "Save Description",
-    "addMember": "Add new member"
+    "addMember": "Add new member",
+    "noActivity": "No activity found!"
   },
   "notFound": {
     "message": "The content you are looking for was not found",
@@ -255,7 +261,9 @@
     "selectColor": "Select a color",
     "addChecklist": "Add checklist",
     "enterTitleForThisCard": "Enter a title for this card...",
-    "generalAttachments": "General Attachments"
+    "generalAttachments": "General Attachments",
+    "labels": "Labels",
+    "checklist": "Checklist"
   },
   "column": {
     "deleteColumnTitle": "Delete Column ?",
