@@ -15,6 +15,7 @@ import Divider from '@mui/material/Divider'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
 import LanguageSelect from '~/components/LanguageSelect/LanguageSelect'
+import { useTranslation } from 'react-i18next'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 
 // Material UI Icons
@@ -32,6 +33,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 import SecurityIcon from '@mui/icons-material/Security'
 
 function Home() {
+  const { t } = useTranslation()
   const currentUser = useSelector(selectCurrentUser)
 
   const scrollToFeatures = () => {
@@ -81,11 +83,11 @@ function Home() {
           {/* Action buttons */}
           <Stack direction="row" spacing={{ xs: 0.8, sm: 1.5 }} alignItems="center">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <ModeSelect />
+              <ModeSelect variant="page" />
             </Box>
 
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <LanguageSelect />
+              <LanguageSelect variant="page" />
             </Box>
 
             {currentUser ? (
@@ -130,7 +132,7 @@ function Home() {
                     minWidth: 'auto'
                   }}
                 >
-                  Log in
+                  {t('home.logIn')}
                 </Button>
                 <Button
                   component={Link}
@@ -147,7 +149,7 @@ function Home() {
                     boxShadow: '0 4px 14px rgba(12, 102, 228, 0.35)'
                   }}
                 >
-                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Get Trello for free</Box>
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('home.getTrelloFree')}</Box>
                   <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Sign up</Box>
                 </Button>
               </>
@@ -244,7 +246,7 @@ function Home() {
                   boxShadow: '0 8px 24px rgba(12, 102, 228, 0.35)'
                 }}
               >
-                {currentUser ? 'Go to your boards' : 'Get Trello for free'}
+                {currentUser ? t('home.goToBoards') : t('home.getTrelloFree')}
               </Button>
 
               <Button
@@ -683,7 +685,7 @@ function Home() {
                 Boards
               </Link>
               <Link to="/login" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
-                Log in
+                {t('home.logIn')}
               </Link>
               <Link to="/register" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
                 Sign up

@@ -299,5 +299,11 @@
     "gradients": "Chuyển sắc",
     "colors": "Màu",
     "upload": "Tải lên"
+  },
+  "home": {
+    "getTrelloFree": "Dùng Trello miễn phí",
+    "goToBoards": "Vào bảng",
+    "boardsShort": "Bảng",
+    "logIn": "Đăng nhập"
   }
 }
