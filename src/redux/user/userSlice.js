@@ -64,6 +64,13 @@ export const userSlice = createSlice({
       if (state.currentUser) {
         state.currentUser.accessToken = action.payload
       }
+    },
+    // REFRESH TOKEN ROTATION: server cấp refreshToken mới mỗi lần refresh,
+    // phải lưu lại thay thế token cũ (token cũ đã bị thu hồi ở server)
+    setRefreshToken: (state, action) => {
+      if (state.currentUser) {
+        state.currentUser.refreshToken = action.payload
+      }
     }
   },
 
@@ -104,7 +111,7 @@ export const userSlice = createSlice({
   }
 })
 
-export const { setAccessToken } = userSlice.actions
+export const { setAccessToken, setRefreshToken } = userSlice.actions
 
 export const selectCurrentUser = (state) => {
   return state.user.currentUser
