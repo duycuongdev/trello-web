@@ -9,10 +9,12 @@ import Popover from '@mui/material/Popover'
 import IconButton from '@mui/material/IconButton'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { useConfirm } from 'material-ui-confirm'
+import { useTranslation } from 'react-i18next'
 import { removeBoardMemberAPI } from '~/apis'
 import { removeMemberFromBoard } from '~/redux/activeBoard/activeBoardSlice'
 
-function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], isOwner = false, onlineUsers = [] }) {
+function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], isOwner = false, onlineUsers = [], excludeUserId = null }) {
+  const { t } = useTranslation()
   const confirmRemoveMember = useConfirm()
   const dispatch = useDispatch()
   // State to manage the popover for showing all users when the limit is exceeded
@@ -26,17 +28,17 @@ function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], is
 
   const handleRemoveMember = (user) => {
     confirmRemoveMember({
-      title: 'Remove member?',
-      description: `Remove ${user?.displayName} from this board?`,
-      confirmationText: 'Remove',
-      cancellationText: 'Cancel'
+      title: t('board.removeMemberTitle'),
+      description: t('board.removeMemberDesc', { name: user?.displayName }),
+      confirmationText: t('board.remove'),
+      cancellationText: t('common.cancel')
     }).then(async () => {
       await removeBoardMemberAPI(boardId, user._id)
       dispatch(removeMemberFromBoard(user._id))
-      toast.success('Member removed from board')
+      toast.success(t('board.memberRemoved'))
     }).catch((error) => {
       if (error?.response) {
-        toast.error(error.response.data?.message || 'Unable to remove member')
+        toast.error(error.response.data?.message || t('board.removeMemberFailed'))
       }
     })
   }
@@ -94,11 +96,11 @@ function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], is
   return (
     <Box sx={{ display: 'flex', gap: '4px' }}>
       {/* display limit number of users */}
-      {boardUsers.map((user, index) => index < limit ? renderUser(user, index) : null)}
+      {boardUsers.filter(user => !excludeUserId || user?._id?.toString() !== excludeUserId?.toString()).map((user, index) => index < limit ? renderUser(user, index) : null)}
 
       {/* if the number of users exceeds the limit, show the "+number" button */}
-      {boardUsers.length > limit &&
-        <Tooltip title="Show more">
+      {boardUsers.filter(user => !excludeUserId || user?._id?.toString() !== excludeUserId?.toString()).length > limit &&
+        <Tooltip title={t('common.showMore')}>
           <Box
             aria-describedby={popoverId}
             onClick={handleTogglePopover}
@@ -116,7 +118,7 @@ function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], is
               backgroundColor: '#a4b0be'
             }}
           >
-            +{boardUsers.length - limit}
+            +{boardUsers.filter(user => !excludeUserId || user?._id?.toString() !== excludeUserId?.toString()).length - limit}
           </Box>
         </Tooltip>
       }

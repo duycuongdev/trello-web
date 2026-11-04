@@ -16,7 +16,10 @@
     "position": "Position",
     "colors": "Colors",
     "showMore": "Show more",
-    "retry": "Retry"
+    "retry": "Retry",
+    "datetimeFormat": "MMM D, YYYY [at] h:mm A",
+    "dateFormatShort": "ddd, MMM D [at] h:mm A",
+    "datetimeFormatFull": "ddd, MMM D, YYYY [at] h:mm A"
   },
   "validation": {
     "required": "This field is required.",
@@ -182,7 +185,11 @@
     "addCard": "Add card",
     "cardTitleRequired": "Please enter Card title",
     "columnArchived": "Column archived!",
-    "columnDeleted": "List permanently deleted!"
+    "columnDeleted": "List permanently deleted!",
+    "addNewColumn": "Add new column",
+    "removeMemberTitle": "Remove member?",
+    "removeMemberDesc": "Remove {{name}} from this board?",
+    "removeMemberFailed": "Unable to remove member"
   },
   "card": {
     "dueSoon": "DUE SOON",

@@ -86,7 +86,7 @@ function Home() {
               <ModeSelect variant="page" />
             </Box>
 
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box sx={{ display: 'block' }}>
               <LanguageSelect variant="page" />
             </Box>
 

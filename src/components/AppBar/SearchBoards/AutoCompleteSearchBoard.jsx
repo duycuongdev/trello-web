@@ -120,7 +120,7 @@ function AutoCompleteSearchBoard() {
         <TextField
           {...params}
           inputRef={searchInputRef}
-          label={t('appBar.typeToSearch')}
+          placeholder={t('appBar.typeToSearch')}
           size="small"
           InputProps={{
             ...params.InputProps,

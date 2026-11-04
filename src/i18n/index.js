@@ -2,6 +2,8 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
+import dayjs from 'dayjs'
+import 'dayjs/locale/vi'
 import en from './locales/en.json'
 import vi from './locales/vi.json'
 
@@ -37,3 +39,10 @@ i18n
   })
 
 export default i18n
+
+// Đồng bộ locale của dayjs (định dạng ngày tháng) với ngôn ngữ giao diện
+const syncDayjsLocale = (lng) => {
+  dayjs.locale(lng?.startsWith('vi') ? 'vi' : 'en')
+}
+syncDayjsLocale(i18n.language)
+i18n.on('languageChanged', syncDayjsLocale)

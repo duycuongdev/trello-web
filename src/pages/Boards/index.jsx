@@ -298,11 +298,11 @@ function Boards() {
             )}
 
             {/* Phân trang */}
-            {(totalBoards > 0) && (
+            {(totalBoards > DEFAULT_ITEMS_PER_PAGE) && (
               <Box sx={{ my: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Pagination
                   size="large"
-                  color="secondary"
+                  color="primary"
                   showFirstButton
                   showLastButton
                   count={Math.ceil(totalBoards / DEFAULT_ITEMS_PER_PAGE)}
