@@ -90,7 +90,9 @@ function ListColumns({ columns = [] }) {
             mx: 2,
             borderRadius: '6px',
             height: 'fit-content',
-            bgcolor: '#ffffff3d'
+            bgcolor: 'rgba(0, 0, 0, 0.32)',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(255, 255, 255, 0.35)'
           }}>
             <Button
               startIcon={<NoteAddIcon />}
@@ -102,7 +104,7 @@ function ListColumns({ columns = [] }) {
                 py: 1
               }}
             >
-              Add new column
+              {t('board.addNewColumn')}
             </Button>
           </Box>
           : <Box sx={{

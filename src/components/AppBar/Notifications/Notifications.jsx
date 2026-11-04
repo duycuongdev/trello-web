@@ -394,7 +394,7 @@ function Notifications() {
 
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 0.3 }}>
                             <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px' }}>
-                              Due: {dayjs(notification.dueDate).format('ddd, MMM D [at] h:mm A')}
+                              Due: {dayjs(notification.dueDate).format(t('common.dateFormatShort'))}
                             </Typography>
                           </Box>
                         </Box>
@@ -507,7 +507,7 @@ function Notifications() {
                         )}
 
                         <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px', pt: 0.2 }}>
-                          {dayjs(notification.createdAt).format('ddd, MMM D, YYYY [at] h:mm A')}
+                          {dayjs(notification.createdAt).format(t('common.datetimeFormatFull'))}
                         </Typography>
                       </Box>
 

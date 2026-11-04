@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
+import LanguageSelect from '~/components/LanguageSelect/LanguageSelect'
 import { useTranslation } from 'react-i18next'
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined'
@@ -165,6 +166,7 @@ function Auth() {
         </Link>
 
         <ModeSelect />
+        <LanguageSelect />
       </Box>
 
       {/* 2. Main Form Container */}

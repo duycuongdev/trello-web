@@ -561,7 +561,7 @@ function ActiveCard() {
                         bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : '#f4f5f7'
                       }}
                     >
-                      {dayjs(activeCard.dueDate).format('MMM D, YYYY [at] h:mm A')}
+                      {dayjs(activeCard.dueDate).format(t('common.datetimeFormat'))}
                     </Button>
 
                     {activeCard?.isDueDateComplete ? (

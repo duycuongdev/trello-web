@@ -430,6 +430,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           boardId={board?._id}
           ownerIds={board?.ownerIds}
           isOwner={isOwner}
+          excludeUserId={currentUser?._id}
         />
       </Box>
     </Box>
