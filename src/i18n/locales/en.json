@@ -189,7 +189,8 @@
     "addNewColumn": "Add new column",
     "removeMemberTitle": "Remove member?",
     "removeMemberDesc": "Remove {{name}} from this board?",
-    "removeMemberFailed": "Unable to remove member"
+    "removeMemberFailed": "Unable to remove member",
+    "youWereRemoved": "You have been removed from this board."
   },
   "card": {
     "dueSoon": "DUE SOON",
