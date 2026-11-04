@@ -20,7 +20,7 @@ function CardChecklistPopover({ anchorEl, isOpen, onClose, onAddChecklist }) {
     const trimmedTitle = title.trim()
     if (!trimmedTitle) return
     onAddChecklist({
-      _id: Date.now().toString(),
+      _id: crypto.randomUUID(),
       title: trimmedTitle,
       items: []
     })

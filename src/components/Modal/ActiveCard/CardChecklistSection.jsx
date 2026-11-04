@@ -124,7 +124,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     if (!trimmed) return
     const validUrl = getValidUrl(trimmed)
     const newAtt = {
-      _id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+      _id: crypto.randomUUID(),
       url: validUrl,
       fileName: null,
       isFile: false
@@ -144,7 +144,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
       const uploaded = await onUploadAttachment(file)
       if (uploaded?.fileUrl) {
         const newAtt = {
-          _id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+          _id: crypto.randomUUID(),
           url: uploaded.fileUrl,
           fileName: uploaded.fileName || file.name,
           isFile: true
@@ -168,7 +168,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     let finalAttachments = [...newItemAttachments]
     if (newItemCurrentUrl.trim()) {
       finalAttachments.push({
-        _id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+        _id: crypto.randomUUID(),
         url: getValidUrl(newItemCurrentUrl.trim()),
         fileName: null,
         isFile: false
@@ -176,7 +176,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     }
 
     const newItem = {
-      _id: Date.now().toString(),
+      _id: crypto.randomUUID(),
       title: trimmedTitle,
       link: finalAttachments[0]?.url || null,
       fileName: finalAttachments[0]?.fileName || null,
@@ -224,7 +224,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     if (!trimmed) return
     const validUrl = getValidUrl(trimmed)
     const newAtt = {
-      _id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+      _id: crypto.randomUUID(),
       url: validUrl,
       fileName: null,
       isFile: false
@@ -244,7 +244,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
       const uploaded = await onUploadAttachment(file)
       if (uploaded?.fileUrl) {
         const newAtt = {
-          _id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+          _id: crypto.randomUUID(),
           url: uploaded.fileUrl,
           fileName: uploaded.fileName || file.name,
           isFile: true
@@ -267,7 +267,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     let finalAttachments = [...editingItemAttachments]
     if (editingItemCurrentUrl.trim()) {
       finalAttachments.push({
-        _id: Date.now().toString() + Math.random().toString(36).substring(2, 6),
+        _id: crypto.randomUUID(),
         url: getValidUrl(editingItemCurrentUrl.trim()),
         fileName: null,
         isFile: false
