@@ -292,13 +292,23 @@ function Board() {
     }
     socketIoInstance.on('BE_BOARD_UPDATED', onReceiveBoardUpdated)
 
+    // Bị xóa khỏi board (kick real-time): rời phòng + điều hướng về danh sách bảng
+    const onRemovedFromBoard = (payload) => {
+      if (!payload?.boardId || payload.boardId !== boardId) return
+      leaveBoardRoom(boardId)
+      toast.info(t('board.youWereRemoved'), { position: 'bottom-right' })
+      navigate('/boards')
+    }
+    socketIoInstance.on('BE_BOARD_MEMBER_REMOVED', onRemovedFromBoard)
+
     return () => {
       leaveBoardRoom(boardId)
       socketIoInstance.off('connect', onConnect)
       socketIoInstance.off('BE_BOARD_USERS_ONLINE', onReceiveOnlineUsers)
       socketIoInstance.off('BE_BOARD_UPDATED', onReceiveBoardUpdated)
+      socketIoInstance.off('BE_BOARD_MEMBER_REMOVED', onRemovedFromBoard)
     }
-  }, [boardId, currentUser, dispatch, setSearchParams, t])
+  }, [boardId, currentUser, dispatch, setSearchParams, t, navigate])
 
   const moveColumns = (dndOrderedColumns) => {
     const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
