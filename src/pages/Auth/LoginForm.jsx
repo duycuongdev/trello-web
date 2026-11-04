@@ -30,6 +30,7 @@ function LoginForm() {
   const [searchParams] = useSearchParams()
   const registeredEmail = searchParams.get('registeredEmail')
   const verifiedEmail = searchParams.get('verifiedEmail')
+  const resetSuccessEmail = searchParams.get('resetSuccess')
 
   const { handleSubmit, register, formState: { errors } } = useForm({
     defaultValues: {
@@ -117,6 +118,12 @@ function LoginForm() {
                 An email has been sent to&nbsp;
                 <Typography component="span" sx={{ fontWeight: 'bold' }}>{registeredEmail}</Typography>
                 <br />Please check and verify your account before logging in!
+              </Alert>
+            }
+            {resetSuccessEmail &&
+              <Alert severity="success" sx={{ borderRadius: 2, '.MuiAlert-message': { overflow: 'hidden' } }}>
+                Your password has been reset successfully.<br />
+                Please log in with your new password.
               </Alert>
             }
           </Box>
@@ -207,6 +214,11 @@ function LoginForm() {
 
           {/* Bottom link */}
           <Box sx={{ p: 1.5, textAlign: 'center' }}>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Link to="/forgot-password" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
+                Forgot password?
+              </Link>
+            </Typography>
             <Typography variant="body2" color="text.secondary">
               Don&apos;t have an account yet?{' '}
               <Link to="/register" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>

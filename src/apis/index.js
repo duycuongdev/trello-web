@@ -55,6 +55,18 @@ export const verifyUserAPI = async (data) => {
   return response.data
 }
 
+// Quên mật khẩu: gửi email chứa link đặt lại (BE luôn trả về message chung để chống email enumeration)
+export const forgotPasswordAPI = async (data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/forgot_password`, data)
+  return response.data
+}
+
+// Đặt lại mật khẩu bằng token từ email (server sẽ thu hồi mọi refresh token của user)
+export const resetPasswordAPI = async (data) => {
+  const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/reset_password`, data)
+  return response.data
+}
+
 export const refreshTokenAPI = async (refreshToken) => {
   const headers = {}
   if (refreshToken) {
