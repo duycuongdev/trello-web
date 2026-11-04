@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import Box from '@mui/material/Box'
@@ -20,18 +21,18 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 
-const TOUR_STEPS = [
+const getTourSteps = (t) => [
   {
     stepIndex: 1,
     icon: <DashboardCustomizeIcon sx={{ fontSize: 36, color: '#0052cc' }} />,
-    tag: 'STEP 1 / 5 • WORKSPACE OVERVIEW',
+    tag: t('onboarding.step1Tag'),
     tagColor: 'primary',
-    title: 'Welcome to Trello Kanban!',
-    subtitle: 'A visual workspace designed to help you organize projects, manage daily tasks, and boost team productivity.',
+    title: t('onboarding.step1Title'),
+    subtitle: t('onboarding.step1Subtitle'),
     highlights: [
-      'Create unlimited dedicated Boards for projects, personal goals, or team workflows.',
-      'Full Dark Mode & Light Mode support with smooth, eye-friendly transitions.',
-      'Easily manage active and archived boards with one-click restore or permanent delete.'
+      t('onboarding.step1H1'),
+      t('onboarding.step1H2'),
+      t('onboarding.step1H3')
     ],
     preview: (
       <Box sx={{
@@ -60,14 +61,14 @@ const TOUR_STEPS = [
   {
     stepIndex: 2,
     icon: <ViewColumnIcon sx={{ fontSize: 36, color: '#0284c7' }} />,
-    tag: 'STEP 2 / 5 • KANBAN WORKFLOW',
+    tag: t('onboarding.step2Tag'),
     tagColor: 'info',
-    title: 'Flexible Lists & Cards Drag-and-Drop',
-    subtitle: 'Seamlessly visualize your workflow from To Do -> In Progress -> Done with fluid drag-and-drop.',
+    title: t('onboarding.step2Title'),
+    subtitle: t('onboarding.step2Subtitle'),
     highlights: [
-      'Smoothly reorder columns and cards with modern dnd-kit touch and mouse gestures.',
-      'Instantly duplicate (Copy) or move cards across columns on the board.',
-      'Compose rich task descriptions using the built-in formatted Markdown Editor.'
+      t('onboarding.step2H1'),
+      t('onboarding.step2H2'),
+      t('onboarding.step2H3')
     ],
     preview: (
       <Box sx={{
@@ -81,15 +82,15 @@ const TOUR_STEPS = [
         gap: 1
       }}>
         <Box sx={{ p: 1, borderRadius: 1, bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e293b' : '#f1f5f9' }}>
-          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, mb: 0.8, color: 'text.secondary' }}>📋 To Do</Typography>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, mb: 0.8, color: 'text.secondary' }}>{t('home.colTodo')}</Typography>
           <Box sx={{ p: 0.8, borderRadius: 1, bgcolor: (theme) => theme.palette.mode === 'dark' ? '#334155' : '#ffffff', fontSize: '0.72rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>Research UI</Box>
         </Box>
         <Box sx={{ p: 1, borderRadius: 1, bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e293b' : '#f1f5f9' }}>
-          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, mb: 0.8, color: '#0284c7' }}>⚡ In Progress</Typography>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, mb: 0.8, color: '#0284c7' }}>{t('home.colInProgress')}</Typography>
           <Box sx={{ p: 0.8, borderRadius: 1, bgcolor: (theme) => theme.palette.mode === 'dark' ? '#334155' : '#ffffff', fontSize: '0.72rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderLeft: '3px solid #0284c7' }}>Build API</Box>
         </Box>
         <Box sx={{ p: 1, borderRadius: 1, bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e293b' : '#f1f5f9' }}>
-          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, mb: 0.8, color: '#16a34a' }}>✅ Done</Typography>
+          <Typography sx={{ fontSize: '0.75rem', fontWeight: 700, mb: 0.8, color: '#16a34a' }}>{t('home.colDone')}</Typography>
           <Box sx={{ p: 0.8, borderRadius: 1, bgcolor: (theme) => theme.palette.mode === 'dark' ? '#334155' : '#ffffff', fontSize: '0.72rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>Setup DB</Box>
         </Box>
       </Box>
@@ -98,14 +99,14 @@ const TOUR_STEPS = [
   {
     stepIndex: 3,
     icon: <CheckCircleOutlineIcon sx={{ fontSize: 36, color: '#16a34a' }} />,
-    tag: 'STEP 3 / 5 • CHECKLISTS & DEADLINES',
+    tag: t('onboarding.step3Tag'),
     tagColor: 'success',
-    title: 'Smart Checklists & Due Date Badges',
-    subtitle: 'Break down complex goals into actionable sub-tasks and track deadlines with ease.',
+    title: t('onboarding.step3Title'),
+    subtitle: t('onboarding.step3Subtitle'),
     highlights: [
-      'Create multiple checklists per card with real-time percentage progress bars.',
-      'Set precise Due Dates with smart countdown countdown badges.',
-      'Automated color badges: Green (Completed), Amber (Due within 24h), Red (Overdue).'
+      t('onboarding.step3H1'),
+      t('onboarding.step3H2'),
+      t('onboarding.step3H3')
     ],
     preview: (
       <Box sx={{
@@ -116,11 +117,11 @@ const TOUR_STEPS = [
         borderColor: (theme) => theme.palette.mode === 'dark' ? '#334155' : '#86efac'
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>Checklist Progress: 75%</Typography>
+          <Typography sx={{ fontSize: '0.8rem', fontWeight: 700 }}>{t('onboarding.checklistProgress', { percent: 75 })}</Typography>
           <Chip
             size="small"
             icon={<AccessTimeIcon sx={{ fontSize: '14px !important' }} />}
-            label="Due: Tomorrow"
+            label={t('card.dueTomorrow')}
             sx={{ bgcolor: '#fef3c7', color: '#b45309', fontWeight: 600, fontSize: '0.72rem' }}
           />
         </Box>
@@ -145,14 +146,14 @@ const TOUR_STEPS = [
   {
     stepIndex: 4,
     icon: <PaletteIcon sx={{ fontSize: 36, color: '#9333ea' }} />,
-    tag: 'STEP 4 / 5 • CUSTOMIZATION',
+    tag: t('onboarding.step4Tag'),
     tagColor: 'secondary',
-    title: 'Color-Coded Labels & Board Wallpapers',
-    subtitle: 'Give your workspace personality and recognize task priority at a single glance.',
+    title: t('onboarding.step4Title'),
+    subtitle: t('onboarding.step4Subtitle'),
     highlights: [
-      'Attach multi-colored Labels with custom titles (Urgent, Bug, Feature, Design, etc.).',
-      'Customize board backgrounds from curated Unsplash photos or upload your own via Cloudinary.',
-      'Filter cards instantly by labels, keywords, or assigned team members.'
+      t('onboarding.step4H1'),
+      t('onboarding.step4H2'),
+      t('onboarding.step4H3')
     ],
     preview: (
       <Box sx={{
@@ -177,14 +178,14 @@ const TOUR_STEPS = [
   {
     stepIndex: 5,
     icon: <GroupAddIcon sx={{ fontSize: 36, color: '#f59e0b' }} />,
-    tag: 'STEP 5 / 5 • REAL-TIME COLLABORATION',
+    tag: t('onboarding.step5Tag'),
     tagColor: 'warning',
-    title: 'Teamwork & Instant Socket Notifications',
-    subtitle: 'Connect with teammates, discuss in card comments, and stay synchronized in real time.',
+    title: t('onboarding.step5Title'),
+    subtitle: t('onboarding.step5Subtitle'),
     highlights: [
-      'Invite members to your boards via email with clear role permissions.',
-      'Comment on cards and receive instant notification alerts powered by Socket.io.',
-      'Archive completed lists and cards to keep your workspace tidy, with one-click restore anytime.'
+      t('onboarding.step5H1'),
+      t('onboarding.step5H2'),
+      t('onboarding.step5H3')
     ],
     preview: (
       <Box sx={{
@@ -203,7 +204,7 @@ const TOUR_STEPS = [
           <Box sx={{ width: 34, height: 34, borderRadius: '50%', bgcolor: '#16a34a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem' }}>B</Box>
           <Box sx={{ width: 34, height: 34, borderRadius: '50%', bgcolor: '#9333ea', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.85rem' }}>C</Box>
         </Box>
-        <Chip size="small" label="🔔 Real-time Socket Alerts" sx={{ bgcolor: '#fef3c7', color: '#b45309', fontWeight: 600 }} />
+        <Chip size="small" label={t('onboarding.socketAlerts')} sx={{ bgcolor: '#fef3c7', color: '#b45309', fontWeight: 600 }} />
       </Box>
     )
   }
@@ -211,6 +212,8 @@ const TOUR_STEPS = [
 
 function UserOnboardingModal({ open, onClose }) {
   const [activeStep, setActiveStep] = useState(0)
+  const { t } = useTranslation()
+  const TOUR_STEPS = getTourSteps(t)
 
   const currentStepData = TOUR_STEPS[activeStep]
   const isFirstStep = activeStep === 0
@@ -348,7 +351,7 @@ function UserOnboardingModal({ open, onClose }) {
             onClick={handleClose}
             sx={{ color: 'text.secondary', textTransform: 'none', fontWeight: 600 }}
           >
-            Skip
+            {t('onboarding.skip')}
           </Button>
 
           <Box sx={{ display: 'flex', gap: 1 }}>
@@ -359,7 +362,7 @@ function UserOnboardingModal({ open, onClose }) {
               startIcon={<NavigateBeforeIcon />}
               sx={{ textTransform: 'none', fontWeight: 600, borderRadius: 2 }}
             >
-              Back
+              {t('onboarding.back')}
             </Button>
 
             <Button
@@ -378,7 +381,7 @@ function UserOnboardingModal({ open, onClose }) {
                 }
               }}
             >
-              {isLastStep ? 'Get Started!' : 'Next'}
+              {isLastStep ? t('onboarding.getStarted') : t('onboarding.next')}
             </Button>
           </Box>
         </Box>

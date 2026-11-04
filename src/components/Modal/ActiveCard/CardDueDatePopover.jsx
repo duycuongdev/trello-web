@@ -12,18 +12,19 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import WatchLaterOutlinedIcon from '@mui/icons-material/WatchLaterOutlined'
 import dayjs from 'dayjs'
+import { useTranslation } from 'react-i18next'
 
 const HOURS_12 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 const DEFAULT_MINUTES = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55']
 
-const REMINDER_OPTIONS = [
-  { value: -1, label: 'None' },
-  { value: 0, label: 'At time of due date' },
-  { value: 10, label: '10 minutes before' },
-  { value: 60, label: '1 hour before' },
-  { value: 120, label: '2 hours before' },
-  { value: 1440, label: '1 day before' },
-  { value: 2880, label: '2 days before' }
+const getReminderOptions = (t) => [
+  { value: -1, label: t('dueDate.none') },
+  { value: 0, label: t('dueDate.atTime') },
+  { value: 10, label: t('dueDate.minutes10Before') },
+  { value: 60, label: t('dueDate.hour1Before') },
+  { value: 120, label: t('dueDate.hours2Before') },
+  { value: 1440, label: t('dueDate.day1Before') },
+  { value: 2880, label: t('dueDate.days2Before') }
 ]
 
 const parseDueDateTo12h = (timestamp) => {
@@ -55,6 +56,8 @@ function CardDueDatePopover({
   reminderMinutes = 1440,
   onUpdateDueDate
 }) {
+  const { t } = useTranslation()
+  const REMINDER_OPTIONS = getReminderOptions(t)
   const [dateStr, setDateStr] = useState(() => parseDueDateTo12h(dueDate).date)
   const [hour12, setHour12] = useState(() => parseDueDateTo12h(dueDate).hour)
   const [minuteStr, setMinuteStr] = useState(() => parseDueDateTo12h(dueDate).minute)
@@ -237,7 +240,7 @@ function CardDueDatePopover({
           disabled={!dateStr}
           sx={{ textTransform: 'none', fontWeight: 600 }}
         >
-          Save
+          {t('common.save')}
         </Button>
         {dueDate && (
           <Button
@@ -252,7 +255,7 @@ function CardDueDatePopover({
               '&:hover': { color: 'error.main', borderColor: 'error.light' }
             }}
           >
-            Remove
+            {t('dueDate.remove')}
           </Button>
         )}
       </Box>
