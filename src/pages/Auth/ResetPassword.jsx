@@ -74,7 +74,7 @@ function ResetPassword() {
               {t('resetPassword.title')}
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              You&apos;re resetting the password for <strong>{email}</strong>
+              {t('resetPassword.resettingFor', { email })}
             </Typography>
           </Box>
 

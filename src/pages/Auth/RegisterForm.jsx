@@ -254,10 +254,10 @@ function RegisterForm() {
               <TrelloIcon fontSize="medium" sx={{ color: 'white' }} />
             </Box>
             <Typography component="h1" variant="h5" fontWeight={800} sx={{ letterSpacing: '-0.5px' }}>
-              Sign up for your account
+              {t('auth.registerHeader')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Get started with your free Trello workspace.
+              {t('auth.registerHeaderSub')}
             </Typography>
           </Box>
 

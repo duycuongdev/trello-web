@@ -116,7 +116,7 @@ function CardActivitySection({
       {/* Hiển thị danh sách các comments */}
       {cardComments.length === 0 && (
         <Typography sx={{ pl: '45px', fontSize: '14px', fontWeight: '500', color: '#b1b1b1' }}>
-          No activity found!
+          {t('card.noActivity')}
         </Typography>
       )}
 

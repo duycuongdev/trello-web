@@ -8,12 +8,14 @@ import { createSearchParams, useNavigate } from 'react-router-dom'
 import { fetchBoardsAPI } from '~/apis/index'
 import { useDebounceFn } from '~/CustomHooks/useDebounceFn'
 import { slugify } from '~/utils/formatter'
+import { useTranslation } from 'react-i18next'
 
 /**
  * Hướng dẫn & ví dụ cái Autocomplele của MUI ở đây:
  * https://mui.com/material-ui/react-autocomplete/#asynchronous-requests
  */
 function AutoCompleteSearchBoard() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const searchInputRef = useRef(null)
 
@@ -88,7 +90,7 @@ function AutoCompleteSearchBoard() {
       sx={{ width: { xs: 130, sm: 170, md: 220 } }}
       id="asynchronous-search-board"
       // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
-      noOptionsText={!boards ? 'Type to search board...' : 'No board found!'}
+      noOptionsText={!boards ? t('appBar.typeToSearchBoard') : t('appBar.noBoardFound')}
 
       // Cụm này để handle việc đóng mở phần kết quả tìm kiếm
       open={open}
@@ -118,7 +120,7 @@ function AutoCompleteSearchBoard() {
         <TextField
           {...params}
           inputRef={searchInputRef}
-          label="Type to search..."
+          label={t('appBar.typeToSearch')}
           size="small"
           InputProps={{
             ...params.InputProps,
