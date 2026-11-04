@@ -5,20 +5,21 @@ import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import KeyboardOutlinedIcon from '@mui/icons-material/KeyboardOutlined'
 import Divider from '@mui/material/Divider'
+import { useTranslation } from 'react-i18next'
 
-const SHORTCUTS = [
+const getShortcuts = (t) => [
   {
-    category: 'Global Navigation',
+    category: t('shortcuts.catGlobal'),
     items: [
-      { key: '/', description: 'Focus board search in top bar' },
-      { key: '?', description: 'Open this keyboard shortcuts guide' },
-      { key: 'Esc', description: 'Close modals, drawers, or blur search' }
+      { key: '/', description: t('shortcuts.searchFocus') },
+      { key: '?', description: t('shortcuts.openGuide') },
+      { key: 'Esc', description: t('shortcuts.escape') }
     ]
   },
   {
-    category: 'Board View',
+    category: t('shortcuts.catBoard'),
     items: [
-      { key: 'F', description: 'Quick toggle "My cards" filter' }
+      { key: 'F', description: t('shortcuts.myCardsFilter') }
     ]
   }
 ]
@@ -52,6 +53,8 @@ function Kbd({ children }) {
 }
 
 function KeyboardShortcutsModal({ open, onClose }) {
+  const { t } = useTranslation()
+  const SHORTCUTS = getShortcuts(t)
   return (
     <Modal
       open={open}
@@ -79,7 +82,7 @@ function KeyboardShortcutsModal({ open, onClose }) {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2 }}>
             <KeyboardOutlinedIcon sx={{ color: '#0052cc', fontSize: 28 }} />
             <Typography id="keyboard-shortcuts-title" variant="h6" fontWeight={700}>
-              Keyboard Shortcuts
+              {t('shortcuts.title')}
             </Typography>
           </Box>
           <IconButton size="small" onClick={onClose} aria-label="close">
@@ -88,7 +91,7 @@ function KeyboardShortcutsModal({ open, onClose }) {
         </Box>
 
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5 }}>
-          Navigate and manage your boards faster with productivity shortcuts.
+          {t('shortcuts.subtitle')}
         </Typography>
 
         {SHORTCUTS.map((section, idx) => (
@@ -135,7 +138,7 @@ function KeyboardShortcutsModal({ open, onClose }) {
           }}
         >
           <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontStyle: 'italic' }}>
-            💡 <strong>Pro Tip:</strong> Shortcuts work globally as long as your cursor is not focused inside a text input field.
+            💡 <strong>{t('shortcuts.proTipLabel')}</strong> {t('shortcuts.proTip')}
           </Typography>
         </Box>
       </Box>

@@ -150,7 +150,7 @@ function Home() {
                   }}
                 >
                   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('home.getTrelloFree')}</Box>
-                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Sign up</Box>
+                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('auth.signUp')}</Box>
                 </Button>
               </>
             )}
@@ -171,7 +171,7 @@ function Home() {
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center', maxWidth: 840, mx: 'auto', mb: { xs: 5, md: 8 } }}>
             <Chip
-              label="⚡ Productivity reimagined for modern teams"
+              label={t('home.badge')}
               color="primary"
               variant="outlined"
               sx={{
@@ -203,7 +203,7 @@ function Home() {
                 mb: { xs: 2, sm: 3 }
               }}
             >
-              Trello brings all your tasks, teammates, and tools together
+              {t('home.heroTitle')}
             </Typography>
 
             <Typography
@@ -218,7 +218,7 @@ function Home() {
                 fontSize: { xs: '0.95rem', sm: '1.1rem', md: '1.25rem' }
               }}
             >
-              Keep everything in the same place — even if your team isn’t. Organize work, streamline workflows, and collaborate seamlessly with intuitive Kanban boards.
+              {t('home.heroSubtitle')}
             </Typography>
 
             <Stack
@@ -264,7 +264,7 @@ function Home() {
                   maxWidth: { xs: '320px', sm: 'none' }
                 }}
               >
-                Explore features
+                {t('home.exploreFeatures')}
               </Button>
             </Stack>
           </Box>
@@ -293,13 +293,13 @@ function Home() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, flexWrap: 'wrap' }}>
                 <DashboardIcon />
                 <Typography variant="h6" fontWeight={700} sx={{ color: 'white', fontSize: { xs: '1rem', sm: '1.25rem' } }}>
-                  Product Roadmap Q4
+                  {t('home.mockupTitle')}
                 </Typography>
-                <Chip size="small" label="Public" sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 600 }} />
+                <Chip size="small" label={t('home.mockupPublic')} sx={{ bgcolor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 600 }} />
               </Box>
 
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Chip size="small" icon={<FilterListIcon sx={{ color: 'white !important' }} />} label="Filter" sx={{ bgcolor: 'rgba(255,255,255,0.15)', color: 'white' }} />
+                <Chip size="small" icon={<FilterListIcon sx={{ color: 'white !important' }} />} label={t('home.mockupFilter')} sx={{ bgcolor: 'rgba(255,255,255,0.15)', color: 'white' }} />
                 <AvatarGroup max={3} sx={{ '& .MuiAvatar-root': { width: 26, height: 26, fontSize: 11, borderColor: 'transparent' } }}>
                   <Avatar sx={{ bgcolor: '#e11d48' }}>A</Avatar>
                   <Avatar sx={{ bgcolor: '#0284c7' }}>B</Avatar>
@@ -319,7 +319,7 @@ function Home() {
                   minHeight: 280
                 }}>
                   <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1.5, px: 0.5 }}>
-                    📋 To Do
+                    {t('home.colTodo')}
                   </Typography>
 
                   {/* Card 1 */}
@@ -330,7 +330,7 @@ function Home() {
                         <Box sx={{ width: 40, height: 6, bgcolor: '#06b6d4', borderRadius: 1 }} />
                       </Box>
                       <Typography variant="body2" fontWeight={600} sx={{ mb: 1 }}>
-                        Research competitor dashboard features
+                        {t('home.mockCard1')}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'text.secondary', fontSize: 12 }}>
                         <Chip size="small" icon={<WatchLaterOutlinedIcon sx={{ fontSize: '14px !important' }} />} label="Oct 28" sx={{ height: 22, fontSize: 11 }} />
@@ -348,7 +348,7 @@ function Home() {
                   <Card sx={{ borderRadius: 1.5, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
                     <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
                       <Typography variant="body2" fontWeight={600}>
-                        Design system UI kit & dark mode palettes
+                        {t('home.mockCard2')}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -364,7 +364,7 @@ function Home() {
                   minHeight: 280
                 }}>
                   <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1.5, px: 0.5 }}>
-                    🚀 In Progress
+                    {t('home.colInProgress')}
                   </Typography>
 
                   {/* Card with cover & checklist */}
@@ -375,13 +375,13 @@ function Home() {
                         <Box sx={{ width: 40, height: 6, bgcolor: '#22c55e', borderRadius: 1 }} />
                       </Box>
                       <Typography variant="body2" fontWeight={600} sx={{ mb: 1.5 }}>
-                        Implement Checklists, Labels & Cover Upload
+                        {t('home.mockCard3')}
                       </Typography>
 
                       {/* Checklist progress bar */}
                       <Box sx={{ mb: 1.5 }}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, fontWeight: 700, color: '#16a34a', mb: 0.5 }}>
-                          <span>Checklist</span>
+                          <span>{t('card.checklist')}</span>
                           <span>100%</span>
                         </Box>
                         <Box sx={{ height: 6, bgcolor: '#e2e8f0', borderRadius: 1, overflow: 'hidden' }}>
@@ -390,7 +390,7 @@ function Home() {
                       </Box>
 
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'text.secondary', fontSize: 12 }}>
-                        <Chip size="small" label="COMPLETED" color="success" sx={{ height: 20, fontSize: 10, fontWeight: 700 }} />
+                        <Chip size="small" label={t('card.completed')} color="success" sx={{ height: 20, fontSize: 10, fontWeight: 700 }} />
                         <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}><AttachFileIcon sx={{ fontSize: 14 }} /> 2</Box>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}><ChatBubbleOutlineIcon sx={{ fontSize: 14 }} /> 4</Box>
@@ -411,7 +411,7 @@ function Home() {
                   minHeight: 280
                 }}>
                   <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1.5, px: 0.5 }}>
-                    ✅ Done
+                    {t('home.colDone')}
                   </Typography>
 
                   <Card sx={{ mb: 1.5, borderRadius: 1.5, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
@@ -420,10 +420,10 @@ function Home() {
                         <Box sx={{ width: 40, height: 6, bgcolor: '#3b82f6', borderRadius: 1 }} />
                       </Box>
                       <Typography variant="body2" fontWeight={600} sx={{ mb: 1 }}>
-                        Board Background Customization via Cloudinary
+                        {t('home.mockCard4')}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Chip size="small" icon={<CheckCircleIcon sx={{ fontSize: '14px !important', color: '#16a34a' }} />} label="Verified" sx={{ height: 22, fontSize: 11 }} />
+                        <Chip size="small" icon={<CheckCircleIcon sx={{ fontSize: '14px !important', color: '#16a34a' }} />} label={t('home.verified')} sx={{ height: 22, fontSize: 11 }} />
                         <Avatar sx={{ width: 22, height: 22, fontSize: 10, bgcolor: '#10b981' }}>C</Avatar>
                       </Box>
                     </CardContent>
@@ -432,7 +432,7 @@ function Home() {
                   <Card sx={{ borderRadius: 1.5, boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
                     <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
                       <Typography variant="body2" fontWeight={600}>
-                        Board Close, Reopen & Permanent Cascading Delete
+                        {t('home.mockCard5')}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -448,13 +448,13 @@ function Home() {
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center', maxWidth: 700, mx: 'auto', mb: 8 }}>
             <Typography variant="overline" color="primary" fontWeight={700} letterSpacing={1.5}>
-              POWERFUL CAPABILITIES
+              {t('home.capabilitiesTag')}
             </Typography>
             <Typography component="h2" variant="h3" fontWeight={800} letterSpacing="-1px" sx={{ mt: 1, mb: 2 }}>
-              Everything you need to stay in flow
+              {t('home.capabilitiesTitle')}
             </Typography>
             <Typography variant="body1" color="text.secondary" fontSize="1.1rem">
-              From personal daily tasks to collaborative team workflows, our Kanban system provides all the tools required for maximum productivity.
+              {t('home.capabilitiesSubtitle')}
             </Typography>
           </Box>
 
@@ -475,10 +475,10 @@ function Home() {
                     <DashboardIcon />
                   </Box>
                   <Typography component="h3" variant="h6" fontWeight={700} sx={{ mb: 1 }}>
-                    Flexible Kanban
+                    {t('home.feature1Title')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" lineHeight={1.6}>
-                    Fluid drag-and-drop cards between columns. Reorder lists, clone tasks, and manage project workflows effortlessly.
+                    {t('home.feature1Desc')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -500,10 +500,10 @@ function Home() {
                     <TaskAltIcon />
                   </Box>
                   <Typography component="h3" variant="h6" fontWeight={700} sx={{ mb: 1 }}>
-                    Smart Checklists & Dates
+                    {t('home.feature2Title')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" lineHeight={1.6}>
-                    Set due dates with smart deadline indicators (Overdue, Due Soon, Completed) and track subtask progress with live % bars.
+                    {t('home.feature2Desc')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -525,10 +525,10 @@ function Home() {
                     <WallpaperOutlinedIcon />
                   </Box>
                   <Typography component="h3" variant="h6" fontWeight={700} sx={{ mb: 1 }}>
-                    Visual Personalization
+                    {t('home.feature3Title')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" lineHeight={1.6}>
-                    Customize board wallpapers with Unsplash photos, gradients, or upload your own image files directly to Cloudinary.
+                    {t('home.feature3Desc')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -550,10 +550,10 @@ function Home() {
                     <GroupOutlinedIcon />
                   </Box>
                   <Typography component="h3" variant="h6" fontWeight={700} sx={{ mb: 1 }}>
-                    Team Collaboration
+                    {t('home.feature4Title')}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" lineHeight={1.6}>
-                    Invite teammates by email with real-time socket notifications, assign card members, and collaborate in rich activity threads.
+                    {t('home.feature4Desc')}
                   </Typography>
                 </CardContent>
               </Card>
@@ -566,26 +566,26 @@ function Home() {
       <Container maxWidth="lg" sx={{ py: { xs: 8, md: 14 } }}>
         <Grid container spacing={6} alignItems="center">
           <Grid xs={12} md={6}>
-            <Chip label="DEEP ORGANIZATION" color="primary" size="small" sx={{ fontWeight: 700, mb: 2 }} />
+            <Chip label="{t('home.deepTag')}" color="primary" size="small" sx={{ fontWeight: 700, mb: 2 }} />
             <Typography component="h2" variant="h3" fontWeight={800} letterSpacing="-1px" sx={{ mb: 2.5 }}>
-              Cards that carry every single detail
+              {t('home.deepTitle')}
             </Typography>
             <Typography variant="body1" color="text.secondary" sx={{ mb: 3, fontSize: '1.1rem', lineHeight: 1.7 }}>
-              Every card is a self-contained hub for productivity. Attach files, configure colorful customizable label strips, write comprehensive descriptions, and track feedback with editable comments.
+              {t('home.deepDesc')}
             </Typography>
 
             <Stack spacing={1.5}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <CheckCircleIcon color="success" />
-                <Typography fontWeight={600}>File attachments with instant make-cover previews</Typography>
+                <Typography fontWeight={600}>{t('home.deepPoint1')}</Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <CheckCircleIcon color="success" />
-                <Typography fontWeight={600}>Color-coded labels with title search and quick filters</Typography>
+                <Typography fontWeight={600}>{t('home.deepPoint2')}</Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <CheckCircleIcon color="success" />
-                <Typography fontWeight={600}>Duplicate and move cards between lists in a click</Typography>
+                <Typography fontWeight={600}>{t('home.deepPoint3')}</Typography>
               </Box>
             </Stack>
           </Grid>
@@ -602,17 +602,17 @@ function Home() {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                 <ArchiveOutlinedIcon color="primary" />
                 <Typography variant="h6" fontWeight={700}>
-                  Peace of mind with Archive & Reopen
+                  {t('home.archiveTitle')}
                 </Typography>
               </Box>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2, lineHeight: 1.6 }}>
-                Finished a sprint or closed a project? Archive cards and columns without losing valuable history. Access the dedicated <strong>Archived Items Drawer</strong> anytime to restore or permanently clean up.
+                {t('home.archiveDescPrefix')}<strong>{t('home.archivedItemsDrawer')}</strong>{t('home.archiveDescSuffix')}
               </Typography>
               <Divider sx={{ my: 2 }} />
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <SecurityIcon color="primary" />
                 <Typography variant="body2" color="text.secondary">
-                  Owner-only board close and permanent cascading deletion safeguards your critical data.
+                  {t('home.securityNote')}
                 </Typography>
               </Box>
             </Box>
@@ -629,10 +629,10 @@ function Home() {
       }}>
         <Container maxWidth="md">
           <Typography component="h2" variant="h3" fontWeight={800} letterSpacing="-1px" sx={{ mb: 2, fontSize: { xs: '2rem', md: '2.8rem' } }}>
-            Ready to supercharge your workflow?
+            {t('home.ctaTitle')}
           </Typography>
           <Typography variant="h6" sx={{ opacity: 0.9, fontWeight: 400, mb: 4, maxWidth: 600, mx: 'auto' }}>
-            Start managing your projects, ideas, and team tasks with clarity and speed today.
+            {t('home.ctaSubtitle')}
           </Typography>
           <Button
             component={Link}
@@ -655,7 +655,7 @@ function Home() {
               }
             }}
           >
-            {currentUser ? 'Go to your boards' : 'Get started — It’s free!'}
+            {currentUser ? t('home.goToBoards') : t('home.getStartedFree')}
           </Button>
         </Container>
       </Box>
@@ -676,19 +676,19 @@ function Home() {
                 Trello
               </Typography>
               <Typography variant="body2" sx={{ ml: 1 }}>
-                © 2026 Trello || All rights reserved.
+                {t('auth.footerCopyright')}
               </Typography>
             </Box>
 
             <Stack direction="row" spacing={3}>
               <Link to="/boards" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
-                Boards
+                {t('home.boardsShort')}
               </Link>
               <Link to="/login" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
                 {t('home.logIn')}
               </Link>
               <Link to="/register" style={{ color: '#94a3b8', textDecoration: 'none', fontSize: '14px' }}>
-                Sign up
+                {t('auth.signUp')}
               </Link>
             </Stack>
           </Box>
