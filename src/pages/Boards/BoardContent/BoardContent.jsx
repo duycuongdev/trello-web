@@ -207,7 +207,9 @@ function BoardContent({
         activeColumn,
         activeDraggingCardId,
         activeDraggingCardData,
-        'handleDragEnd'
+        // Đang kéo qua cột khác: CHỈ cập nhật state local, KHÔNG gọi API
+        // (trước đây nhãn bị hoán đổi khiến API + socket bị bắn liên tục khi kéo qua lại)
+        'handleDragOver'
       )
     }
   }
@@ -247,7 +249,8 @@ function BoardContent({
           activeColumn,
           activeDraggingCardId,
           activeDraggingCardData,
-          'handleDragOver'
+          // Đã thả chuột: cập nhật state và GỌI API đúng 1 lần để lưu vị trí mới
+          'handleDragEnd'
         )
       } else {
         // hành động kéo thả trong cùng 1 column
