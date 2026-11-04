@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { cloneDeep } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import Popover from '@mui/material/Popover'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'

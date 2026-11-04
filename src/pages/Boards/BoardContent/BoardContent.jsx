@@ -2,7 +2,7 @@
 import Box from '@mui/material/Box'
 import ListColumns from './ListColumns/ListColumns'
 import { useEffect, useState, useCallback, useRef } from 'react'
-import { cloneDeep, isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 
 // drag drop libarary
 import {
@@ -95,61 +95,54 @@ function BoardContent({
       const modifier = isBeLowOverItem ? 1 : 0
       newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
 
-      // clone mảng OrderedColumnState cũ ra 1 cái mới để xử lí data rồi return - cập nhật lại OrderedColumnState mới
-      const nextColumns = cloneDeep(prevColumns)
-      const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
-      const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
+      /**
+       * Cập nhật STRUCTURAL (giữ nguyên reference của các column/card không đổi)
+       * thay vì cloneDeep toàn bộ board: nhờ vậy React.memo ở Column/Card có thể
+       * bỏ qua re-render cho mọi column không liên quan trong lúc kéo thả.
+       */
+      const nextColumns = prevColumns.map(column => {
+        // column không liên quan -> trả nguyên reference cũ
+        if (column._id !== activeColumn._id && column._id !== overColumn._id) return column
 
-      if (nextActiveColumn) {
-        // xóa card ở cái column active
-        nextActiveColumn.cards = nextActiveColumn.cards.filter(card => card._id !== activeDraggingCardId)
-
-        // thêm placeholderCard (1 card ẩn bên trong column) nếu column bị rỗng
-        if (isEmpty(nextActiveColumn.cards)) {
-          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+        if (column._id === activeColumn._id) {
+          // xóa card ở column active, thêm placeholderCard nếu column bị rỗng
+          let cards = column.cards.filter(card => card._id !== activeDraggingCardId)
+          if (isEmpty(cards)) {
+            cards = [generatePlaceholderCard(column)]
+          }
+          return { ...column, cards, cardOrderIds: cards.map(card => card._id) }
         }
 
-        // cập nhật lại mảng cardOrderIds cho chuẩn dữ liệu
-        nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(card => card._id)
-      }
-
-      // column mới
-      if (nextOverColumn) {
-        // kiểm tra xem card đang kéo nó có tồn tại column chưa , nếu có thì cần xóa nó trước
-        nextOverColumn.cards = nextOverColumn.cards.filter(card => card._id !== activeDraggingCardId)
-
-        //  phải cập nhật lại chuẩn dữ liệu columnId trong card sau khi kéo card giữa 2 column khác nhau
+        // column đích (overColumn)
+        // kiểm tra xem card đang kéo đã tồn tại trong column chưa, nếu có cần xóa trước
+        let cards = column.cards.filter(card => card._id !== activeDraggingCardId)
+        // phải cập nhật lại chuẩn dữ liệu columnId trong card sau khi kéo giữa 2 column khác nhau
         const rebuild_activeDraggingCardData = {
           ...activeDraggingCardData,
-          columnId: nextOverColumn._id
+          columnId: column._id
         }
+        // thêm card đang kéo vào overColumn theo vị trí index mới
+        cards = cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
+        // xóa placeholder card nếu column đích có card
+        cards = cards.filter(card => !card.FE_PlaceholderCard)
 
-        // tiếp theo là thêm cái card đang kéo vào overColumn theo vị trí index mới
-        nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, rebuild_activeDraggingCardData)
-
-        // xóa placeholder card nếu column có 1 card
-        nextOverColumn.cards = nextOverColumn.cards.filter(card => !card.FE_PlaceholderCard)
-
-        // cập nhật lại mảng cardOrderIds cho nguồn dữ liệu
-        nextOverColumn.cardOrderIds = nextOverColumn.cards.map(card => card._id)
-      }
+        return { ...column, cards, cardOrderIds: cards.map(card => card._id) }
+      })
 
       // nếu function này được gọi từ handleDragEnd nghĩa là đã kéo thả xong, lúc này mới xử lý gọi API 1 lần ở đây
       if (triggerFrom === 'handleDragEnd') {
         /**
          * gọi lên props function moveCardToDifferentColumn nằm ở component cha cao nhất (board/._id.jsx)
-         * Lưu ý: học phần cao hơn sẽ đưa ra ngoài Redux Global Store
-         * Và lúc này có thể gọi luôn API ở đây là xong thay vì phải lần lượt gọi ngược lên những component cha ở phía bên trên (đối với component con nằm càng sâu thì càng khó)
          * Với việc sử dụng Redux thì code sẽ clean chuẩn chỉnh hơn
          */
         /*
-         phải dùng tới activeDragItemData.columnId hoặc tốt nhất là oldColumnWhenDraggingCard._id (set vào state từ bước handleDragStart)
-         chứ không phải activeData trong scope handleDragEnd này vì sau khi đi qua onDragOver và tới đây là state của card đã bị cập nhật 1 lần rồi
+         phải dùng tới oldColumnWhenDraggingCard._id (set vào state từ bước handleDragStart)
+         chứ không phải activeData trong scope handleDragEnd này vì sau khi đi qua onDragOver là state của card đã bị cập nhật 1 lần rồi
         */
         moveCardToDifferentColumn(
           activeDraggingCardId,
           oldColumnWhenDraggingCard._id,
-          nextOverColumn._id,
+          overColumn._id,
           nextColumns
         )
       }
@@ -265,19 +258,12 @@ function BoardContent({
         const dndOrderedCardsIds = dndOrderedCards.map(card => card._id)
 
         // Vẫn gọi update State ở đây để tránh delay hoặc Flickering giao diện lúc kéo thả cần phải chờ gọi API
+        // (structural update: chỉ thay column đích, giữ reference các column khác cho memo)
         setOrderedColumns(prevColumns => {
-          // clone mảng OrderedColumnState cũ ra 1 cái mới để xử lí data rồi return - cập nhật lại OrderedColumnState mới
-          const nextColumns = cloneDeep(prevColumns)
-
-          // tìm tới cái column đang thả
-          const targetColumn = nextColumns.find(column => column._id === overColumn._id)
-
-          // cập nhật lại 2 giá trị mới là card và cardOrderIds trong cái targetColumn
-          targetColumn.cards = dndOrderedCards
-          targetColumn.cardOrderIds = dndOrderedCardsIds
-
-          // trả về giá trị mới chuẩn vị trí
-          return nextColumns
+          return prevColumns.map(column => {
+            if (column._id !== overColumn._id) return column
+            return { ...column, cards: dndOrderedCards, cardOrderIds: dndOrderedCardsIds }
+          })
         })
 
         /**

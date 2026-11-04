@@ -29,7 +29,7 @@ import {
 } from '~/redux/activeCard/activeCardSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { cloneDeep } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { useParams, useNavigate, Link, useSearchParams, useLocation } from 'react-router-dom'
 import { slugify } from '~/utils/formatter'
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
@@ -154,13 +154,14 @@ function Board() {
       }
       case BOARD_ACTION_TYPES.MOVE_CARD_SAME_COLUMN: {
         if (payload?.columnId && currentBoard?.columns) {
-          const nextBoard = cloneDeep(currentBoard)
-          const col = nextBoard.columns.find(c => c._id === payload.columnId)
-          if (col) {
-            col.cards = payload.cards
-            col.cardOrderIds = payload.cardOrderIds
-            dispatch(updateCurrentActiveBoard(nextBoard))
+          // Structural update: chỉ thay column liên quan, giữ reference cho phần còn lại
+          const nextBoard = {
+            ...currentBoard,
+            columns: currentBoard.columns.map(c => c._id === payload.columnId
+              ? { ...c, cards: payload.cards, cardOrderIds: payload.cardOrderIds }
+              : c)
           }
+          dispatch(updateCurrentActiveBoard(nextBoard))
         }
         break
       }
@@ -321,11 +322,13 @@ function Board() {
   }
 
   const moveCardInTheSameColumn = (dndOrderedCards, dndOrderedCardsIds, columnId) => {
-    const newBoard = cloneDeep(board)
-    const columnToUpdate = newBoard.columns.find(column => column._id === columnId)
-    if (columnToUpdate) {
-      columnToUpdate.cards = dndOrderedCards
-      columnToUpdate.cardOrderIds = dndOrderedCardsIds
+    // Structural update: chỉ thay column bị đổi, giữ reference các column/card khác
+    // để React.memo ở Column/Card bỏ qua re-render (không cloneDeep cả board)
+    const newBoard = {
+      ...board,
+      columns: board.columns.map(column => column._id === columnId
+        ? { ...column, cards: dndOrderedCards, cardOrderIds: dndOrderedCardsIds }
+        : column)
     }
     dispatch(updateCurrentActiveBoard(newBoard))
 

@@ -1,6 +1,6 @@
 // tạo cấu trúc "rfce"
 import Box from '@mui/material/Box'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -21,7 +21,7 @@ import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
-import { cloneDeep } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +29,7 @@ import { createNewCardAPI, deleteColumnDetailsAPI, updateColumnDetailsAPI, archi
 import ToggleFocusInput from '~/components/Form/ToggleFocusInput'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
 
+// eslint-disable-next-line react-refresh/only-export-components -- export qua memo() là pattern chuẩn, plugin react-refresh 0.3.x không nhận diện
 function Column({ column }) {
   const dispatch = useDispatch()
   const board = useSelector(selectCurrentActiveBoard)
@@ -352,4 +353,5 @@ function Column({ column }) {
   )
 }
 
-export default Column
+// eslint-disable-next-line react-refresh/only-export-components -- export qua memo() là pattern chuẩn, plugin react-refresh 0.3.x không nhận diện
+export default memo(Column)
