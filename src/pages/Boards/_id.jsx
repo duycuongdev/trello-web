@@ -295,7 +295,7 @@ function Board() {
       socketIoInstance.off('BE_BOARD_USERS_ONLINE', onReceiveOnlineUsers)
       socketIoInstance.off('BE_BOARD_UPDATED', onReceiveBoardUpdated)
     }
-  }, [boardId, currentUser, dispatch])
+  }, [boardId, currentUser, dispatch, setSearchParams])
 
   const moveColumns = (dndOrderedColumns) => {
     const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)

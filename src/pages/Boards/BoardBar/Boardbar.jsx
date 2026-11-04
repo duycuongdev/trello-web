@@ -127,7 +127,6 @@ function BoardBar({ board, onlineUsers = [] }) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [dispatch, cardFilter?.onlyMyCards])
 
-  
   const handleUpdateBoardTitle = (newTitle) => {
     if (!newTitle || newTitle.trim() === board?.title) return
     const updatedTitle = newTitle.trim()

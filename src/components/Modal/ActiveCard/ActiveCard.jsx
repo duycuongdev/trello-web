@@ -6,7 +6,6 @@ import Chip from '@mui/material/Chip'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Checkbox from '@mui/material/Checkbox'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
 import CancelIcon from '@mui/icons-material/Cancel'
 import Grid from '@mui/material/Unstable_Grid2'
@@ -370,8 +369,6 @@ function ActiveCard() {
       return null
     }
   }
-
-
 
   // Xóa tệp đính kèm
   const handleDeleteAttachment = (attachmentId) => {
