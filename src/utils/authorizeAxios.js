@@ -2,7 +2,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { interceptorLoadingElements } from './formatter'
 import { refreshTokenAPI } from '~/apis/index'
-import { logoutUserAPI, setAccessToken } from '~/redux/user/userSlice'
+import { logoutUserAPI, setAccessToken, setRefreshToken } from '~/redux/user/userSlice'
 /**
  * Không thể import { store } from '~/redux/store' theo cách thông thường ở đây
  * Giải pháp: Inject store: là kỹ thuật khi cần sử dụng biến redux store ở các file ngoài phạm vi component như file authorizeAxios hiện tại
@@ -83,6 +83,12 @@ authorizedAxiosInstance.interceptors.response.use(
             // Cập nhật accessToken mới vào Redux store
             if (data?.accessToken) {
               axiosReduxStore.dispatch(setAccessToken(data.accessToken))
+            }
+            // REFRESH TOKEN ROTATION: server cấp refreshToken mới, token cũ đã bị thu hồi
+            // => phải lưu lại token mới, nếu không lần refresh sau sẽ dùng token cũ (đã revoke)
+            // và kích hoạt theft detection khiến bị logout toàn bộ phiên
+            if (data?.refreshToken) {
+              axiosReduxStore.dispatch(setRefreshToken(data.refreshToken))
             }
             return data?.accessToken
           })
