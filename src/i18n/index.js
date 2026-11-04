@@ -12,8 +12,8 @@ import vi from './locales/vi.json'
  * - Đổi ngôn ngữ: i18n.changeLanguage('vi' | 'en') (xem LanguageSelect trong AppBar)
  */
 export const SUPPORTED_LANGUAGES = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'vi', label: 'Tiếng Việt', flag: '🇻🇳' }
+  { code: 'en', label: 'English' },
+  { code: 'vi', label: 'Tiếng Việt' }
 ]
 
 i18n

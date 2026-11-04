@@ -47,7 +47,7 @@ function LanguageSelect() {
         {SUPPORTED_LANGUAGES.map(({ code, label, flag }) => (
           <MenuItem key={code} value={code}>
             <Box style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>{flag}</span> {label}
+              {label}
             </Box>
           </MenuItem>
         ))}

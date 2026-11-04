@@ -14,6 +14,7 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Divider from '@mui/material/Divider'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
+import LanguageSelect from '~/components/LanguageSelect/LanguageSelect'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 
 // Material UI Icons
@@ -81,6 +82,10 @@ function Home() {
           <Stack direction="row" spacing={{ xs: 0.8, sm: 1.5 }} alignItems="center">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               <ModeSelect />
+            </Box>
+
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <LanguageSelect />
             </Box>
 
             {currentUser ? (
