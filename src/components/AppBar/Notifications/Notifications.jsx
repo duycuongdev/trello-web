@@ -182,7 +182,7 @@ function Notifications() {
 
     const onReceiveCardDueDateChanged = ({ card, boardTitle }) => {
       dispatch(fetchInvitationsAPI())
-      const cardTitle = card?.title ? "'" + card.title + "'" : 'assigned card'
+      const cardTitle = card?.title ? `'${card.title}'` : 'assigned card'
       const boardInfo = boardTitle ? ' on ' + boardTitle : ''
       toast.info('⏰ Deadline updated for ' + cardTitle + boardInfo)
     }

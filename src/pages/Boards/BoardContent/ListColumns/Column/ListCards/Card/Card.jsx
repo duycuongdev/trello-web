@@ -19,7 +19,7 @@ import { useSearchParams } from 'react-router-dom'
 
 function Card({ card }) {
   const dispatch = useDispatch()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [, setSearchParams] = useSearchParams()
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: card._id, data: { ...card } })
 
   const dndKitCardStyles = {
