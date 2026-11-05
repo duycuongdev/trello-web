@@ -431,7 +431,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                             <TextField
                               fullWidth
                               size="small"
-                              placeholder="Dán link web và nhấn Enter (hoặc bấm icon kẹp giấy để tải tệp)..."
+                              placeholder={t('card.attachLinkPlaceholder')}
                               value={editingItemCurrentUrl}
                               onChange={(e) => setEditingItemCurrentUrl(e.target.value)}
                               onKeyDown={(e) => {
@@ -445,7 +445,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                                 endAdornment: (
                                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                     {onUploadAttachment && (
-                                      <Tooltip title="Tải tệp từ máy tính">
+                                      <Tooltip title={t('card.uploadFile')}>
                                         <span>
                                           <IconButton
                                             size="small"
@@ -485,7 +485,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                                 onClick={handleAddEditItemLink}
                                 sx={{ textTransform: 'none', whiteSpace: 'nowrap' }}
                               >
-                              Add
+                              {t('common.add')}
                               </Button>
                             )}
                           </Box>
@@ -528,7 +528,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                               color: (theme) => editingItemAttachments.length > 0 ? 'success.main' : theme.palette.text.secondary
                             }}
                           >
-                            {editingItemAttachments.length > 0 ? `Đính kèm (${editingItemAttachments.length})` : 'Đính kèm link / tệp'}
+                            {editingItemAttachments.length > 0 ? t('card.attachCount', { count: editingItemAttachments.length }) : t('card.attachLinkOrFile')}
                           </Button>
                         </Box>
                       </Box>
@@ -592,7 +592,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                               {itemAttachments.map(att => (
                                 <Tooltip
                                   key={att._id}
-                                  title={att.fileName ? `Tệp: ${att.fileName} (Nhấp để mở)` : `Mở: ${att.url}`}
+                                  title={att.fileName ? t('card.fileTooltip', { name: att.fileName }) : t('card.openUrl', { url: att.url })}
                                 >
                                   <Chip
                                     size="small"
@@ -730,7 +730,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                       <TextField
                         fullWidth
                         size="small"
-                        placeholder="Dán link web và nhấn Enter (hoặc bấm icon kẹp giấy để tải tệp)..."
+                        placeholder={t('card.attachLinkPlaceholder')}
                         value={newItemCurrentUrl}
                         onChange={(e) => setNewItemCurrentUrl(e.target.value)}
                         onKeyDown={(e) => {
@@ -744,7 +744,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                           endAdornment: (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                               {onUploadAttachment && (
-                                <Tooltip title="Tải tệp từ máy tính">
+                                <Tooltip title={t('card.uploadFile')}>
                                   <span>
                                     <IconButton
                                       size="small"
@@ -784,7 +784,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                           onClick={handleAddNewItemLink}
                           sx={{ textTransform: 'none', whiteSpace: 'nowrap' }}
                         >
-                          Add
+                          {t('common.add')}
                         </Button>
                       )}
                     </Box>
@@ -801,7 +801,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                         disabled={!newItemTitle.trim()}
                         sx={{ textTransform: 'none', fontWeight: 600 }}
                       >
-                        Add
+                        {t('common.add')}
                       </Button>
                       <IconButton size="small" onClick={handleCancelAddItem}>
                         <CloseIcon fontSize="small" />
@@ -822,7 +822,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                         color: (theme) => newItemAttachments.length > 0 ? 'success.main' : theme.palette.text.secondary
                       }}
                     >
-                      {newItemAttachments.length > 0 ? `Đính kèm (${newItemAttachments.length})` : 'Đính kèm link / tệp'}
+                      {newItemAttachments.length > 0 ? t('card.attachCount', { count: newItemAttachments.length }) : t('card.attachLinkOrFile')}
                     </Button>
                   </Box>
                 </Box>

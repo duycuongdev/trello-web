@@ -19,7 +19,8 @@
     "retry": "Retry",
     "datetimeFormat": "MMM D, YYYY [at] h:mm A",
     "dateFormatShort": "ddd, MMM D [at] h:mm A",
-    "datetimeFormatFull": "ddd, MMM D, YYYY [at] h:mm A"
+    "datetimeFormatFull": "ddd, MMM D, YYYY [at] h:mm A",
+    "add": "Add"
   },
   "validation": {
     "required": "This field is required.",
@@ -190,7 +191,8 @@
     "removeMemberTitle": "Remove member?",
     "removeMemberDesc": "Remove {{name}} from this board?",
     "removeMemberFailed": "Unable to remove member",
-    "youWereRemoved": "You have been removed from this board."
+    "youWereRemoved": "You have been removed from this board.",
+    "noTitle": "(No title)"
   },
   "card": {
     "dueSoon": "DUE SOON",
@@ -233,7 +235,12 @@
     "descEmptySubtitle": "Supports rich Markdown: headings, checklists, code blocks, tables, and quotes. Click to edit.",
     "saveDescription": "Save Description",
     "addMember": "Add new member",
-    "noActivity": "No activity found!"
+    "noActivity": "No activity found!",
+    "attachLinkPlaceholder": "Paste a web link and press Enter (or click the paperclip icon to attach a file)...",
+    "attachCount": "Attachments ({{count}})",
+    "attachLinkOrFile": "Attach link / file",
+    "fileTooltip": "File: {{name}} (Click to open)",
+    "openUrl": "Open: {{url}}"
   },
   "notFound": {
     "message": "The content you are looking for was not found",
