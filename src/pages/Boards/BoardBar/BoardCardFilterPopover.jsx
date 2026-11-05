@@ -386,7 +386,7 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
                         textOverflow: 'ellipsis'
                       }}
                     >
-                      {label.title || '(Không có tiêu đề)'}
+                      {label.title || t('board.noTitle')}
                     </Typography>
                     <Typography
                       variant="caption"

@@ -19,7 +19,8 @@
     "retry": "Thử lại",
     "datetimeFormat": "D MMM, YYYY [lúc] HH:mm",
     "dateFormatShort": "ddd, D MMM [lúc] HH:mm",
-    "datetimeFormatFull": "ddd, D MMM, YYYY [lúc] HH:mm"
+    "datetimeFormatFull": "ddd, D MMM, YYYY [lúc] HH:mm",
+    "add": "Thêm"
   },
   "validation": {
     "required": "Trường này là bắt buộc.",
@@ -190,7 +191,8 @@
     "removeMemberTitle": "Xóa thành viên?",
     "removeMemberDesc": "Xóa {{name}} khỏi bảng này?",
     "removeMemberFailed": "Không thể xóa thành viên",
-    "youWereRemoved": "Bạn đã bị xóa khỏi bảng này."
+    "youWereRemoved": "Bạn đã bị xóa khỏi bảng này.",
+    "noTitle": "(Không có tiêu đề)"
   },
   "card": {
     "dueSoon": "SẮP ĐẾN HẠN",
@@ -233,7 +235,12 @@
     "descEmptySubtitle": "Hỗ trợ Markdown đầy đủ: tiêu đề, việc cần làm, khối mã, bảng và trích dẫn. Bấm để chỉnh sửa.",
     "saveDescription": "Lưu mô tả",
     "addMember": "Thêm thành viên mới",
-    "noActivity": "Chưa có hoạt động nào!"
+    "noActivity": "Chưa có hoạt động nào!",
+    "attachLinkPlaceholder": "Dán link web và nhấn Enter (hoặc bấm icon kẹp giấy để đính kèm tệp)...",
+    "attachCount": "Đính kèm ({{count}})",
+    "attachLinkOrFile": "Đính kèm link / tệp",
+    "fileTooltip": "Tệp: {{name}} (Nhấp để mở)",
+    "openUrl": "Mở: {{url}}"
   },
   "notFound": {
     "message": "Không tìm thấy nội dung bạn đang tìm kiếm",
