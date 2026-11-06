@@ -20,7 +20,8 @@
     "datetimeFormat": "MMM D, YYYY [at] h:mm A",
     "dateFormatShort": "ddd, MMM D [at] h:mm A",
     "datetimeFormatFull": "ddd, MMM D, YYYY [at] h:mm A",
-    "add": "Add"
+    "add": "Add",
+    "dateChipFormat": "MMM D"
   },
   "validation": {
     "required": "This field is required.",
@@ -429,5 +430,15 @@
     "day1Before": "1 day before",
     "days2Before": "2 days before",
     "remove": "Remove"
+  },
+  "checklist": {
+    "detailsTitle": "Details",
+    "dueDate": "Due date",
+    "members": "Members",
+    "clearDate": "Clear",
+    "setDueDate": "Set date",
+    "addMember": "Add member",
+    "editDetails": "Due date & members",
+    "noBoardUsers": "No board members found"
   }
 }

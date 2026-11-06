@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField'
 import Checkbox from '@mui/material/Checkbox'
 import LinearProgress from '@mui/material/LinearProgress'
 import Stack from '@mui/material/Stack'
+import Divider from '@mui/material/Divider'
 import Tooltip from '@mui/material/Tooltip'
 import Chip from '@mui/material/Chip'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -17,9 +18,14 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import LinkIcon from '@mui/icons-material/Link'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import CloseIcon from '@mui/icons-material/Close'
+import dayjs from 'dayjs'
+import Avatar from '@mui/material/Avatar'
+import Popover from '@mui/material/Popover'
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined'
+import ScheduleOutlinedIcon from '@mui/icons-material/ScheduleOutlined'
 import { useTranslation } from 'react-i18next'
 
-function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploadAttachment }) {
+function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploadAttachment, boardUsers = [] }) {
   const { t } = useTranslation()
   // State cho thêm item mới
   const [activeChecklistIdForNewItem, setActiveChecklistIdForNewItem] = useState(null)
@@ -36,6 +42,10 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
   const [showEditItemAttachBox, setShowEditItemAttachBox] = useState(false)
   const [editingItemCurrentUrl, setEditingItemCurrentUrl] = useState('')
   const [isUploadingEditItemFile, setIsUploadingEditItemFile] = useState(false)
+
+  // Popover chi tiết (hạn chót + thành viên) cho checklist hoặc item
+  // { scope: 'checklist'|'item', checklistId, id, draftDate, anchorEl }
+  const [detailPopover, setDetailPopover] = useState(null)
 
   if (!checklists || checklists.length === 0) return null
 
@@ -221,6 +231,123 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     setIsUploadingEditItemFile(false)
   }
 
+  // ===== Hạn chót + thành viên cho CHECKLIST và ITEM =====
+  const getChecklistById = (id) => checklists.find(cl => cl._id === id)
+  const getItemById = (checklistId, itemId) => getChecklistById(checklistId)?.items?.find(it => it._id === itemId)
+  const findUserById = (uid) => boardUsers.find(u => u._id?.toString() === uid?.toString())
+
+  const setChecklistDetails = (checklistId, patch) => {
+    onUpdateCardChecklists(checklists.map(cl => cl._id === checklistId ? { ...cl, ...patch } : cl))
+  }
+  const setItemDetails = (checklistId, itemId, patch) => {
+    onUpdateCardChecklists(checklists.map(cl => cl._id !== checklistId ? cl : {
+      ...cl,
+      items: (cl.items || []).map(it => it._id === itemId ? { ...it, ...patch } : it)
+    }))
+  }
+
+  const openDetailPopover = (scope, checklistId, id, dueDate, anchorEl) => {
+    setDetailPopover({
+      scope,
+      checklistId,
+      id,
+      draftDate: dueDate ? dayjs(dueDate).format('YYYY-MM-DD') : '',
+      anchorEl
+    })
+  }
+  const closeDetailPopover = () => setDetailPopover(null)
+
+  const handleSaveDetailDate = () => {
+    if (!detailPopover) return
+    const due = detailPopover.draftDate ? dayjs(detailPopover.draftDate).valueOf() : null
+    if (detailPopover.scope === 'checklist') setChecklistDetails(detailPopover.id, { dueDate: due })
+    else setItemDetails(detailPopover.checklistId, detailPopover.id, { dueDate: due })
+    closeDetailPopover()
+  }
+  const handleClearDetailDate = () => {
+    if (!detailPopover) return
+    if (detailPopover.scope === 'checklist') setChecklistDetails(detailPopover.id, { dueDate: null })
+    else setItemDetails(detailPopover.checklistId, detailPopover.id, { dueDate: null })
+    setDetailPopover(dp => dp ? { ...dp, draftDate: '' } : dp)
+  }
+  const handleToggleDetailMember = (userId) => {
+    if (!detailPopover) return
+    const source = detailPopover.scope === 'checklist'
+      ? getChecklistById(detailPopover.id)
+      : getItemById(detailPopover.checklistId, detailPopover.id)
+    if (!source) return
+    const memberIds = (source.memberIds || []).map(String)
+    const next = memberIds.includes(userId.toString())
+      ? memberIds.filter(m => m !== userId.toString())
+      : [...memberIds, userId.toString()]
+    if (detailPopover.scope === 'checklist') setChecklistDetails(detailPopover.id, { memberIds: next })
+    else setItemDetails(detailPopover.checklistId, detailPopover.id, { memberIds: next })
+  }
+  const getCurrentDetailMembers = () => {
+    if (!detailPopover) return []
+    const source = detailPopover.scope === 'checklist'
+      ? getChecklistById(detailPopover.id)
+      : getItemById(detailPopover.checklistId, detailPopover.id)
+    return (source?.memberIds || []).map(String)
+  }
+
+  // Chip hiển thị + mở popover chi tiết. Ghost style khi trống để dễ khám phá tính năng.
+  const renderDueChip = (scope, checklistId, id, dueDate, isDoneRef) => {
+    const isEmpty = !dueDate
+    const d = dueDate ? dayjs(dueDate) : null
+    const isOverdue = !isEmpty && !isDoneRef && d.startOf('day').isBefore(dayjs().startOf('day'))
+    return (
+      <Chip
+        size="small"
+        icon={<ScheduleOutlinedIcon sx={{ fontSize: '13px !important' }} />}
+        label={isEmpty ? t('checklist.setDueDate') : d.format(t('common.dateChipFormat'))}
+        onClick={(e) => { e.stopPropagation(); openDetailPopover(scope, checklistId, id, dueDate, e.currentTarget) }}
+        sx={{
+          height: 22,
+          fontSize: '0.72rem',
+          fontWeight: 600,
+          cursor: 'pointer',
+          ...(isEmpty
+            ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
+            : isOverdue
+              ? { bgcolor: 'error.main', color: 'white', '& .MuiChip-icon': { color: 'white' } }
+              : { bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.18)' : '#e0edff', color: 'primary.main', '& .MuiChip-icon': { color: 'primary.main' } })
+        }}
+      />
+    )
+  }
+
+  const renderMemberChip = (scope, checklistId, id, memberIds = []) => {
+    const users = memberIds.map(uid => findUserById(uid)).filter(Boolean)
+    const visible = users.slice(0, 3)
+    return (
+      <Chip
+        size="small"
+        icon={users.length === 0
+          ? <PersonAddAltOutlinedIcon sx={{ fontSize: '13px !important' }} />
+          : undefined}
+        label={users.length === 0
+          ? t('checklist.addMember')
+          : (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '-4px' }}>
+              {visible.map(u => (
+                <Avatar key={u._id} src={u.avatar} sx={{ width: 16, height: 16, fontSize: 9, ml: users.length > 1 ? '-4px' : 0, border: '1px solid #fff' }} />
+              ))}
+              {users.length > 3 && <span style={{ fontSize: '0.68rem', fontWeight: 700, ml: 0.25 }}>+{users.length - 3}</span>}
+            </Box>
+          )}
+        onClick={(e) => { e.stopPropagation(); openDetailPopover(scope, checklistId, id, null, e.currentTarget) }}
+        sx={{
+          height: 22,
+          cursor: 'pointer',
+          ...(users.length === 0
+            ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
+            : { bgcolor: 'transparent', border: '1px solid', borderColor: 'divider' })
+        }}
+      />
+    )
+  }
+
   const handleAddEditItemLink = () => {
     const trimmed = editingItemCurrentUrl.trim()
     if (!trimmed) return
@@ -310,11 +437,21 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
           <Box key={checklist._id}>
             {/* Header Checklist */}
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
                 <TaskAltOutlinedIcon sx={{ color: '#16a34a' }} />
                 <Typography sx={{ fontWeight: '600', fontSize: '18px' }}>
                   {checklist.title}
                 </Typography>
+                {/* Hạn chót + thành viên ở CẤP CHECKLIST */}
+                <Tooltip title={t('checklist.editDetails')}>
+                  <Box
+                    sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}
+                    onClick={(e) => { e.stopPropagation(); openDetailPopover('checklist', checklist._id, checklist._id, checklist.dueDate, e.currentTarget) }}
+                  >
+                    {renderDueChip('checklist', checklist._id, checklist._id, checklist.dueDate, isComplete)}
+                    {renderMemberChip('checklist', checklist._id, checklist._id, checklist.memberIds)}
+                  </Box>
+                </Tooltip>
               </Box>
               <Button
                 size="small"
@@ -626,6 +763,19 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                               ))}
                             </Box>
                           )}
+
+                          {/* Dòng 3: Hạn chót + thành viên ở CẤP ITEM */}
+                          <Box
+                            sx={{
+                              display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap', pt: 0.25,
+                              '& .detail-chip': { opacity: (item.dueDate || (item.memberIds || []).length) ? 1 : 0.55 },
+                              '&:hover .detail-chip': { opacity: 1 }
+                            }}
+                            onClick={(e) => { e.stopPropagation(); openDetailPopover('item', checklist._id, item._id, item.dueDate, e.currentTarget) }}
+                          >
+                            {renderDueChip('item', checklist._id, item._id, item.dueDate, item.isDone)}
+                            {renderMemberChip('item', checklist._id, item._id, item.memberIds)}
+                          </Box>
                         </Box>
                       </Box>
 
@@ -847,6 +997,66 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
           </Box>
         )
       })}
+
+      {/* Popover chi tiết: hạn chót + thành viên (cho checklist hoặc item) */}
+      <Popover
+        open={Boolean(detailPopover)}
+        anchorEl={detailPopover?.anchorEl || null}
+        onClose={closeDetailPopover}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
+        <Box sx={{ p: 1.5, width: 250, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            {t('checklist.detailsTitle')}
+          </Typography>
+
+          <TextField
+            label={t('checklist.dueDate')}
+            type="date"
+            size="small"
+            fullWidth
+            value={detailPopover?.draftDate || ''}
+            onChange={(e) => setDetailPopover(dp => dp ? { ...dp, draftDate: e.target.value } : dp)}
+            InputLabelProps={{ shrink: true }}
+          />
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button size="small" color="inherit" onClick={handleClearDetailDate} sx={{ textTransform: 'none' }}>
+              {t('checklist.clearDate')}
+            </Button>
+            <Button size="small" variant="contained" onClick={handleSaveDetailDate} sx={{ textTransform: 'none', fontWeight: 600 }}>
+              {t('common.save')}
+            </Button>
+          </Box>
+
+          <Divider sx={{ my: 0.5 }} />
+
+          <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            {t('checklist.members')}
+          </Typography>
+          <Box sx={{ maxHeight: 170, overflowY: 'auto' }}>
+            {(boardUsers || []).map(u => (
+              <Box
+                key={u._id}
+                onClick={() => handleToggleDetailMember(u._id)}
+                sx={{
+                  display: 'flex', alignItems: 'center', gap: 1, py: 0.4, px: 0.5,
+                  borderRadius: 1, cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' }
+                }}
+              >
+                <Checkbox size="small" sx={{ p: 0 }} checked={getCurrentDetailMembers().includes(u._id?.toString())} />
+                <Avatar src={u.avatar} sx={{ width: 24, height: 24, fontSize: 11 }} />
+                <Typography variant="body2" sx={{ flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {u.displayName || u.username || u.email}
+                </Typography>
+              </Box>
+            ))}
+            {(boardUsers || []).length === 0 && (
+              <Typography variant="caption" color="text.secondary">{t('checklist.noBoardUsers')}</Typography>
+            )}
+          </Box>
+        </Box>
+      </Popover>
     </Stack>
   )
 }
