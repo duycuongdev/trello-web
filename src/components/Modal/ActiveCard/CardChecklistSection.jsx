@@ -622,7 +622,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                                 onClick={handleAddEditItemLink}
                                 sx={{ textTransform: 'none', whiteSpace: 'nowrap' }}
                               >
-                              {t('common.add')}
+                                {t('common.add')}
                               </Button>
                             )}
                           </Box>
