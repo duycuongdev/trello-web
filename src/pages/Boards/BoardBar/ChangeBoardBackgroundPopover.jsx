@@ -51,7 +51,8 @@ function ChangeBoardBackgroundPopover({
   onClose,
   currentBackground,
   onSelectBackground,
-  onUploadBackgroundFile
+  onUploadBackgroundFile,
+  title
 }) {
   const { t } = useTranslation()
   const [tabIndex, setTabIndex] = useState(0)
@@ -118,7 +119,7 @@ function ChangeBoardBackgroundPopover({
       {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
         <Typography variant="subtitle1" fontWeight={700}>
-          Change Background
+          {title || t('background.changeTitle')}
         </Typography>
         <IconButton size="small" onClick={onClose}>
           <CloseIcon fontSize="small" />

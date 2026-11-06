@@ -4,7 +4,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Modal from '@mui/material/Modal'
-import Popover from '@mui/material/Popover'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
@@ -22,7 +21,6 @@ import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
-import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import UndoIcon from '@mui/icons-material/Undo'
 import SubjectRoundedIcon from '@mui/icons-material/SubjectRounded'
@@ -66,7 +64,7 @@ import {
   restoreCardAPI
 } from '~/apis'
 import { selectCurrentUser } from '~/redux/user/userSlice'
-import { PRESET_PHOTOS } from '~/utils/samplePhotos'
+import ChangeBoardBackgroundPopover from '~/pages/Boards/BoardBar/ChangeBoardBackgroundPopover'
 import { CARD_MEMBER_ACTION } from '~/utils/constants'
 import { useTranslation } from 'react-i18next'
 import { fetchInvitationsAPI } from '~/redux/notifications/notificationsSlice'
@@ -103,8 +101,7 @@ function ActiveCard() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [labelAnchorEl, setLabelAnchorEl] = useState(null)
-  // Popover gallery ảnh mẫu cho Cover
-  const [sampleCoverAnchorEl, setSampleCoverAnchorEl] = useState(null)
+  const [coverPickerAnchorEl, setCoverPickerAnchorEl] = useState(null)
   const isLabelOpen = Boolean(labelAnchorEl)
   const handleOpenLabelPopover = (event) => setLabelAnchorEl(event.currentTarget)
   const handleCloseLabelPopover = () => setLabelAnchorEl(null)
@@ -313,21 +310,6 @@ function ActiveCard() {
     callApiUpdateCard({ description: newDescription })
   }
 
-  const onUploadCardCover = (event) => {
-    const error = singleFileValidator(event.target?.files[0])
-    if (error) {
-      toast.error(error)
-      return
-    }
-    let reqData = new FormData()
-    reqData.append('cardCover', event.target?.files[0])
-
-    // Gọi API...
-    toast.promise(
-      callApiUpdateCard(reqData).finally(() => event.target.value = ''),
-      { pending: 'Updating cover...' }
-    )
-  }
 
   // Upload tệp đính kèm vào Card
   const onUploadCardAttachment = (event) => {
@@ -397,14 +379,18 @@ function ActiveCard() {
     callApiUpdateCard({ cover: imageUrl })
   }
 
-  // Chọn ảnh mẫu từ gallery -> đặt làm Cover (lưu URL trực tiếp, không qua Cloudinary)
-  const handleOpenSampleCover = (event) => setSampleCoverAnchorEl(event.currentTarget)
-  const handleSetSampleCover = (photo) => {
+  // Mở popover chọn Cover — tái sử dụng nguyên bộ picker của board background
+  const handleOpenCoverPicker = (event) => setCoverPickerAnchorEl(event.currentTarget)
+  // Upload file ảnh bìa từ tab Upload của popover (FormData cardCover)
+  const handleUploadCardCoverFile = (file) => {
+    const error = singleFileValidator(file)
+    if (error) { toast.error(error); return }
+    const reqData = new FormData()
+    reqData.append('cardCover', file)
     toast.promise(
-      callApiUpdateCard({ cover: photo.value }),
-      { pending: t('card.updatingCover'), success: t('card.coverUpdated') }
+      callApiUpdateCard(reqData),
+      { pending: t('card.updatingCover') }
     )
-    setSampleCoverAnchorEl(null)
   }
 
   // Dùng async await ở đây để component con CardActivitySection chờ và nếu thành công thì mới clear input comment
@@ -501,11 +487,15 @@ function ActiveCard() {
 
         {activeCard?.cover &&
           <Box sx={{ mb: 4 }}>
-            <img
-              style={{ width: '100%', height: 'auto', maxHeight: '320px', borderRadius: '6px', objectFit: 'cover' }}
-              src={activeCard?.cover}
-              alt="card-cover"
-            />
+            {String(activeCard.cover).startsWith('http') ? (
+              <img
+                style={{ width: '100%', height: 'auto', maxHeight: '320px', borderRadius: '6px', objectFit: 'cover' }}
+                src={activeCard?.cover}
+                alt="card-cover"
+              />
+            ) : (
+              <Box sx={{ height: 180, background: activeCard.cover, borderRadius: '6px' }} />
+            )}
           </Box>
         }
 
@@ -673,48 +663,21 @@ function ActiveCard() {
                 </SidebarItem>
               )}
               {/* Feature 06: Xử lý hành động cập nhật ảnh Cover của Card */}
-              <SidebarItem className="active" component="label">
+              <SidebarItem className="active" onClick={handleOpenCoverPicker}>
                 <ImageOutlinedIcon fontSize="small" sx={{ color: '#ec4899' }} />
                 {t('cardModal.cover')}
-                <VisuallyHiddenInput type="file" onChange={onUploadCardCover} />
-              </SidebarItem>
 
-              {/* Gallery ảnh mẫu cho Cover (giống board background) */}
-              <SidebarItem className="active" onClick={handleOpenSampleCover}>
-                <WallpaperOutlinedIcon fontSize="small" sx={{ color: '#0ea5e9' }} />
-                {t('card.samplePhotos')}
               </SidebarItem>
-
-              <Popover
-                open={Boolean(sampleCoverAnchorEl)}
-                anchorEl={sampleCoverAnchorEl}
-                onClose={() => setSampleCoverAnchorEl(null)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-              >
-                <Box sx={{ p: 1.5, width: 300 }}>
-                  <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5, display: 'block', mb: 1 }}>
-                    {t('card.samplePhotos')}
-                  </Typography>
-                  <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1 }}>
-                    {PRESET_PHOTOS.map((photo) => (
-                      <Box
-                        key={photo.id}
-                        component="img"
-                        src={photo.thumb}
-                        alt={photo.name}
-                        onClick={() => handleSetSampleCover(photo)}
-                        sx={{
-                          width: '100%', height: 64, objectFit: 'cover', borderRadius: 1.5,
-                          cursor: 'pointer', border: '2px solid transparent',
-                          transition: 'all 0.15s ease',
-                          '&:hover': { transform: 'scale(1.05)', borderColor: 'primary.main', boxShadow: 2 }
-                        }}
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              </Popover>
+              {/* Popover chọn Cover — tái sử dụng nguyên bộ picker của board (Photos/Gradients/Colors/Upload) */}
+              <ChangeBoardBackgroundPopover
+                anchorEl={coverPickerAnchorEl}
+                isOpen={Boolean(coverPickerAnchorEl)}
+                onClose={() => setCoverPickerAnchorEl(null)}
+                currentBackground={activeCard?.cover || null}
+                onSelectBackground={handleMakeCover}
+                onUploadBackgroundFile={handleUploadCardCoverFile}
+                title={t('cardModal.cover')}
+              />
 
               {/* Feature 10: Nút Upload tệp đính kèm */}
               <SidebarItem className="active" component="label">

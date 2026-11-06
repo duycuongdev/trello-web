@@ -68,7 +68,11 @@ function Card({ card }) {
         border: '1px solid transparent',
         '&:hover': { borderColor: (theme) => theme.palette.primary.main }
       }}>
-      {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}
+      {card?.cover && (
+        String(card.cover).startsWith('http')
+          ? <CardMedia sx={{ height: 140 }} image={card?.cover} />
+          : <Box sx={{ height: 140, background: card.cover }} />
+      )}
 
       <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
         {!!card?.labels?.length && (

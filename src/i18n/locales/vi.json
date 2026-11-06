@@ -325,7 +325,8 @@
     "photos": "Ảnh",
     "gradients": "Chuyển sắc",
     "colors": "Màu",
-    "upload": "Tải lên"
+    "upload": "Tải lên",
+    "changeTitle": "Đổi nền"
   },
   "home": {
     "getTrelloFree": "Dùng Trello miễn phí",
@@ -435,13 +436,13 @@
     "remove": "Xóa hạn chót"
   },
   "checklist": {
-    "detailsTitle": "Chi tiết",
     "dueDate": "Hạn chót",
     "members": "Thành viên",
     "clearDate": "Xóa hạn",
     "setDueDate": "Đặt hạn",
     "addMember": "Thêm thành viên",
-    "editDetails": "Hạn chót & thành viên",
-    "noBoardUsers": "Không có thành viên trong bảng"
+    "noBoardUsers": "Không có thành viên trong bảng",
+    "editDueDate": "Bấm để sửa hạn chót",
+    "editMembers": "Bấm để sửa thành viên"
   }
 }
