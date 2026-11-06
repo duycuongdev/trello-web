@@ -241,7 +241,10 @@
     "attachCount": "Attachments ({{count}})",
     "attachLinkOrFile": "Attach link / file",
     "fileTooltip": "File: {{name}} (Click to open)",
-    "openUrl": "Open: {{url}}"
+    "openUrl": "Open: {{url}}",
+    "samplePhotos": "Sample photos",
+    "updatingCover": "Updating cover...",
+    "coverUpdated": "Cover updated!"
   },
   "notFound": {
     "message": "The content you are looking for was not found",

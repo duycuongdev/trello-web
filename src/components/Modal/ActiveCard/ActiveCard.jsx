@@ -4,6 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Modal from '@mui/material/Modal'
+import Popover from '@mui/material/Popover'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
@@ -21,6 +22,7 @@ import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined'
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
+import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import UndoIcon from '@mui/icons-material/Undo'
 import SubjectRoundedIcon from '@mui/icons-material/SubjectRounded'
@@ -64,6 +66,7 @@ import {
   restoreCardAPI
 } from '~/apis'
 import { selectCurrentUser } from '~/redux/user/userSlice'
+import { PRESET_PHOTOS } from '~/utils/samplePhotos'
 import { CARD_MEMBER_ACTION } from '~/utils/constants'
 import { useTranslation } from 'react-i18next'
 import { fetchInvitationsAPI } from '~/redux/notifications/notificationsSlice'
@@ -100,6 +103,8 @@ function ActiveCard() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [labelAnchorEl, setLabelAnchorEl] = useState(null)
+  // Popover gallery ảnh mẫu cho Cover
+  const [sampleCoverAnchorEl, setSampleCoverAnchorEl] = useState(null)
   const isLabelOpen = Boolean(labelAnchorEl)
   const handleOpenLabelPopover = (event) => setLabelAnchorEl(event.currentTarget)
   const handleCloseLabelPopover = () => setLabelAnchorEl(null)
@@ -392,6 +397,16 @@ function ActiveCard() {
     callApiUpdateCard({ cover: imageUrl })
   }
 
+  // Chọn ảnh mẫu từ gallery -> đặt làm Cover (lưu URL trực tiếp, không qua Cloudinary)
+  const handleOpenSampleCover = (event) => setSampleCoverAnchorEl(event.currentTarget)
+  const handleSetSampleCover = (photo) => {
+    toast.promise(
+      callApiUpdateCard({ cover: photo.value }),
+      { pending: t('card.updatingCover'), success: t('card.coverUpdated') }
+    )
+    setSampleCoverAnchorEl(null)
+  }
+
   // Dùng async await ở đây để component con CardActivitySection chờ và nếu thành công thì mới clear input comment
   const onAddCardComment = async (commentToAdd) => {
     await callApiUpdateCard({ commentToAdd })
@@ -663,6 +678,43 @@ function ActiveCard() {
                 {t('cardModal.cover')}
                 <VisuallyHiddenInput type="file" onChange={onUploadCardCover} />
               </SidebarItem>
+
+              {/* Gallery ảnh mẫu cho Cover (giống board background) */}
+              <SidebarItem className="active" onClick={handleOpenSampleCover}>
+                <WallpaperOutlinedIcon fontSize="small" sx={{ color: '#0ea5e9' }} />
+                {t('card.samplePhotos')}
+              </SidebarItem>
+
+              <Popover
+                open={Boolean(sampleCoverAnchorEl)}
+                anchorEl={sampleCoverAnchorEl}
+                onClose={() => setSampleCoverAnchorEl(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              >
+                <Box sx={{ p: 1.5, width: 300 }}>
+                  <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5, display: 'block', mb: 1 }}>
+                    {t('card.samplePhotos')}
+                  </Typography>
+                  <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1 }}>
+                    {PRESET_PHOTOS.map((photo) => (
+                      <Box
+                        key={photo.id}
+                        component="img"
+                        src={photo.thumb}
+                        alt={photo.name}
+                        onClick={() => handleSetSampleCover(photo)}
+                        sx={{
+                          width: '100%', height: 64, objectFit: 'cover', borderRadius: 1.5,
+                          cursor: 'pointer', border: '2px solid transparent',
+                          transition: 'all 0.15s ease',
+                          '&:hover': { transform: 'scale(1.05)', borderColor: 'primary.main', boxShadow: 2 }
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </Box>
+              </Popover>
 
               {/* Feature 10: Nút Upload tệp đính kèm */}
               <SidebarItem className="active" component="label">
