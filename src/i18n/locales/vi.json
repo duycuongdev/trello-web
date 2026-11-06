@@ -20,7 +20,8 @@
     "datetimeFormat": "D MMM, YYYY [lúc] HH:mm",
     "dateFormatShort": "ddd, D MMM [lúc] HH:mm",
     "datetimeFormatFull": "ddd, D MMM, YYYY [lúc] HH:mm",
-    "add": "Thêm"
+    "add": "Thêm",
+    "dateChipFormat": "D MMM"
   },
   "validation": {
     "required": "Trường này là bắt buộc.",
@@ -429,5 +430,15 @@
     "day1Before": "1 ngày trước",
     "days2Before": "2 ngày trước",
     "remove": "Xóa hạn chót"
+  },
+  "checklist": {
+    "detailsTitle": "Chi tiết",
+    "dueDate": "Hạn chót",
+    "members": "Thành viên",
+    "clearDate": "Xóa hạn",
+    "setDueDate": "Đặt hạn",
+    "addMember": "Thêm thành viên",
+    "editDetails": "Hạn chót & thành viên",
+    "noBoardUsers": "Không có thành viên trong bảng"
   }
 }
