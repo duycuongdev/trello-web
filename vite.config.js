@@ -23,5 +23,12 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 1200
+  },
+  // Ghim port dev: Google OAuth chỉ chấp nhận origin http://localhost:5173
+  // (đã đăng ký trong Google Cloud Console). Nếu port bận thì FAIL LOUDLY
+  // thay vì lặng lẽ nhảy sang 5174/5175... và phá Google login.
+  server: {
+    port: 5173,
+    strictPort: true
   }
 })
