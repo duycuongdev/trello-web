@@ -241,7 +241,10 @@
     "attachCount": "Đính kèm ({{count}})",
     "attachLinkOrFile": "Đính kèm link / tệp",
     "fileTooltip": "Tệp: {{name}} (Nhấp để mở)",
-    "openUrl": "Mở: {{url}}"
+    "openUrl": "Mở: {{url}}",
+    "samplePhotos": "Ảnh mẫu",
+    "updatingCover": "Đang cập nhật ảnh bìa...",
+    "coverUpdated": "Đã cập nhật ảnh bìa!"
   },
   "notFound": {
     "message": "Không tìm thấy nội dung bạn đang tìm kiếm",
