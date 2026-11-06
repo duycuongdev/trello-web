@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField'
 import Checkbox from '@mui/material/Checkbox'
 import LinearProgress from '@mui/material/LinearProgress'
 import Stack from '@mui/material/Stack'
-import Divider from '@mui/material/Divider'
 import Tooltip from '@mui/material/Tooltip'
 import Chip from '@mui/material/Chip'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -246,8 +245,9 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     }))
   }
 
-  const openDetailPopover = (scope, checklistId, id, dueDate, anchorEl) => {
+  const openDetailPopover = (kind, scope, checklistId, id, dueDate, anchorEl) => {
     setDetailPopover({
+      kind,
       scope,
       checklistId,
       id,
@@ -297,23 +297,25 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     const d = dueDate ? dayjs(dueDate) : null
     const isOverdue = !isEmpty && !isDoneRef && d.startOf('day').isBefore(dayjs().startOf('day'))
     return (
-      <Chip
-        size="small"
-        icon={<ScheduleOutlinedIcon sx={{ fontSize: '13px !important' }} />}
-        label={isEmpty ? t('checklist.setDueDate') : d.format(t('common.dateChipFormat'))}
-        onClick={(e) => { e.stopPropagation(); openDetailPopover(scope, checklistId, id, dueDate, e.currentTarget) }}
-        sx={{
-          height: 22,
-          fontSize: '0.72rem',
-          fontWeight: 600,
-          cursor: 'pointer',
-          ...(isEmpty
-            ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
-            : isOverdue
-              ? { bgcolor: 'error.main', color: 'white', '& .MuiChip-icon': { color: 'white' } }
-              : { bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.18)' : '#e0edff', color: 'primary.main', '& .MuiChip-icon': { color: 'primary.main' } })
-        }}
-      />
+      <Tooltip title={t('checklist.editDueDate')}>
+        <Chip
+          size="small"
+          icon={<ScheduleOutlinedIcon sx={{ fontSize: '13px !important' }} />}
+          label={isEmpty ? t('checklist.setDueDate') : d.format(t('common.dateChipFormat'))}
+          onClick={(e) => { e.stopPropagation(); openDetailPopover('date', scope, checklistId, id, dueDate, e.currentTarget) }}
+          sx={{
+            height: 22,
+            fontSize: '0.72rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+            ...(isEmpty
+              ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
+              : isOverdue
+                ? { bgcolor: 'error.main', color: 'white', '& .MuiChip-icon': { color: 'white' } }
+                : { bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(59,130,246,0.18)' : '#e0edff', color: 'primary.main', '& .MuiChip-icon': { color: 'primary.main' } })
+          }}
+        />
+      </Tooltip>
     )
   }
 
@@ -321,30 +323,32 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
     const users = memberIds.map(uid => findUserById(uid)).filter(Boolean)
     const visible = users.slice(0, 3)
     return (
-      <Chip
-        size="small"
-        icon={users.length === 0
-          ? <PersonAddAltOutlinedIcon sx={{ fontSize: '13px !important' }} />
-          : undefined}
-        label={users.length === 0
-          ? t('checklist.addMember')
-          : (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '-4px' }}>
-              {visible.map(u => (
-                <Avatar key={u._id} src={u.avatar} sx={{ width: 16, height: 16, fontSize: 9, ml: users.length > 1 ? '-4px' : 0, border: '1px solid #fff' }} />
-              ))}
-              {users.length > 3 && <span style={{ fontSize: '0.68rem', fontWeight: 700, ml: 0.25 }}>+{users.length - 3}</span>}
-            </Box>
-          )}
-        onClick={(e) => { e.stopPropagation(); openDetailPopover(scope, checklistId, id, null, e.currentTarget) }}
-        sx={{
-          height: 22,
-          cursor: 'pointer',
-          ...(users.length === 0
-            ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
-            : { bgcolor: 'transparent', border: '1px solid', borderColor: 'divider' })
-        }}
-      />
+      <Tooltip title={t('checklist.editMembers')}>
+        <Chip
+          size="small"
+          icon={users.length === 0
+            ? <PersonAddAltOutlinedIcon sx={{ fontSize: '13px !important' }} />
+            : undefined}
+          label={users.length === 0
+            ? t('checklist.addMember')
+            : (
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                {visible.map(u => (
+                  <Avatar key={u._id} src={u.avatar} sx={{ width: 16, height: 16, fontSize: 9, ml: users.length > 1 ? '-4px' : 0, border: '1px solid #fff' }} />
+                ))}
+                {users.length > 3 && <span style={{ fontSize: '0.68rem', fontWeight: 700, marginLeft: 2 }}>+{users.length - 3}</span>}
+              </Box>
+            )}
+          onClick={(e) => { e.stopPropagation(); openDetailPopover('members', scope, checklistId, id, null, e.currentTarget) }}
+          sx={{
+            height: 22,
+            cursor: 'pointer',
+            ...(users.length === 0
+              ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
+              : { bgcolor: 'transparent', border: '1px solid', borderColor: 'divider' })
+          }}
+        />
+      </Tooltip>
     )
   }
 
@@ -442,16 +446,9 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                 <Typography sx={{ fontWeight: '600', fontSize: '18px' }}>
                   {checklist.title}
                 </Typography>
-                {/* Hạn chót + thành viên ở CẤP CHECKLIST */}
-                <Tooltip title={t('checklist.editDetails')}>
-                  <Box
-                    sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}
-                    onClick={(e) => { e.stopPropagation(); openDetailPopover('checklist', checklist._id, checklist._id, checklist.dueDate, e.currentTarget) }}
-                  >
-                    {renderDueChip('checklist', checklist._id, checklist._id, checklist.dueDate, isComplete)}
-                    {renderMemberChip('checklist', checklist._id, checklist._id, checklist.memberIds)}
-                  </Box>
-                </Tooltip>
+                {/* Hạn chót + thành viên ở CẤP CHECKLIST (mỗi chip mở popover riêng) */}
+                {renderDueChip('checklist', checklist._id, checklist._id, checklist.dueDate, isComplete)}
+                {renderMemberChip('checklist', checklist._id, checklist._id, checklist.memberIds)}
               </Box>
               <Button
                 size="small"
@@ -764,14 +761,13 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                             </Box>
                           )}
 
-                          {/* Dòng 3: Hạn chót + thành viên ở CẤP ITEM */}
+                          {/* Dòng 3: Hạn chót + thành viên ở CẤP ITEM (mỗi chip mở popover riêng) */}
                           <Box
                             sx={{
                               display: 'flex', alignItems: 'center', gap: 0.75, flexWrap: 'wrap', pt: 0.25,
                               '& .detail-chip': { opacity: (item.dueDate || (item.memberIds || []).length) ? 1 : 0.55 },
                               '&:hover .detail-chip': { opacity: 1 }
                             }}
-                            onClick={(e) => { e.stopPropagation(); openDetailPopover('item', checklist._id, item._id, item.dueDate, e.currentTarget) }}
                           >
                             {renderDueChip('item', checklist._id, item._id, item.dueDate, item.isDone)}
                             {renderMemberChip('item', checklist._id, item._id, item.memberIds)}
@@ -1007,54 +1003,61 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
         <Box sx={{ p: 1.5, width: 250, display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            {t('checklist.detailsTitle')}
-          </Typography>
-
-          <TextField
-            label={t('checklist.dueDate')}
-            type="date"
-            size="small"
-            fullWidth
-            value={detailPopover?.draftDate || ''}
-            onChange={(e) => setDetailPopover(dp => dp ? { ...dp, draftDate: e.target.value } : dp)}
-            InputLabelProps={{ shrink: true }}
-          />
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Button size="small" color="inherit" onClick={handleClearDetailDate} sx={{ textTransform: 'none' }}>
-              {t('checklist.clearDate')}
-            </Button>
-            <Button size="small" variant="contained" onClick={handleSaveDetailDate} sx={{ textTransform: 'none', fontWeight: 600 }}>
-              {t('common.save')}
-            </Button>
-          </Box>
-
-          <Divider sx={{ my: 0.5 }} />
-
-          <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            {t('checklist.members')}
-          </Typography>
-          <Box sx={{ maxHeight: 170, overflowY: 'auto' }}>
-            {(boardUsers || []).map(u => (
-              <Box
-                key={u._id}
-                onClick={() => handleToggleDetailMember(u._id)}
-                sx={{
-                  display: 'flex', alignItems: 'center', gap: 1, py: 0.4, px: 0.5,
-                  borderRadius: 1, cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' }
-                }}
-              >
-                <Checkbox size="small" sx={{ p: 0 }} checked={getCurrentDetailMembers().includes(u._id?.toString())} />
-                <Avatar src={u.avatar} sx={{ width: 24, height: 24, fontSize: 11 }} />
-                <Typography variant="body2" sx={{ flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {u.displayName || u.username || u.email}
-                </Typography>
+          {/* Popover HẠN CHÓT - mở từ chip ngày */}
+          {detailPopover?.kind === 'date' && (
+            <>
+              <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                {t('checklist.dueDate')}
+              </Typography>
+              <TextField
+                label={t('checklist.dueDate')}
+                type="date"
+                size="small"
+                fullWidth
+                value={detailPopover?.draftDate || ''}
+                onChange={(e) => setDetailPopover(dp => dp ? { ...dp, draftDate: e.target.value } : dp)}
+                InputLabelProps={{ shrink: true }}
+              />
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button size="small" color="inherit" onClick={handleClearDetailDate} sx={{ textTransform: 'none' }}>
+                  {t('checklist.clearDate')}
+                </Button>
+                <Button size="small" variant="contained" onClick={handleSaveDetailDate} sx={{ textTransform: 'none', fontWeight: 600 }}>
+                  {t('common.save')}
+                </Button>
               </Box>
-            ))}
-            {(boardUsers || []).length === 0 && (
-              <Typography variant="caption" color="text.secondary">{t('checklist.noBoardUsers')}</Typography>
-            )}
-          </Box>
+            </>
+          )}
+
+          {/* Popover THÀNH VIÊN - mở từ chip thành viên */}
+          {detailPopover?.kind === 'members' && (
+            <>
+              <Typography variant="caption" fontWeight={700} sx={{ color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                {t('checklist.members')}
+              </Typography>
+              <Box sx={{ maxHeight: 220, overflowY: 'auto' }}>
+                {(boardUsers || []).map(u => (
+                  <Box
+                    key={u._id}
+                    onClick={() => handleToggleDetailMember(u._id)}
+                    sx={{
+                      display: 'flex', alignItems: 'center', gap: 1, py: 0.4, px: 0.5,
+                      borderRadius: 1, cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <Checkbox size="small" sx={{ p: 0 }} checked={getCurrentDetailMembers().includes(u._id?.toString())} />
+                    <Avatar src={u.avatar} sx={{ width: 24, height: 24, fontSize: 11 }} />
+                    <Typography variant="body2" sx={{ flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {u.displayName || u.username || u.email}
+                    </Typography>
+                  </Box>
+                ))}
+                {(boardUsers || []).length === 0 && (
+                  <Typography variant="caption" color="text.secondary">{t('checklist.noBoardUsers')}</Typography>
+                )}
+              </Box>
+            </>
+          )}
         </Box>
       </Popover>
     </Stack>

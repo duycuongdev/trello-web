@@ -325,7 +325,8 @@
     "photos": "Photos",
     "gradients": "Gradients",
     "colors": "Colors",
-    "upload": "Upload"
+    "upload": "Upload",
+    "changeTitle": "Change background"
   },
   "home": {
     "getTrelloFree": "Get Trello for free",
@@ -435,13 +436,13 @@
     "remove": "Remove"
   },
   "checklist": {
-    "detailsTitle": "Details",
     "dueDate": "Due date",
     "members": "Members",
     "clearDate": "Clear",
     "setDueDate": "Set date",
     "addMember": "Add member",
-    "editDetails": "Due date & members",
-    "noBoardUsers": "No board members found"
+    "noBoardUsers": "No board members found",
+    "editDueDate": "Click to edit due date",
+    "editMembers": "Click to edit members"
   }
 }
