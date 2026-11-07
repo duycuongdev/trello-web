@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
@@ -16,11 +16,8 @@ import Profile from './Menus/Profile'
  */
 function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
   const { t } = useTranslation()
-  const location = useLocation()
   const activeBoard = useSelector(selectCurrentActiveBoard)
   const onBoardWithImage = Boolean(activeBoard?.background)
-
-  const isBoardsActive = location.pathname.startsWith('/boards')
 
   return (
     <Box sx={{
@@ -45,17 +42,16 @@ function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
         to="/boards/"
         icon={<SpaceDashboardIcon />}
         label={t('appBar.boardList')}
-        active={isBoardsActive || location.pathname === '/'}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', minWidth: 64 }}>
         <Notifications openUpward />
-        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: 'rgba(255, 255, 255, 0.85)' }}>
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: '#ffffff' }}>
           {t('appBar.notifications')}
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', minWidth: 64 }}>
         <Profile onOpenTour={onOpenTour} onOpenShortcuts={onOpenShortcuts} openUpward />
-        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: 'rgba(255, 255, 255, 0.85)' }}>
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: '#ffffff' }}>
           {t('profileMenu.profile')}
         </Typography>
       </Box>
@@ -63,7 +59,7 @@ function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
   )
 }
 
-function TabLink({ to, icon, label, active }) {
+function TabLink({ to, icon, label }) {
   return (
     <Box
       component={Link}
@@ -75,14 +71,13 @@ function TabLink({ to, icon, label, active }) {
         gap: '2px',
         minWidth: 64,
         py: 1,
-        // Không dùng nền pill trắng cho tab active (nhẹ nhàng hơn): chỉ đổi độ sáng chữ/icon
-        color: active ? '#ffffff' : 'rgba(255, 255, 255, 0.6)',
-        textDecoration: 'none',
-        transition: 'all 0.15s ease'
+        // Đồng bộ hoàn toàn với 2 tab còn lại: không phân biệt active bằng màu
+        color: '#ffffff',
+        textDecoration: 'none'
       }}
     >
       {icon}
-      <Typography sx={{ fontSize: '0.65rem', fontWeight: active ? 700 : 500, lineHeight: 1 }}>
+      <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: '#ffffff' }}>
         {label}
       </Typography>
     </Box>

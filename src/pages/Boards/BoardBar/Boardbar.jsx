@@ -243,6 +243,44 @@ function BoardBar({ board, onlineUsers = [] }) {
         alignItems: 'center',
         gap: { xs: 1, sm: 2 }
       }}>
+        {/* Mobile (xs): cụm icon Lọc → Mời → ⋯ đứng TRƯỚC tên board, tên chiếm toàn bộ chỗ còn lại */}
+        <Badge
+          color="warning"
+          variant="dot"
+          invisible={!hasActiveFilter}
+          sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
+        >
+          <IconButton
+            onClick={handleOpenFilter}
+            aria-label={t('boardBar.filters')}
+            sx={{ color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
+          >
+            <FilterIcon />
+          </IconButton>
+        </Badge>
+
+        <Box sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
+          <InviteBoardUser boardId={board?._id} board={board} iconOnly />
+        </Box>
+
+        {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
+        <Tooltip title={t('boardBar.more')}>
+          <IconButton
+            ref={moreBtnRef}
+            onClick={(e) => setMoreAnchorEl(e.currentTarget)}
+            aria-label={t('boardBar.more')}
+            aria-haspopup="menu"
+            sx={{
+              display: { xs: 'inline-flex', sm: 'none' },
+              color: 'white',
+              bgcolor: 'rgba(255, 255, 255, 0.15)',
+              '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
+            }}
+          >
+            <MoreHorizIcon />
+          </IconButton>
+        </Tooltip>
+
         {!isEditingTitle ? (
           <Tooltip title={t('board.clickToEditTitle')}>
             <Chip
@@ -252,12 +290,15 @@ function BoardBar({ board, onlineUsers = [] }) {
                 fontSize: '14px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                // Mobile: giới hạn độ rộng tên board - bấm vào tên để xem/sửa đầy đủ
-                maxWidth: { xs: '42vw', sm: 'none' },
+                // Tên board chiếm toàn bộ chỗ còn lại (sau cụm icon mobile) - dài quá thì ellipsis, bấm vào để xem/sửa
+                flex: '1 1 auto',
+                minWidth: 0,
                 '& .MuiChip-label': {
+                  display: 'block',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
+                  textAlign: 'left'
                 },
                 '&:hover': {
                   bgcolor: 'rgba(255, 255, 255, 0.25)'
@@ -423,43 +464,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           />
         )}
 
-        {/* Mobile (xs): cụm icon Lọc → Mời → ⋯ nằm ngay sau tên board (đề xuất của chủ project) */}
-        <Badge
-          color="warning"
-          variant="dot"
-          invisible={!hasActiveFilter}
-          sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
-        >
-          <IconButton
-            onClick={handleOpenFilter}
-            aria-label={t('boardBar.filters')}
-            sx={{ color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
-          >
-            <FilterIcon />
-          </IconButton>
-        </Badge>
-
-        <Box sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
-          <InviteBoardUser boardId={board?._id} board={board} iconOnly />
-        </Box>
-
-        {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
-        <Tooltip title={t('boardBar.more')}>
-          <IconButton
-            ref={moreBtnRef}
-            onClick={(e) => setMoreAnchorEl(e.currentTarget)}
-            aria-label={t('boardBar.more')}
-            aria-haspopup="menu"
-            sx={{
-              display: { xs: 'inline-flex', sm: 'none' },
-              color: 'white',
-              bgcolor: 'rgba(255, 255, 255, 0.15)',
-              '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
-            }}
-          >
-            <MoreHorizIcon />
-          </IconButton>
-        </Tooltip>
+        {/* Menu "⋯" của mobile - anchor trỏ tới nút trong cụm icon ở đầu thanh */}
         <Menu
           anchorEl={moreAnchorEl}
           open={isMoreOpen}

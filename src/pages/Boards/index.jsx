@@ -210,9 +210,28 @@ function Boards() {
 
           {/* Main Content */}
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-              {isClosedView ? t('boards.closedBoards') : t('boards.yourBoards')}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1.5, mb: 3, flexWrap: 'wrap' }}>
+              <Typography variant="h5" sx={{ fontWeight: 700 }}>
+                {isClosedView ? t('boards.closedBoards') : t('boards.yourBoards')}
+              </Typography>
+
+              {/* Mobile/tablet (md trở xuống, sidebar đang ẩn): nút chuyển qua lại giữa Bảng và Bảng đã đóng */}
+              <Button
+                component={Link}
+                to={isClosedView ? '/boards' : '/boards?closed=true'}
+                startIcon={isClosedView ? <SpaceDashboardIcon /> : <FolderOffOutlinedIcon />}
+                size="small"
+                variant={isClosedView ? 'contained' : 'outlined'}
+                sx={{
+                  display: { xs: 'inline-flex', md: 'none' },
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  borderRadius: 2
+                }}
+              >
+                {isClosedView ? t('boards.sidebarBoards') : t('boards.sidebarClosedBoards')}
+              </Button>
+            </Box>
 
             {/* Trường hợp gọi API nhưng không tồn tại cái board nào trong Database trả về */}
             {boards?.length === 0 && (
