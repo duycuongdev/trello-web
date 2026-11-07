@@ -10,6 +10,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Profile from './Menus/Profile'
 import { Link } from 'react-router-dom'
 import Notifications from './Notifications/Notifications'
+import MobileBottomNav from './MobileBottomNav'
 import AutoCompleteSearchBoard from './SearchBoards/AutoCompleteSearchBoard'
 import { useSelector } from 'react-redux'
 import { selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
@@ -109,14 +110,22 @@ function AppBar() {
           <ModeSelect />
         </Box>
 
-        {/* notifications */}
-        <Notifications />
+        {/* notifications + account: chỉ trên desktop/tablet - trên mobile chúng nằm ở BottomNav */}
+        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+          <Notifications />
 
-        <Profile
-          onOpenTour={() => setOpenTour(true)}
-          onOpenShortcuts={() => setOpenShortcuts(true)}
-        />
+          <Profile
+            onOpenTour={() => setOpenTour(true)}
+            onOpenShortcuts={() => setOpenShortcuts(true)}
+          />
+        </Box>
       </Box>
+
+      {/* Thanh điều hướng dưới cùng cho mobile (Boards / Notifications / Account) */}
+      <MobileBottomNav
+        onOpenTour={() => setOpenTour(true)}
+        onOpenShortcuts={() => setOpenShortcuts(true)}
+      />
 
       {/* Modal giới thiệu toàn bộ tính năng website cho người dùng */}
       <UserOnboardingModal open={openTour} onClose={handleCloseTour} />

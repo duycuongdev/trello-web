@@ -504,21 +504,38 @@ function Board() {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        background: board?.background?.startsWith('http')
-          ? `url("${board.background}") center/cover no-repeat fixed`
-          : (board?.background || ((theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'))),
-        transition: 'background 0.3s ease'
+        // Màu nền dự phòng khi chưa có ảnh (ảnh vẽ bằng layer riêng bên dưới)
+        bgcolor: board?.background?.startsWith('http')
+          ? (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc')
+          : (board?.background || ((theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc')))
       }}
     >
-      <ActiveCard />
-      <AppBar />
-      <BoardBar board={board} onlineUsers={onlineUsers} />
-      <BoardContent
-        board={board}
-        moveColumns={moveColumns}
-        moveCardInTheSameColumn={moveCardInTheSameColumn}
-        moveCardToDifferentColumn={moveCardToDifferentColumn}
-      />
+      {/* Ảnh nền board vẽ bằng layer position:fixed riêng.
+          KHÔNG dùng background-attachment: fixed trên Container vì iOS Safari/PWA bỏ qua nó,
+          khiến ảnh không vẽ đằng sau AppBar/BoardBar (2 dải xám nhợt trên iPhone). */}
+      {board?.background?.startsWith('http') && (
+        <Box
+          sx={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: `url("${board.background}") center/cover no-repeat`,
+            transition: 'background 0.3s ease'
+          }}
+        />
+      )}
+      <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <ActiveCard />
+        <AppBar />
+        <BoardBar board={board} onlineUsers={onlineUsers} />
+        <BoardContent
+          board={board}
+          moveColumns={moveColumns}
+          moveCardInTheSameColumn={moveCardInTheSameColumn}
+          moveCardToDifferentColumn={moveCardToDifferentColumn}
+        />
+      </Box>
     </Container>
   )
 }
