@@ -4,8 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/trello.svg" />
-  <link rel="apple-touch-icon" href="/trello.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- iOS: apple-touch-icon bắt buộc là PNG (SVG bị bỏ qua), iOS tự bo góc -->
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- PWA / iOS standalone -->
+  <meta name="theme-color" content="#0052cc" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Trello Clone" />
 
   <!-- Primary Meta Tags -->
   <title>Trello Clone – Manage Team Projects &amp; Tasks with Intuitive Kanban Boards</title>
