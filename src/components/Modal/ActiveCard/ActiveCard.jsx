@@ -6,8 +6,9 @@ import Chip from '@mui/material/Chip'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import CloseIcon from '@mui/icons-material/Close'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
-import CancelIcon from '@mui/icons-material/Cancel'
 import Grid from '@mui/material/Unstable_Grid2'
 import Stack from '@mui/material/Stack'
 import Divider from '@mui/material/Divider'
@@ -451,11 +452,12 @@ function ActiveCard() {
       }}>
         <Box sx={{
           position: 'absolute',
-          top: '12px',
-          right: '10px',
-          cursor: 'pointer'
+          top: '8px',
+          right: '8px'
         }}>
-          <CancelIcon color="error" sx={{ '&:hover': { color: 'error.light' } }} onClick={handleCloseModal} />
+          <IconButton size="small" onClick={handleCloseModal} aria-label="close">
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </Box>
 
         {/* Banner thông báo thẻ đã lưu trữ */}
@@ -634,10 +636,21 @@ function ActiveCard() {
             </Box>
           </Grid>
 
-          {/* Right side */}
-          <Grid xs={12} sm={3}>
+          {/* Right side - trên mobile (xs) đưa lên TRƯỚC nội dung chính (order: -1) để không phải cuộn xuống cuối */}
+          <Grid xs={12} sm={3} sx={{ order: { xs: -1, sm: 0 } }}>
             <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.addToCard')}</Typography>
-            <Stack direction="column" spacing={1}>
+            <Stack
+              spacing={1}
+              direction={{ xs: 'row', sm: 'column' }}
+              sx={{
+                overflowX: { xs: 'auto', sm: 'visible' },
+                overflowY: 'hidden',
+                pb: { xs: 1, sm: 0 },
+                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' },
+                '&::-webkit-scrollbar': { height: '5px' },
+                '&::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '4px' }
+              }}
+            >
               {/* Feature 05: Xử lý hành động bản thân user tự join / leave khỏi card */}
               {!activeCard?.memberIds?.includes(currentUser._id) ? (
                 <SidebarItem
@@ -733,7 +746,18 @@ function ActiveCard() {
             <Divider sx={{ my: 2 }} />
 
             <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.actions')}</Typography>
-            <Stack direction="column" spacing={1}>
+            <Stack
+              spacing={1}
+              direction={{ xs: 'row', sm: 'column' }}
+              sx={{
+                overflowX: { xs: 'auto', sm: 'visible' },
+                overflowY: 'hidden',
+                pb: { xs: 1, sm: 0 },
+                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' },
+                '&::-webkit-scrollbar': { height: '5px' },
+                '&::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '4px' }
+              }}
+            >
               <SidebarItem
                 className="active"
                 onClick={handleDeleteCard}

@@ -11,13 +11,14 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard'
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import UndoIcon from '@mui/icons-material/Undo'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import AddIcon from '@mui/icons-material/Add'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Pagination from '@mui/material/Pagination'
 import PaginationItem from '@mui/material/PaginationItem'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import randomColor from 'randomcolor'
-import SidebarCreateBoardModal from './create'
+import SidebarCreateBoardModal, { CreateBoardModal } from './create'
 import { styled } from '@mui/material/styles'
 import { fetchBoardsAPI, reopenBoardAPI, deleteBoardDetailsAPI } from '~/apis/index.js'
 import { DEFAULT_PAGE, DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants.js'
@@ -50,6 +51,44 @@ const SidebarItem = styled(Box)(({ theme }) => ({
   }
 }))
 
+/**
+ * Ô "+ Create new board" đặt ngay trong lưới board (chuẩn Trello thật).
+ */
+function CreateBoardTile({ onClick }) {
+  const { t } = useTranslation()
+  return (
+    <Card
+      onClick={onClick}
+      sx={{
+        cursor: 'pointer',
+        width: '100%',
+        height: '140px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 1,
+        borderRadius: '10px',
+        bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0, 82, 204, 0.04)',
+        border: '2px dashed',
+        borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0, 82, 204, 0.35)',
+        boxShadow: 'none',
+        transition: 'all 0.2s ease',
+        '&:hover': {
+          bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0, 82, 204, 0.08)',
+          borderColor: '#0052cc',
+          transform: 'translateY(-3px)'
+        }
+      }}
+    >
+      <AddIcon sx={{ fontSize: 34, color: '#0052cc' }} />
+      <Typography sx={{ fontWeight: 600, color: '#0052cc', fontSize: '0.95rem' }}>
+        {t('boards.createBoard')}
+      </Typography>
+    </Card>
+  )
+}
+
 function Boards() {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -59,6 +98,8 @@ function Boards() {
   // Tổng toàn bộ số lượng bản ghi boards có trong Database mà phía BE trả về để FE dùng tính toán phân trang
   const [totalBoards, setTotalBoards] = useState(null)
   const [loadError, setLoadError] = useState('')
+  // Ô "+ Create new board" trong lưới board mở modal tạo board
+  const [openCreateBoardModal, setOpenCreateBoardModal] = useState(false)
 
   // Xử lý phân trang từ url với MUI: https://mui.com/material-ui/react-pagination/#router-integration
   const location = useLocation()
@@ -185,9 +226,12 @@ function Boards() {
 
             {/* Trường hợp gọi API nhưng không tồn tại cái board nào trong Database trả về */}
             {boards?.length === 0 && (
-              <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
-                {isClosedView ? t('boards.noClosedBoards') : t('boards.noResults')}
-              </Typography>
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>
+                  {isClosedView ? t('boards.noClosedBoards') : t('boards.noResults')}
+                </Typography>
+                {!isClosedView && <CreateBoardTile onClick={() => setOpenCreateBoardModal(true)} />}
+              </Box>
             )}
 
             {/* Render danh sách boards theo CSS Grid 5 cột trên hàng */}
@@ -294,8 +338,20 @@ function Boards() {
                     </CardContent>
                   </Card>
                 ))}
+
+                {/* Ô "+ Create new board" ngay trong lưới - người dùng Trello quen với cách này */}
+                {!isClosedView && (
+                  <CreateBoardTile onClick={() => setOpenCreateBoardModal(true)} />
+                )}
               </Box>
             )}
+
+            {/* Modal tạo board dùng chung cho ô trong lưới */}
+            <CreateBoardModal
+              open={openCreateBoardModal}
+              onClose={() => setOpenCreateBoardModal(false)}
+              afterCreateNewBoard={afterCreateNewBoard}
+            />
 
             {/* Phân trang */}
             {(totalBoards > DEFAULT_ITEMS_PER_PAGE) && (

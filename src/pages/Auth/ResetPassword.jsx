@@ -17,6 +17,7 @@ import {
   PASSWORD_RULE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import PasswordStrengthMeter from '~/components/Form/PasswordStrengthMeter'
 import { resetPasswordAPI } from '~/apis'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
@@ -87,6 +88,7 @@ function ResetPassword() {
                   label={t('resetPassword.newPassword')}
                   type={showPassword ? 'text' : 'password'}
                   variant="outlined"
+                  inputProps={{ autoComplete: 'new-password' }}
                   error={!!errors.newPassword}
                   InputProps={{
                     endAdornment: (
@@ -103,6 +105,7 @@ function ResetPassword() {
                   })}
                 />
                 <FieldErrorAlert errors={errors} fieldName="newPassword" />
+                <PasswordStrengthMeter password={watch('newPassword') || ''} />
               </Box>
 
               <Box>

@@ -165,8 +165,10 @@ function Auth() {
           </Typography>
         </Link>
 
-        <ModeSelect />
-        <LanguageSelect />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <ModeSelect />
+          <LanguageSelect />
+        </Box>
       </Box>
 
       {/* 2. Main Form Container */}
@@ -206,7 +208,7 @@ function Auth() {
           <span>{t('auth.footerTerms')}</span>
         </Stack>
         <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.75)' }}>
-          © 2026 Trello || All rights reserved.
+          {t('auth.footerCopyright')}
         </Typography>
       </Box>
     </Box>

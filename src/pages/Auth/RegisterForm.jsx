@@ -7,16 +7,21 @@ import MuiCard from '@mui/material/Card'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
 import Zoom from '@mui/material/Zoom'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import {
   EMAIL_RULE,
   PASSWORD_RULE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import PasswordStrengthMeter from '~/components/Form/PasswordStrengthMeter'
 import { useForm } from 'react-hook-form'
 import { registerUserAPI } from '~/apis'
 import { toast } from 'react-toastify'
@@ -30,6 +35,7 @@ function RegisterForm() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [registeredEmail, setRegisteredEmail] = useState(null)
+  const [showPassword, setShowPassword] = useState(false)
   const { handleSubmit, register, formState: { errors }, watch, reset } = useForm()
 
   const handleGoogleLoginSuccess = (credentialResponse) => {
@@ -270,6 +276,7 @@ function RegisterForm() {
                 label={t('auth.email')}
                 type="text"
                 variant="outlined"
+                inputProps={{ autoComplete: 'email' }}
                 error={!!errors.email}
                 {...register('email', {
                   required: t('validation.required'),
@@ -286,9 +293,23 @@ function RegisterForm() {
               <TextField
                 fullWidth
                 label={t('auth.password')}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
+                inputProps={{ autoComplete: 'new-password' }}
                 error={!!errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                        aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+                      >
+                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
                 {...register('password', {
                   required: t('validation.required'),
                   pattern: {
@@ -298,13 +319,14 @@ function RegisterForm() {
                 })}
               />
               <FieldErrorAlert errors={errors} fieldName="password" />
+              <PasswordStrengthMeter password={watch('password') || ''} />
             </Box>
 
             <Box>
               <TextField
                 fullWidth
                 label="Confirm Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
                 error={!!errors.password_confirmation}
                 {...register('password_confirmation', {

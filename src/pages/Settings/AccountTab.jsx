@@ -121,7 +121,7 @@ function AccountTab() {
         </Box>
 
         <form onSubmit={handleSubmit(submitChangeGeneralInformation)}>
-          <Box sx={{ width: { xs: '100%', sm: '400px' }, maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Box sx={{ width: { xs: '100%', sm: '520px' }, maxWidth: '520px', display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Box>
               <TextField
                 disabled
@@ -130,6 +130,16 @@ function AccountTab() {
                 label="Your Email"
                 type="text"
                 variant="filled"
+                // Mobile: thu nhỏ chữ + tăng tương phản cho ô khóa để email dài không bị cắt
+                sx={{
+                  '.MuiFilledInput-input.Mui-disabled': {
+                    WebkitTextFillColor: (theme) => (theme.palette.mode === 'dark' ? '#b6c2cf' : '#44546f'),
+                    fontSize: { xs: '0.85rem', sm: '1rem' }
+                  },
+                  '.MuiFilledInput-root.Mui-disabled': {
+                    bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.07)')
+                  }
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -148,6 +158,15 @@ function AccountTab() {
                 label="Your Username"
                 type="text"
                 variant="filled"
+                sx={{
+                  '.MuiFilledInput-input.Mui-disabled': {
+                    WebkitTextFillColor: (theme) => (theme.palette.mode === 'dark' ? '#b6c2cf' : '#44546f'),
+                    fontSize: { xs: '0.85rem', sm: '1rem' }
+                  },
+                  '.MuiFilledInput-root.Mui-disabled': {
+                    bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.07)')
+                  }
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">

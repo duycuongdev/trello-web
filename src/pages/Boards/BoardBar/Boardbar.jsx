@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
+import IconButton from '@mui/material/IconButton'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import Typography from '@mui/material/Typography'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import FilterIcon from '@mui/icons-material/FilterList'
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined'
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import Tooltip from '@mui/material/Tooltip'
 import { selectCardFilter, setCardFilter, updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { updateBoardDetailsAPI, closeBoardAPI, removeBoardMemberAPI } from '~/apis'
@@ -53,6 +59,24 @@ function BoardBar({ board, onlineUsers = [] }) {
   const [bgAnchorEl, setBgAnchorEl] = useState(null)
   const isBgOpen = Boolean(bgAnchorEl)
   const [isArchivedOpen, setIsArchivedOpen] = useState(false)
+
+  // Trên mobile (xs): các chip công cụ bị tràn thanh -> gom vào menu "⋯"
+  const [moreAnchorEl, setMoreAnchorEl] = useState(null)
+  const isMoreOpen = Boolean(moreAnchorEl)
+  const moreBtnRef = useRef(null)
+
+  const handleOpenFilterFromMore = () => {
+    setMoreAnchorEl(null)
+    setFilterAnchorEl(moreBtnRef.current)
+  }
+  const handleOpenBgFromMore = () => {
+    setMoreAnchorEl(null)
+    setBgAnchorEl(moreBtnRef.current)
+  }
+  const handleOpenArchivedFromMore = () => {
+    setMoreAnchorEl(null)
+    setIsArchivedOpen(true)
+  }
 
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [titleValue, setTitleValue] = useState(board?.title || '')
@@ -207,7 +231,7 @@ function BoardBar({ board, onlineUsers = [] }) {
       overflow: 'auto',
       paddingX: 2,
       bgcolor: board?.background
-        ? 'rgba(0, 0, 0, 0.25)'
+        ? 'rgba(0, 0, 0, 0.4)'
         : (theme) => (theme.palette.mode === 'dark' ? '#1e293b' : '#0747a6'),
       backdropFilter: board?.background ? 'blur(6px)' : 'none',
       borderBottom: board?.background ? '1px solid rgba(255, 255, 255, 0.15)' : 'none',
@@ -298,6 +322,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         <Chip
           sx={{
             ...MENU_STYLES,
+            display: { xs: 'none', sm: 'inline-flex' },
             ...(hasActiveFilter && {
               bgcolor: 'rgba(255, 255, 255, 0.25)',
               border: '1px solid rgba(255, 255, 255, 0.6)',
@@ -321,6 +346,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         <Chip
           sx={{
             ...MENU_STYLES,
+            display: { xs: 'none', sm: 'inline-flex' },
             ...(board?.background && {
               bgcolor: 'rgba(255, 255, 255, 0.25)',
               border: '1px solid rgba(255, 255, 255, 0.6)',
@@ -344,7 +370,7 @@ function BoardBar({ board, onlineUsers = [] }) {
 
         {/* Nút Mở Danh sách Lưu trữ (Archived Items) */}
         <Chip
-          sx={MENU_STYLES}
+          sx={{ ...MENU_STYLES, display: { xs: 'none', sm: 'inline-flex' } }}
           icon={<ArchiveOutlinedIcon />}
           label='Archived'
           clickable
@@ -362,6 +388,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           <Chip
             sx={{
               ...MENU_STYLES,
+              display: { xs: 'none', sm: 'inline-flex' },
               '&:hover': {
                 bgcolor: 'error.main'
               }
@@ -378,6 +405,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           <Chip
             sx={{
               ...MENU_STYLES,
+              display: { xs: 'none', sm: 'inline-flex' },
               '&:hover': {
                 bgcolor: 'error.main'
               }
@@ -388,6 +416,68 @@ function BoardBar({ board, onlineUsers = [] }) {
             onClick={handleLeaveBoard}
           />
         )}
+
+        {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
+        <Tooltip title="More actions">
+          <IconButton
+            ref={moreBtnRef}
+            onClick={(e) => setMoreAnchorEl(e.currentTarget)}
+            aria-label="More board actions"
+            aria-haspopup="menu"
+            sx={{
+              display: { xs: 'inline-flex', sm: 'none' },
+              color: 'white',
+              bgcolor: 'rgba(255, 255, 255, 0.15)',
+              '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
+            }}
+          >
+            <MoreHorizIcon />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          anchorEl={moreAnchorEl}
+          open={isMoreOpen}
+          onClose={() => setMoreAnchorEl(null)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <MenuItem onClick={handleOpenFilterFromMore}>
+            <ListItemIcon>
+              <FilterIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">
+              {hasActiveFilter ? `Filters (${activeFilterCount})` : 'Filters'}
+            </Typography>
+          </MenuItem>
+          <MenuItem onClick={handleOpenBgFromMore}>
+            <ListItemIcon>
+              <WallpaperOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Background</Typography>
+          </MenuItem>
+          <MenuItem onClick={handleOpenArchivedFromMore}>
+            <ListItemIcon>
+              <ArchiveOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">Archived</Typography>
+          </MenuItem>
+          {isOwner && (
+            <MenuItem onClick={() => { setMoreAnchorEl(null); handleCloseBoard() }}>
+              <ListItemIcon>
+                <FolderOffOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              <Typography variant="inherit">Close board</Typography>
+            </MenuItem>
+          )}
+          {isInvitedMember && (
+            <MenuItem onClick={() => { setMoreAnchorEl(null); handleLeaveBoard() }}>
+              <ListItemIcon>
+                <ExitToAppIcon fontSize="small" />
+              </ListItemIcon>
+              <Typography variant="inherit">Leave board</Typography>
+            </MenuItem>
+          )}
+        </Menu>
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -421,7 +511,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         )}
 
         {/* handle invite user into board */}
-        <InviteBoardUser boardId={board?._id} />
+        <InviteBoardUser boardId={board?._id} board={board} />
 
         {/* handle user group */}
         <BoardUserGroup

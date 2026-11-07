@@ -47,7 +47,7 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
         <IconButton
           onClick={handleClick}
           size="small"
-          sx={{ padding: 0 }}
+          sx={{ color: 'inherit' }}
           aria-controls={open ? 'basic-menu-profile' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}

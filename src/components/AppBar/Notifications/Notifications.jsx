@@ -224,19 +224,23 @@ function Notifications() {
   return (
     <Box>
       <Tooltip title="Notifications">
-        <Badge
-          color="error"
-          badgeContent={unreadCount > 0 ? unreadCount : null}
-          max={99}
-          sx={{ cursor: 'pointer' }}
+        <IconButton
           id="basic-button-open-notification"
           aria-controls={open ? 'basic-notification-drop-down' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickNotificationIcon}
+          // Đủ touch target tối thiểu ~44px trên mobile
+          sx={{ color: 'inherit' }}
         >
-          <NotificationsNoneIcon sx={{ color: unreadCount > 0 ? '#f59e0b' : 'white' }} />
-        </Badge>
+          <Badge
+            color="error"
+            badgeContent={unreadCount > 0 ? unreadCount : null}
+            max={99}
+          >
+            <NotificationsNoneIcon sx={{ color: unreadCount > 0 ? '#f59e0b' : 'white' }} />
+          </Badge>
+        </IconButton>
       </Tooltip>
 
       <Menu

@@ -4,6 +4,9 @@ import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import Popover from '@mui/material/Popover'
 import Button from '@mui/material/Button'
+import Avatar from '@mui/material/Avatar'
+import Chip from '@mui/material/Chip'
+import Divider from '@mui/material/Divider'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
@@ -13,7 +16,7 @@ import { inviteUserToBoardAPI } from '~/apis'
 import { useTranslation } from 'react-i18next'
 import { socketIoInstance } from '~/socketClient'
 
-function InviteBoardUser({ boardId }) {
+function InviteBoardUser({ boardId, board }) {
   const { t } = useTranslation()
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
@@ -66,7 +69,7 @@ function InviteBoardUser({ boardId }) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <form onSubmit={handleSubmit(submitInviteUserToBoard)} style={{ width: '320px', maxWidth: 'calc(100vw - 32px)' }}>
+        <form onSubmit={handleSubmit(submitInviteUserToBoard)} style={{ width: '340px', maxWidth: 'calc(100vw - 32px)' }}>
           <Box sx={{ p: '15px 20px 20px 20px', display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography variant="span" sx={{ fontWeight: 'bold', fontSize: '16px' }}>{t('board.inviteUser')}</Typography>
             <Box>
@@ -95,6 +98,41 @@ function InviteBoardUser({ boardId }) {
                 Invite
               </Button>
             </Box>
+
+            {/* Danh sách thành viên hiện tại của bảng */}
+            {(board?.FE_allUsers || []).length > 0 && (
+              <>
+                <Divider />
+                <Box>
+                  <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    {t('board.currentMembers')} ({board.FE_allUsers.length})
+                  </Typography>
+                  <Box sx={{ mt: 1, maxHeight: 200, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 1, pr: 0.5 }}>
+                    {board.FE_allUsers.map((user) => {
+                      const userIsOwner = (board?.ownerIds || []).some(id => id?.toString() === user?._id?.toString())
+                      return (
+                        <Box key={user?._id} sx={{ display: 'flex', alignItems: 'center', gap: 1.25 }}>
+                          <Avatar sx={{ width: 30, height: 30 }} alt={user?.displayName} src={user?.avatar} />
+                          <Box sx={{ minWidth: 0, flex: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+                              <Typography variant="body2" sx={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {user?.displayName || 'User'}
+                              </Typography>
+                              {userIsOwner && (
+                                <Chip size="small" label={t('board.ownerBadge')} sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, bgcolor: 'rgba(0, 82, 204, 0.12)', color: '#0052cc' }} />
+                              )}
+                            </Box>
+                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {user?.email}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )
+                    })}
+                  </Box>
+                </Box>
+              </>
+            )}
           </Box>
         </form>
       </Popover>

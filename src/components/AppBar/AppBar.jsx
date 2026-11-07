@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
 import AppsIcon from '@mui/icons-material/Apps'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import Typography from '@mui/material/Typography'
@@ -68,7 +69,7 @@ function AppBar() {
       overflowX: 'auto',
       paddingX: { xs: 1, sm: 2 },
       bgcolor: activeBoard?.background
-        ? 'rgba(0, 0, 0, 0.35)'
+        ? 'rgba(0, 0, 0, 0.45)'
         : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
       backdropFilter: activeBoard?.background ? 'blur(6px)' : 'none',
       borderBottom: activeBoard?.background
@@ -81,7 +82,12 @@ function AppBar() {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
         <Link to='/boards'>
           <Tooltip title={t('appBar.boardList')}>
-            <AppsIcon sx={{ color: 'white', verticalAlign: 'middle' }} />
+            <IconButton
+              sx={{ color: 'white' }}
+              aria-label={t('appBar.boardList')}
+            >
+              <AppsIcon />
+            </IconButton>
           </Tooltip>
         </Link>
         <Link to='/boards' style={{ textDecoration: 'none' }}>

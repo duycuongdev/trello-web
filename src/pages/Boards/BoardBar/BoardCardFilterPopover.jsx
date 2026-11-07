@@ -323,10 +323,10 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
             borderColor: 'divider'
           }}>
             <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500, fontSize: '0.85rem' }}>
-              Chưa có nhãn nào trên bảng
+              {t('board.filterNoLabels')}
             </Typography>
             <Typography variant="caption" sx={{ color: 'text.disabled', mt: 0.5, display: 'block' }}>
-              Hãy mở thẻ và tạo nhãn để lọc
+              {t('board.filterNoLabelsHint')}
             </Typography>
           </Box>
         ) : (

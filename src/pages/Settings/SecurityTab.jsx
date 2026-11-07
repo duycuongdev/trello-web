@@ -1,15 +1,20 @@
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import PasswordIcon from '@mui/icons-material/Password'
 import LockResetIcon from '@mui/icons-material/LockReset'
 import LockIcon from '@mui/icons-material/Lock'
 import LogoutIcon from '@mui/icons-material/Logout'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 import { FIELD_REQUIRED_MESSAGE, PASSWORD_RULE, PASSWORD_RULE_MESSAGE } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import PasswordStrengthMeter from '~/components/Form/PasswordStrengthMeter'
 import { useForm } from 'react-hook-form'
 import { useConfirm } from 'material-ui-confirm'
 import { toast } from 'react-toastify'
@@ -21,6 +26,7 @@ function SecurityTab() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { register, handleSubmit, watch, formState: { errors } } = useForm()
+  const [showPassword, setShowPassword] = useState(false)
 
   // Ôn lại: https://www.npmjs.com/package/material-ui-confirm
   const confirmChangePassword = useConfirm()
@@ -74,12 +80,25 @@ function SecurityTab() {
               <TextField
                 fullWidth
                 label={t('settings.currentPassword')}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
+                // autoComplete chuẩn giúp trình duyệt không tự điền nhầm (dấu ••• trông như giá trị có sẵn)
+                inputProps={{ autoComplete: 'current-password' }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <PasswordIcon fontSize="small" />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                        aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+                      >
+                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                      </IconButton>
                     </InputAdornment>
                   )
                 }}
@@ -99,8 +118,9 @@ function SecurityTab() {
               <TextField
                 fullWidth
                 label={t('settings.newPassword')}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
+                inputProps={{ autoComplete: 'new-password' }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -118,14 +138,16 @@ function SecurityTab() {
                 error={!!errors['new_password']}
               />
               <FieldErrorAlert errors={errors} fieldName={'new_password'} />
+              <PasswordStrengthMeter password={watch('new_password') || ''} />
             </Box>
 
             <Box>
               <TextField
                 fullWidth
                 label={t('settings.newPasswordConfirmation')}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
+                inputProps={{ autoComplete: 'new-password' }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -136,7 +158,7 @@ function SecurityTab() {
                 {...register('new_password_confirmation', {
                   validate: (value) => {
                     if (value === watch('new_password')) return true
-                    return 'Password confirmation does not match.'
+                    return t('validation.passwordsDoNotMatch')
                   }
                 })}
                 error={!!errors['new_password_confirmation']}

@@ -2,7 +2,9 @@
 import Box from '@mui/material/Box'
 import Column from './Column/Column'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
+import ViewWeekOutlinedIcon from '@mui/icons-material/ViewWeekOutlined'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import TextField from '@mui/material/TextField'
@@ -34,7 +36,7 @@ function ListColumns({ columns = [] }) {
     }
 
     if (newColumnTitle.trim().length < 3) {
-      toast.error('Column title must be at least 3 characters long')
+      toast.error(t('board.columnTitleMinLength'))
       return
     }
 
@@ -75,11 +77,55 @@ function ListColumns({ columns = [] }) {
         width: '100%',
         height: '100%',
         display: 'flex',
+        position: 'relative',
         overflowX: 'auto',
         overflowY: 'hidden',
         // thanh scroll thẳng với list card
         '&::-webkit-scrollbar-track': { m: 2 }
       }}>
+        {/* Empty state: board chưa có cột nào - hướng dẫn tạo cột đầu tiên ngay giữa màn hình */}
+        {(columns || []).length === 0 && !openNewColumnForm && (
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1,
+            textAlign: 'center',
+            bgcolor: 'rgba(0, 0, 0, 0.35)',
+            backdropFilter: 'blur(6px)',
+            border: '1px dashed rgba(255, 255, 255, 0.4)',
+            borderRadius: 3,
+            p: { xs: 3, md: 4 },
+            maxWidth: 400
+          }}>
+            <ViewWeekOutlinedIcon sx={{ fontSize: 48, color: 'rgba(255, 255, 255, 0.9)', mb: 1 }} />
+            <Typography sx={{ color: 'white', fontWeight: 700, fontSize: '1.1rem', mb: 0.5 }}>
+              {t('board.emptyColumnsTitle')}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 2.5 }}>
+              {t('board.emptyColumnsHint')}
+            </Typography>
+            <Button
+              startIcon={<NoteAddIcon />}
+              onClick={toggleOpenNewColumnForm}
+              sx={{
+                bgcolor: 'white',
+                color: '#0747a6',
+                fontWeight: 700,
+                textTransform: 'none',
+                px: 3,
+                py: 1,
+                borderRadius: 2,
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
+                '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.85)' }
+              }}
+            >
+              {t('board.addNewColumn')}
+            </Button>
+          </Box>
+        )}
+
         {(columns || []).map(column => <Column key={column._id} column={column} />)}
 
         {/* add new column */}
@@ -150,7 +196,7 @@ function ListColumns({ columns = [] }) {
                   borderColor: (theme) => theme.palette.success.main,
                   '&:hover': { bgcolor: (theme) => theme.palette.success.main }
                 }}
-              >Add Column</Button>
+              >{t('board.addColumn')}</Button>
               <CloseIcon
                 fontSize='small'
                 sx={{

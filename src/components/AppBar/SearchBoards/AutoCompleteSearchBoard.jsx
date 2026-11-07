@@ -3,7 +3,10 @@ import TextField from '@mui/material/TextField'
 import Autocomplete from '@mui/material/Autocomplete'
 import CircularProgress from '@mui/material/CircularProgress'
 import InputAdornment from '@mui/material/InputAdornment'
+import IconButton from '@mui/material/IconButton'
+import Box from '@mui/material/Box'
 import SearchIcon from '@mui/icons-material/Search'
+import CloseIcon from '@mui/icons-material/Close'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { fetchBoardsAPI } from '~/apis/index'
 import { useDebounceFn } from '~/CustomHooks/useDebounceFn'
@@ -25,6 +28,13 @@ function AutoCompleteSearchBoard() {
   const [boards, setBoards] = useState(null)
   // Sẽ hiện loading khi bắt đầu gọi api fetch boards
   const [loading, setLoading] = useState(false)
+  // Trên mobile: ô tìm kiếm thu gọn thành icon kính lúp, bấm mới mở rộng ra ô nhập
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+
+  // Khi mở rộng ô tìm kiếm trên mobile thì focus ngay vào input
+  useEffect(() => {
+    if (mobileSearchOpen) searchInputRef.current?.focus()
+  }, [mobileSearchOpen])
 
   // Phím tắt bàn phím: bấm phím '/' để focus vào ô tìm kiếm, bấm 'ESC' để hủy focus
   useEffect(() => {
@@ -44,6 +54,8 @@ function AutoCompleteSearchBoard() {
       if (event.key === 'Escape' && document.activeElement === searchInputRef.current) {
         searchInputRef.current?.blur()
         setOpen(false)
+        // Trên mobile thì thu gọn lại thành icon kính lúp
+        setMobileSearchOpen(false)
       }
     }
 
@@ -86,71 +98,99 @@ function AutoCompleteSearchBoard() {
   }
 
   return (
-    <Autocomplete
-      sx={{ width: { xs: 130, sm: 170, md: 220 } }}
-      id="asynchronous-search-board"
-      // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
-      noOptionsText={!boards ? t('appBar.typeToSearchBoard') : t('appBar.noBoardFound')}
+    <>
+      {/* Mobile (xs): icon kính lúp thu gọn - bấm vào mới mở ô tìm kiếm */}
+      <Box sx={{ display: { xs: mobileSearchOpen ? 'none' : 'block', sm: 'none' } }}>
+        <IconButton
+          onClick={() => setMobileSearchOpen(true)}
+          aria-label={t('appBar.searchBoard')}
+          sx={{ color: 'white', width: 44, height: 44, bgcolor: 'rgba(255, 255, 255, 0.12)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.22)' } }}
+        >
+          <SearchIcon />
+        </IconButton>
+      </Box>
 
-      // Cụm này để handle việc đóng mở phần kết quả tìm kiếm
-      open={open}
-      onOpen={() => { setOpen(true) }}
-      onClose={() => { setOpen(false) }}
+      {/* Ô tìm kiếm: luôn render trên sm trở lên, trên xs chỉ hiện khi đã mở */}
+      <Box sx={{ display: { xs: mobileSearchOpen ? 'flex' : 'none', sm: 'flex' }, alignItems: 'center', gap: 0.25 }}>
+        <Autocomplete
+          sx={{ width: { xs: 190, sm: 170, md: 220 } }}
+          id="asynchronous-search-board"
+          // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
+          noOptionsText={!boards ? t('appBar.typeToSearchBoard') : t('appBar.noBoardFound')}
 
-      // getOptionLabel: để thằng Autocomplete nó lấy title của board và hiển thị ra
-      getOptionLabel={(board) => board.title}
+          // Cụm này để handle việc đóng mở phần kết quả tìm kiếm
+          open={open}
+          onOpen={() => { setOpen(true) }}
+          onClose={() => { setOpen(false) }}
 
-      // Options của Autocomplete nó cần đầu vào là 1 Array, mà boards của chúng ta ban đầu cần cho null để làm cái noOptionsText ở trên nên đoạn này cần thêm cái || [] vào
-      options={boards || []}
+          // getOptionLabel: để thằng Autocomplete nó lấy title của board và hiển thị ra
+          getOptionLabel={(board) => board.title}
 
-      // Fix một cái warning của MUI, vì Autocomplete mặc định khi chúng ta chọn giá trị nó sẽ xảy ra sự so sánh object bên dưới, và mặc dù có 2 json objects trông như nhau trong JavaScript nhưng khi compare sẽ ra false. Vậy nên cần compare chuẩn với value dạng Primitive, ví dụ ở đây là dùng String _id thay vì compare toàn bộ cả cái json object board.
-      isOptionEqualToValue={(option, value) => option._id === value._id}
+          // Options của Autocomplete nó cần đầu vào là 1 Array, mà boards của chúng ta ban đầu cần cho null để làm cái noOptionsText ở trên nên đoạn này cần thêm cái || [] vào
+          options={boards || []}
 
-      // Loading thì đơn giản rồi nhé
-      loading={loading}
+          // Fix một cái warning của MUI, vì Autocomplete mặc định khi chúng ta chọn giá trị nó sẽ xảy ra sự so sánh object bên dưới, và mặc dù có 2 json objects trông như nhau trong JavaScript nhưng khi compare sẽ ra false. Vậy nên cần compare chuẩn với value dạng Primitive, ví dụ ở đây là dùng String _id thay vì compare toàn bộ cả cái json object board.
+          isOptionEqualToValue={(option, value) => option._id === value._id}
 
-      // onInputChange sẽ chạy khi gõ nội dung vào thẻ input, cần làm debounce để tránh việc bị spam gọi API
-      onInputChange={debounceSearchBoard}
+          // Loading thì đơn giản rồi nhé
+          loading={loading}
 
-      // onChange của cả cái Autocomplete sẽ chạy khi chúng ta select một cái kết quả (ở đây là board)
-      onChange={handleSelectedBoard}
+          // onInputChange sẽ chạy khi gõ nội dung vào thẻ input, cần làm debounce để tránh việc bị spam gọi API
+          onInputChange={debounceSearchBoard}
 
-      // Render ra cái thẻ input để nhập nội dung tìm kiếm
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          inputRef={searchInputRef}
-          placeholder={t('appBar.typeToSearch')}
-          size="small"
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon sx={{ color: 'white' }} />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <>
-                {loading ? <CircularProgress sx={{ color: 'white' }} size={20} /> : null}
-                {/* Phím tắt / Badge hiển thị trên desktop/tablet */}
-                {params.InputProps.endAdornment}
-              </>
-            )
-          }}
-          sx={{
-            '& label': { color: 'white' },
-            '& input': { color: 'white' },
-            '& label.Mui-focused': { color: 'white' },
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': { borderColor: 'white' },
-              '&:hover fieldset': { borderColor: 'white' },
-              '&.Mui-focused fieldset': { borderColor: 'white' }
-            },
-            '.MuiSvgIcon-root': { color: 'white' }
-          }}
+          // onChange của cả cái Autocomplete sẽ chạy khi chúng ta select một cái kết quả (ở đây là board)
+          onChange={handleSelectedBoard}
+
+          // Render ra cái thẻ input để nhập nội dung tìm kiếm
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              inputRef={searchInputRef}
+              placeholder={t('appBar.typeToSearch')}
+              size="small"
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ color: 'white' }} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <>
+                    {loading ? <CircularProgress sx={{ color: 'white' }} size={20} /> : null}
+                    {/* Phím tắt / Badge hiển thị trên desktop/tablet */}
+                    {params.InputProps.endAdornment}
+                  </>
+                )
+              }}
+              sx={{
+                '& label': { color: 'white' },
+                '& input': { color: 'white' },
+                '& label.Mui-focused': { color: 'white' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: 'white' },
+                  '&:hover fieldset': { borderColor: 'white' },
+                  '&.Mui-focused fieldset': { borderColor: 'white' }
+                },
+                '.MuiSvgIcon-root': { color: 'white' }
+              }}
+            />
+          )}
         />
-      )}
-    />
+
+        {/* Nút thu gọn lại thành icon kính lúp (chỉ hiện trên mobile khi đang mở) */}
+        {mobileSearchOpen && (
+          <IconButton
+            onClick={() => setMobileSearchOpen(false)}
+            aria-label="close"
+            size="small"
+            sx={{ color: 'white', display: { sm: 'none' } }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
+    </>
   )
 }
 

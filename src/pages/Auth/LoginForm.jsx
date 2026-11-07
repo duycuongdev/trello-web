@@ -1,4 +1,5 @@
 import { Link, useSearchParams, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -7,9 +8,13 @@ import MuiCard from '@mui/material/Card'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
 import Zoom from '@mui/material/Zoom'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useForm } from 'react-hook-form'
 import {
   EMAIL_RULE,  PASSWORD_RULE
@@ -26,6 +31,7 @@ function LoginForm() {
   const navigate = useNavigate()
 
   const [searchParams] = useSearchParams()
+  const [showPassword, setShowPassword] = useState(false)
   const registeredEmail = searchParams.get('registeredEmail')
   const verifiedEmail = searchParams.get('verifiedEmail')
   const resetSuccessEmail = searchParams.get('resetSuccess')
@@ -130,6 +136,7 @@ function LoginForm() {
                 label={t('auth.email')}
                 type="text"
                 variant="outlined"
+                inputProps={{ autoComplete: 'email' }}
                 error={!!errors.email}
                 {...register('email', {
                   required: t('validation.required'),
@@ -146,9 +153,23 @@ function LoginForm() {
               <TextField
                 fullWidth
                 label={t('auth.password')}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 variant="outlined"
+                inputProps={{ autoComplete: 'current-password' }}
                 error={!!errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                        aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+                      >
+                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                      </IconButton>
+                    </InputAdornment>
+                  )
+                }}
                 {...register('password', {
                   required: t('validation.required'),
                   pattern: {
