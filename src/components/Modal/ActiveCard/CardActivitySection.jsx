@@ -66,7 +66,7 @@ function CardActivitySection({
     if (onUpdateCardComment) {
       onUpdateCardComment(commentId, trimmed)
         .then(() => {
-          toast.success('Comment updated successfully!')
+          // Không toast success - bình luận mới hiển thị ngay trong activity
           handleCancelEdit()
         })
         .catch(() => {})
@@ -77,17 +77,15 @@ function CardActivitySection({
     const commentId = comment._id || comment.commentedAt?.toString()
 
     confirmDeleteComment({
-      title: 'Delete Comment?',
-      description: 'Are you sure you want to delete this comment? This action cannot be undone.',
-      confirmationText: 'Delete',
-      cancellationText: 'Cancel'
+      title: t('card.deleteCommentTitle'),
+      description: t('card.deleteCommentDesc'),
+      confirmationText: t('common.delete'),
+      cancellationText: t('common.cancel')
     })
       .then(() => {
         if (onDeleteCardComment) {
           onDeleteCardComment(commentId)
-            .then(() => {
-              toast.success('Comment deleted successfully!')
-            })
+            // Không toast success - bình luận biến mất khỏi activity ngay lập tức
             .catch(() => {})
         }
       })

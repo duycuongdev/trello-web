@@ -67,13 +67,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                   zIndex: '99999 !important'
                 },
                 '.Toastify__toast': {
-                  borderRadius: '12px !important',
-                  minHeight: '44px !important',
-                  padding: '8px 14px !important',
-                  fontSize: '13.5px !important',
+                  borderRadius: '10px !important',
+                  minHeight: '38px !important',
+                  padding: '6px 12px !important',
+                  fontSize: '13px !important',
                   fontWeight: '500 !important',
                   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2) !important',
-                  marginBottom: '8px !important'
+                  marginBottom: '6px !important'
                 },
                 '.Toastify__toast-body': {
                   padding: '0 !important',

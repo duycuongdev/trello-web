@@ -38,14 +38,9 @@ function AccountTab() {
     // Nếu không có sự thay đổi gì về displayname thì không làm gì cả
     if (displayName === currentUser?.displayName) return
 
-    // Gọi API...
+    // Gọi API... (chỉ toast pending; thành công thì UI tự hiển thị tên mới, lỗi do interceptor báo)
     toast.promise(dispatch(updateUserAPI({ displayName })), {
-      pending: 'Updating...'
-    }).then((res) => {
-      // Nếu update thành công thì điều hướng về trang dashboard
-      if (!res.error) {
-        toast.success(t('card.updateSuccess'))
-      }
+      pending: t('settings.updating')
     })
   }
 
@@ -67,14 +62,10 @@ function AccountTab() {
     //   console.log('reqData Value: ', value)
     // }
 
-    // Gọi API...
+    // Gọi API... (toast pending vì upload có thể chậm; thành công thì UI tự hiển thị avatar mới)
     toast.promise(dispatch(updateUserAPI(reqData)), {
-      pending: 'Updating...'
-    }).then((res) => {
-      // Nếu update thành công thì điều hướng về trang dashboard
-      if (!res.error) {
-        toast.success(t('card.updateSuccess'))
-      }
+      pending: t('settings.updating')
+    }).then(() => {
       // Lưu ý, dù có lỗi hoặc thành công thì cũng phải clear giá trị của file input, nếu không thì sẽ không thể chọn cùng một file liên tiếp được
       e.target.value = ''
     })

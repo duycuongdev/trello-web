@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import useMediaQuery from '@mui/material/useMediaQuery'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Badge from '@mui/material/Badge'
@@ -49,8 +48,6 @@ const MENU_STYLES = {
 function BoardBar({ board, onlineUsers = [] }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
-  // Mobile: ẩn icon dashboard trong chip tên board để chữ thẳng với viền cột đầu tiên
-  const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const confirm = useConfirm()
   const navigate = useNavigate()
   const currentUser = useSelector(selectCurrentUser)
@@ -168,9 +165,7 @@ function BoardBar({ board, onlineUsers = [] }) {
     })
 
     updateBoardDetailsAPI(board._id, { title: updatedTitle })
-      .then(() => {
-        toast.success(t('board.boardTitleUpdated'))
-      })
+      // Không toast success - giao diện đã hiển thị tiêu đề mới ngay lập tức
       .catch(() => {
         dispatch(updateCurrentActiveBoard(board))
         toast.error(t('board.boardTitleUpdateFailed'))
@@ -189,9 +184,7 @@ function BoardBar({ board, onlineUsers = [] }) {
     })
 
     updateBoardDetailsAPI(board._id, { background: newBackground })
-      .then(() => {
-        toast.success(t('board.boardBackgroundUpdated'))
-      })
+      // Không toast success - giao diện đã hiển thị nền mới ngay lập tức
       .catch(() => {
         dispatch(updateCurrentActiveBoard(board))
         toast.error(t('board.boardBackgroundUpdateFailed'))
@@ -274,7 +267,7 @@ function BoardBar({ board, onlineUsers = [] }) {
                   bgcolor: 'rgba(255, 255, 255, 0.25)'
                 }
               }}
-              icon={!isXs ? <DashboardIcon sx={{ color: 'white !important', fontSize: '18px' }} /> : undefined}
+              icon={<DashboardIcon sx={{ color: 'white !important', fontSize: '18px' }} />}
               label={board?.title || 'Untitled Board'}
               clickable
               onClick={() => {

@@ -424,7 +424,7 @@ function ActiveCard() {
     dispatch(fetchInvitationsAPI())
     if (incomingMemberInfor?.userId === currentUser._id) {
       if (incomingMemberInfor.action === CARD_MEMBER_ACTION.ADD) {
-        toast.success(t('card.joinedCard'))
+        // Không toast success - user thấy mình xuất hiện trong phần Members ngay lập tức
       } else {
         toast.info('Left card successfully!')
       }
