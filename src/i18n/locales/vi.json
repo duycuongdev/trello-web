@@ -330,7 +330,7 @@
     "title": "Thông báo",
     "markAllAsRead": "Đánh dấu tất cả là đã đọc",
     "allCaughtUp": "Bạn đã xem hết thông báo!",
-    "emptyDesc": "Không có hạn chót thẻ hay lời mời bảng nào đang hoạt động lúc này.",
+    "emptyDesc": "Chưa có hạn chót hay lời mời bảng nào.",
     "unreadCount": "{{count}} mới",
     "taskOverdue": "Thẻ quá hạn",
     "taskDueSoon": "Sắp đến hạn",
@@ -363,7 +363,7 @@
     "leaveBoard": "Rời bảng",
     "more": "Hành động khác",
     "leaveBoardTitle": "Rời bảng?",
-    "leaveBoardDesc": "Bạn có chắc muốn rời \"{{title}}\"? Bạn sẽ mất quyền truy cập bảng này trừ khi được mời lại."
+    "leaveBoardDesc": "Bạn có chắc muốn rời khỏi \"{{title}}\"? Bạn sẽ mất quyền truy cập bảng này trừ khi được mời lại."
   },
   "background": {
     "photos": "Ảnh",

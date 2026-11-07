@@ -228,7 +228,7 @@ function BoardBar({ board, onlineUsers = [] }) {
       justifyContent: 'space-between',
       gap: 2,
       overflow: 'auto',
-      paddingX: 2,
+      paddingX: { xs: 1, sm: 2 },
       bgcolor: board?.background
         ? 'rgba(0, 0, 0, 0.55)'
         : (theme) => (theme.palette.mode === 'dark' ? '#1e293b' : '#0747a6'),

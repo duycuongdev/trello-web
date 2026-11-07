@@ -302,7 +302,7 @@
     "checklist": "Checklist"
   },
   "column": {
-    "deleteColumnTitle": "Delete Column ?",
+    "deleteColumnTitle": "Delete column?",
     "deleteColumnDesc": "Are you sure you want to permanently delete this column? All cards in it will be permanently removed. This action cannot be undone.",
     "deleteThisColumn": "Delete this column",
     "archiveThisColumn": "Archive this column",
@@ -348,7 +348,7 @@
     "rejected": "Rejected"
   },
   "boardBar": {
-    "closeBoardTitle": "Close Board?",
+    "closeBoardTitle": "Close board?",
     "closeBoardDesc": "Are you sure you want to close this board? You can reopen it later from Closed boards.",
     "close": "Close",
     "boardClosed": "Board closed!",
@@ -362,7 +362,7 @@
     "closeBoard": "Close board",
     "leaveBoard": "Leave board",
     "more": "More actions",
-    "leaveBoardTitle": "Leave Board?",
+    "leaveBoardTitle": "Leave board?",
     "leaveBoardDesc": "Are you sure you want to leave \"{{title}}\"? You will lose access to this board unless invited again."
   },
   "background": {

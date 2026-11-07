@@ -305,6 +305,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
           onClick={(e) => { e.stopPropagation(); openDetailPopover('date', scope, checklistId, id, dueDate, e.currentTarget) }}
           sx={{
             height: 22,
+            flexShrink: 0,
             fontSize: '0.72rem',
             fontWeight: 600,
             cursor: 'pointer',
@@ -342,6 +343,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
           onClick={(e) => { e.stopPropagation(); openDetailPopover('members', scope, checklistId, id, null, e.currentTarget) }}
           sx={{
             height: 22,
+            flexShrink: 0,
             cursor: 'pointer',
             ...(users.length === 0
               ? { bgcolor: 'transparent', border: '1px dashed', borderColor: 'divider', color: 'text.secondary', '& .MuiChip-icon': { color: 'text.secondary' } }
@@ -440,13 +442,13 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
         return (
           <Box key={checklist._id}>
             {/* Header Checklist */}
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
-                <TaskAltOutlinedIcon sx={{ color: '#16a34a' }} />
-                <Typography sx={{ fontWeight: '600', fontSize: '18px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1, mb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0, flex: '1 1 auto' }}>
+                <TaskAltOutlinedIcon sx={{ color: '#16a34a', flexShrink: 0 }} />
+                <Typography sx={{ fontWeight: '600', fontSize: '18px', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {checklist.title}
                 </Typography>
-                {/* Hạn chót + thành viên ở CẤP CHECKLIST (mỗi chip mở popover riêng) */}
+                {/* Hạn chót + thành viên ở CẤP CHECKLIST - luôn cùng một hàng với tiêu đề */}
                 {renderDueChip('checklist', checklist._id, checklist._id, checklist.dueDate, isComplete)}
                 {renderMemberChip('checklist', checklist._id, checklist._id, checklist.memberIds)}
               </Box>
@@ -697,7 +699,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                         <Checkbox
                           checked={Boolean(item.isDone)}
                           size="small"
-                          sx={{ p: 0.25, mt: '2px' }}
+                          sx={{ p: 0.25, mt: '-1px', flexShrink: 0 }}
                           onClick={(e) => {
                             e.stopPropagation()
                             handleToggleItem(checklist._id, item._id)
