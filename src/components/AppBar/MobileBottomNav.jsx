@@ -36,9 +36,9 @@ function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
       height: 'calc(60px + env(safe-area-inset-bottom, 0px))',
       paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       bgcolor: onBoardWithImage
-        ? 'rgba(0, 0, 0, 0.5)'
+        ? 'rgba(0, 0, 0, 0.55)'
         : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
-      backdropFilter: onBoardWithImage ? 'blur(10px)' : 'none',
+      backdropFilter: onBoardWithImage ? 'blur(16px)' : 'none',
       borderTop: '1px solid rgba(255, 255, 255, 0.15)'
     }}>
       <TabLink

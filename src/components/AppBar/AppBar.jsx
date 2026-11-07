@@ -73,9 +73,10 @@ function AppBar() {
         overflowX: 'auto',
         paddingX: { xs: 1, sm: 2 },
         bgcolor: activeBoard?.background
-          ? 'rgba(0, 0, 0, 0.45)'
+          ? 'rgba(0, 0, 0, 0.6)'
           : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
-        backdropFilter: activeBoard?.background ? 'blur(6px)' : 'none',
+        // Kính mờ đậm đủ để chữ trắng luôn đọc được kể cả khi ảnh nền có vùng gần trắng (bầu trời)
+        backdropFilter: activeBoard?.background ? 'blur(16px)' : 'none',
         borderBottom: activeBoard?.background
           ? '1px solid rgba(255, 255, 255, 0.15)'
           : (theme) => (theme.palette.mode === 'dark' ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.08)'),

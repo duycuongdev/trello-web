@@ -233,9 +233,9 @@ function BoardBar({ board, onlineUsers = [] }) {
       overflow: 'auto',
       paddingX: 2,
       bgcolor: board?.background
-        ? 'rgba(0, 0, 0, 0.4)'
+        ? 'rgba(0, 0, 0, 0.55)'
         : (theme) => (theme.palette.mode === 'dark' ? '#1e293b' : '#0747a6'),
-      backdropFilter: board?.background ? 'blur(6px)' : 'none',
+      backdropFilter: board?.background ? 'blur(16px)' : 'none',
       borderBottom: board?.background ? '1px solid rgba(255, 255, 255, 0.15)' : 'none',
       transition: 'background 0.3s ease',
       // thanh scroll thẳng với list card

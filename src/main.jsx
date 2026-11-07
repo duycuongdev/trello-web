@@ -52,6 +52,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             }}>
               <GlobalStyles styles={{
                 a: { textDecoration: 'none' },
+                // iOS Safari/PWA tự zoom cả trang khi focus vào input có font-size < 16px
+                // và trong PWA standalone nó không tự reset -> ép 16px trên mobile
+                '@media (max-width: 896px)': {
+                  'input, textarea, select': { fontSize: '16px !important' }
+                },
                 // Tinh chỉnh Toast thông báo siêu nhỏ gọn (Compact Pill), chuẩn đẹp trên cả Mobile và Desktop
                 '.Toastify__toast-container': {
                   width: 'min(92vw, 380px) !important',
