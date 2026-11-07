@@ -29,6 +29,9 @@ function AppBar() {
   // Mobile: khi đang ở trong chi tiết board thì ẩn AppBar (BoardBar đã có nút quay lại)
   // để chỉ còn 1 tầng header như app Trello thật. Desktop giữ nguyên.
   const isBoardDetail = /^\/boards\/[^/]+/.test(location.pathname)
+  // Kính mờ chỉ áp dụng KHI ĐANG ở board chi tiết có ảnh nền - ngoài ra dùng màu mặc định
+  // (tránh kéo style của board cũ sang trang danh sách bảng)
+  const hasImageBg = isBoardDetail && Boolean(activeBoard?.background)
 
   // Tự động bật Tour giới thiệu tính năng khi người dùng đăng nhập lần đầu
   useEffect(() => {
@@ -77,12 +80,12 @@ function AppBar() {
         gap: { xs: 1, sm: 2 },
         overflowX: 'auto',
         paddingX: 2,
-        bgcolor: activeBoard?.background
+        bgcolor: hasImageBg
           ? 'rgba(0, 0, 0, 0.6)'
           : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
         // Kính mờ đậm đủ để chữ trắng luôn đọc được kể cả khi ảnh nền có vùng gần trắng (bầu trời)
-        backdropFilter: activeBoard?.background ? 'blur(16px)' : 'none',
-        borderBottom: activeBoard?.background
+        backdropFilter: hasImageBg ? 'blur(16px)' : 'none',
+        borderBottom: hasImageBg
           ? '1px solid rgba(255, 255, 255, 0.15)'
           : (theme) => (theme.palette.mode === 'dark' ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.08)'),
         transition: 'background 0.3s ease, border-color 0.3s ease',

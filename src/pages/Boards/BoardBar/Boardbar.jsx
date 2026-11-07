@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Badge from '@mui/material/Badge'
@@ -48,6 +49,8 @@ const MENU_STYLES = {
 function BoardBar({ board, onlineUsers = [] }) {
   const { t } = useTranslation()
   const dispatch = useDispatch()
+  // Mobile: ẩn icon dashboard trong chip tên board để chữ thẳng với viền cột đầu tiên
+  const isXs = useMediaQuery((theme) => theme.breakpoints.down('sm'))
   const confirm = useConfirm()
   const navigate = useNavigate()
   const currentUser = useSelector(selectCurrentUser)
@@ -255,9 +258,11 @@ function BoardBar({ board, onlineUsers = [] }) {
                 fontSize: '14px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                // Tên board chiếm toàn bộ chỗ còn lại (sau cụm icon mobile) - dài quá thì ellipsis, bấm vào để xem/sửa
+                // Tên board chiếm toàn bộ chỗ còn lại - dài quá thì ellipsis, bấm vào để xem/sửa
                 flex: '1 1 auto',
                 minWidth: 0,
+                // Mobile: giảm đệm để chữ thẳng với viền cột đầu tiên
+                px: { xs: 1.25, sm: '5px' },
                 '& .MuiChip-label': {
                   display: 'block',
                   overflow: 'hidden',
@@ -269,7 +274,7 @@ function BoardBar({ board, onlineUsers = [] }) {
                   bgcolor: 'rgba(255, 255, 255, 0.25)'
                 }
               }}
-              icon={<DashboardIcon sx={{ color: 'white !important', fontSize: '18px' }} />}
+              icon={!isXs ? <DashboardIcon sx={{ color: 'white !important', fontSize: '18px' }} /> : undefined}
               label={board?.title || 'Untitled Board'}
               clickable
               onClick={() => {

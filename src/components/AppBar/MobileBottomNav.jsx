@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
@@ -16,8 +16,10 @@ import Profile from './Menus/Profile'
  */
 function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
   const { t } = useTranslation()
+  const location = useLocation()
   const activeBoard = useSelector(selectCurrentActiveBoard)
-  const onBoardWithImage = Boolean(activeBoard?.background)
+  // Kính mờ chỉ khi đang ở board chi tiết có ảnh nền (không kéo sang trang danh sách)
+  const onBoardWithImage = /^\/boards\/[^/]+/.test(location.pathname) && Boolean(activeBoard?.background)
 
   return (
     <Box sx={{

@@ -288,12 +288,14 @@ function Boards() {
                         }
                       }}
                     >
-                      <Box sx={{
-                        height: '50px',
-                        backgroundColor: b.background?.startsWith('http') ? 'transparent' : (b.background || randomColor({ seed: b._id })),
-                        background: b.background?.startsWith('http') ? `url("${b.background}") center/cover no-repeat` : undefined,
-                        flexShrink: 0
-                      }} />
+                    <Box sx={{
+                      height: '50px',
+                      // Dùng shorthand `background` để hỗ trợ cả ảnh, gradient và màu đặc
+                      background: b.background?.startsWith('http')
+                        ? `url("${b.background}") center/cover no-repeat`
+                        : (b.background || randomColor({ seed: b._id })),
+                      flexShrink: 0
+                    }} />
 
                       <CardContent sx={{
                         p: 1.5,

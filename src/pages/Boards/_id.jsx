@@ -504,10 +504,13 @@ function Board() {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        // Màu nền dự phòng khi chưa có ảnh (ảnh vẽ bằng layer riêng bên dưới)
-        bgcolor: board?.background?.startsWith('http')
+        // Gradient/màu đặc: áp trực tiếp bằng shorthand `background` (bgcolor = background-color
+        // sẽ INVALID với chuỗi linear-gradient dài -> gradient không bao giờ được áp dụng).
+        // Ảnh http: vẽ bằng layer fixed riêng bên dưới, Container chỉ giữ màu dự phòng.
+        background: board?.background?.startsWith('http')
           ? (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc')
-          : (board?.background || ((theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc')))
+          : (board?.background || ((theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'))),
+        transition: 'background 0.3s ease'
       }}
     >
       {/* Ảnh nền board vẽ bằng layer position:fixed riêng.
