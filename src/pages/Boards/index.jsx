@@ -17,6 +17,7 @@ import CardContent from '@mui/material/CardContent'
 import Pagination from '@mui/material/Pagination'
 import PaginationItem from '@mui/material/PaginationItem'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import randomColor from 'randomcolor'
 import SidebarCreateBoardModal, { CreateBoardModal } from './create'
 import { styled } from '@mui/material/styles'
@@ -246,102 +247,114 @@ function Boards() {
                 },
                 gap: 2.5
               }}>
-                {boards.map(b => (
-                  <Card
+                {boards.map((b, index) => (
+                  <motion.div
                     key={b._id}
-                    onClick={() => navigate(`/boards/${b._id}/${b.slug || slugify(b.title)}`)}
-                    sx={{
-                      cursor: 'pointer',
-                      width: '100%',
-                      height: '140px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      borderRadius: '10px',
-                      overflow: 'hidden',
-                      bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
-                      border: '1px solid',
-                      borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
-                      boxShadow: (theme) => theme.palette.mode === 'dark' ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 6px rgba(0,0,0,0.04)',
-                      transition: 'all 0.2s ease',
-                      '&:hover': {
-                        transform: 'translateY(-3px)',
-                        borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0, 82, 204, 0.35)',
-                        boxShadow: (theme) => theme.palette.mode === 'dark' ? '0 8px 20px rgba(0,0,0,0.5)' : '0 8px 20px rgba(0,0,0,0.1)'
-                      }
-                    }}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.4), ease: 'easeOut' }}
                   >
-                    <Box sx={{
-                      height: '50px',
-                      backgroundColor: b.background?.startsWith('http') ? 'transparent' : (b.background || randomColor({ seed: b._id })),
-                      background: b.background?.startsWith('http') ? `url("${b.background}") center/cover no-repeat` : undefined,
-                      flexShrink: 0
-                    }} />
+                    <Card
+                      onClick={() => navigate(`/boards/${b._id}/${b.slug || slugify(b.title)}`)}
+                      sx={{
+                        cursor: 'pointer',
+                        width: '100%',
+                        height: '140px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
+                        border: '1px solid',
+                        borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+                        boxShadow: (theme) => theme.palette.mode === 'dark' ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 6px rgba(0,0,0,0.04)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          transform: 'translateY(-3px)',
+                          borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0, 82, 204, 0.35)',
+                          boxShadow: (theme) => theme.palette.mode === 'dark' ? '0 8px 20px rgba(0,0,0,0.5)' : '0 8px 20px rgba(0,0,0,0.1)'
+                        }
+                      }}
+                    >
+                      <Box sx={{
+                        height: '50px',
+                        backgroundColor: b.background?.startsWith('http') ? 'transparent' : (b.background || randomColor({ seed: b._id })),
+                        background: b.background?.startsWith('http') ? `url("${b.background}") center/cover no-repeat` : undefined,
+                        flexShrink: 0
+                      }} />
 
-                    <CardContent sx={{
-                      p: 1.5,
-                      flex: 1,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      '&:last-child': { pb: 1.5 }
-                    }}>
-                      <Typography
-                        variant="subtitle1"
-                        component="div"
-                        sx={{
-                          fontWeight: 600,
-                          overflow: 'hidden',
-                          whiteSpace: 'nowrap',
-                          textOverflow: 'ellipsis',
-                          lineHeight: 1.3
-                        }}
-                      >
-                        {b.title}
-                      </Typography>
+                      <CardContent sx={{
+                        p: 1.5,
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        '&:last-child': { pb: 1.5 }
+                      }}>
+                        <Typography
+                          variant="subtitle1"
+                          component="div"
+                          sx={{
+                            fontWeight: 600,
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                            lineHeight: 1.3
+                          }}
+                        >
+                          {b.title}
+                        </Typography>
 
-                      {isClosedView ? (
-                        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', pt: 0.8, borderTop: '1px solid', borderColor: 'divider' }}>
-                          <Button
-                            size="small"
-                            variant="outlined"
-                            startIcon={<UndoIcon fontSize="small" />}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleReopenBoard(b._id)
-                            }}
-                            sx={{ textTransform: 'none', fontSize: '11px', py: 0.2, px: 0.8 }}
-                          >
-                            {t('boards.reopen')}
-                          </Button>
-                          <Button
-                            size="small"
-                            color="error"
-                            variant="outlined"
-                            startIcon={<DeleteOutlineIcon fontSize="small" />}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              handleDeleteBoard(b)
-                            }}
-                            sx={{ textTransform: 'none', fontSize: '11px', py: 0.2, px: 0.8 }}
-                          >
-                            {t('boards.delete')}
-                          </Button>
-                        </Box>
-                      ) : (
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 0.8, borderTop: '1px solid', borderColor: 'divider' }}>
-                          <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'capitalize', fontSize: '11px' }}>
-                            {t('boards.workspace')}
-                          </Typography>
-                        </Box>
-                      )}
-                    </CardContent>
-                  </Card>
+                        {isClosedView ? (
+                          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', pt: 0.8, borderTop: '1px solid', borderColor: 'divider' }}>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              startIcon={<UndoIcon fontSize="small" />}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleReopenBoard(b._id)
+                              }}
+                              sx={{ textTransform: 'none', fontSize: '11px', py: 0.2, px: 0.8 }}
+                            >
+                              {t('boards.reopen')}
+                            </Button>
+                            <Button
+                              size="small"
+                              color="error"
+                              variant="outlined"
+                              startIcon={<DeleteOutlineIcon fontSize="small" />}
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                handleDeleteBoard(b)
+                              }}
+                              sx={{ textTransform: 'none', fontSize: '11px', py: 0.2, px: 0.8 }}
+                            >
+                              {t('boards.delete')}
+                            </Button>
+                          </Box>
+                        ) : (
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 0.8, borderTop: '1px solid', borderColor: 'divider' }}>
+                            <Typography variant="caption" color="text.secondary" sx={{ textTransform: 'capitalize', fontSize: '11px' }}>
+                              {t('boards.workspace')}
+                            </Typography>
+                          </Box>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 ))}
 
                 {/* Ô "+ Create new board" ngay trong lưới - người dùng Trello quen với cách này */}
                 {!isClosedView && (
-                  <CreateBoardTile onClick={() => setOpenCreateBoardModal(true)} />
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: Math.min(boards.length * 0.04, 0.4), ease: 'easeOut' }}
+                  >
+                    <CreateBoardTile onClick={() => setOpenCreateBoardModal(true)} />
+                  </motion.div>
                 )}
               </Box>
             )}

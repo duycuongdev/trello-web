@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Board from '~/pages/Boards/_id'
 import NotFound from '~/pages/404/NotFound'
 import Auth from '~/pages/Auth/Auth'
@@ -23,6 +24,23 @@ const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to="/login" replace={true} />
   return <Outlet />
 }
+
+/**
+ * PageFade: hiệu ứng fade + trượt nhẹ lên khi mỗi trang được mount (route change).
+ * Dùng mount-animation thay cho AnimatePresence mode="wait" để tránh case kẹt
+ * khi điều hướng client-side giữa các route (framer-motion v14 + react-router v6).
+ * Tự động tắt khi người dùng bật Reduce Motion (MotionConfig ở main.jsx).
+ */
+const PageFade = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.22, ease: 'easeOut' }}
+    style={{ minHeight: '100vh' }}
+  >
+    {children}
+  </motion.div>
+)
 
 function App() {
   const dispatch = useDispatch()
@@ -60,32 +78,32 @@ function App() {
   return (
     <Routes>
       {/* Landing Page: khách chưa đăng nhập xem trang giới thiệu; đã đăng nhập tự chuyển vào /boards */}
-      <Route path='/' element={currentUser ? <Navigate to='/boards/' replace={true} /> : <Home />} />
-      <Route path='/home' element={<Home />} />
+      <Route path='/' element={currentUser ? <Navigate to='/boards/' replace={true} /> : <PageFade><Home /></PageFade>} />
+      <Route path='/home' element={<PageFade><Home /></PageFade>} />
 
       {/* Protected Routes (Hiểu đơn giản trong dự án của chúng ta là những route chỉ cho truy cập sau khi đã login) */}
       <Route element={<ProtectedRoute user={currentUser} />}>
         {/* <Outlet /> của react-router-dom sẽ chạy vào các child route trong này */}
 
         {/* board details route */}
-        <Route path='boards/:boardId' element={<Board />} />
-        <Route path='boards/:boardId/:slug' element={<Board />} />
-        <Route path='boards/' element={<Boards />} />
+        <Route path='boards/:boardId' element={<PageFade><Board /></PageFade>} />
+        <Route path='boards/:boardId/:slug' element={<PageFade><Board /></PageFade>} />
+        <Route path='boards/' element={<PageFade><Boards /></PageFade>} />
 
         {/* User Settings */}
-        <Route path='settings/account' element={<Settings />} />
-        <Route path='settings/security' element={<Settings />} />
+        <Route path='settings/account' element={<PageFade><Settings /></PageFade>} />
+        <Route path='settings/security' element={<PageFade><Settings /></PageFade>} />
       </Route>
 
       {/* Authentication */}
-      <Route path='login' element={<Auth />} />
-      <Route path='register' element={<Auth />} />
-      <Route path='/account/verification' element={<AccountVerification />} />
-      <Route path='/forgot-password' element={<ForgotPassword />} />
-      <Route path='/reset-password' element={<ResetPassword />} />
+      <Route path='login' element={<PageFade><Auth /></PageFade>} />
+      <Route path='register' element={<PageFade><Auth /></PageFade>} />
+      <Route path='/account/verification' element={<PageFade><AccountVerification /></PageFade>} />
+      <Route path='/forgot-password' element={<PageFade><ForgotPassword /></PageFade>} />
+      <Route path='/reset-password' element={<PageFade><ResetPassword /></PageFade>} />
 
       {/* 404 route */}
-      <Route path='*' element={<NotFound />} />
+      <Route path='*' element={<PageFade><NotFound /></PageFade>} />
     </Routes>
   )
 }

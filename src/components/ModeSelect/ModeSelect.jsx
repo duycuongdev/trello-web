@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useColorScheme } from '@mui/material/styles'
 import { useTranslation } from 'react-i18next'
+import { AnimatePresence, motion } from 'framer-motion'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -64,7 +65,18 @@ function ModeSelect({ variant = 'appbar' }) {
             })
           }}
         >
-          <ModeIcon fontSize="small" sx={{ color: iconColor }} />
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={mode}
+              initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              style={{ display: 'inline-flex', lineHeight: 0 }}
+            >
+              <ModeIcon fontSize="small" sx={{ color: iconColor }} />
+            </motion.span>
+          </AnimatePresence>
         </IconButton>
       </Tooltip>
       <Menu

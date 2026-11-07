@@ -25,6 +25,7 @@ const persistor = persistStore(store)
 // kỹ thuật Inject store vào authorizeAxios.js để sử dụng biến store trong file authorizeAxios.js
 import { injectStore } from '~/utils/authorizeAxios'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { MotionConfig } from 'framer-motion'
 import { GOOGLE_CLIENT_ID } from '~/utils/constants'
 injectStore(store)
 
@@ -76,7 +77,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                 }
               }} />
               <CssBaseline />
-              <App />
+              {/* reducedMotion="user": tự tắt animation khi người dùng bật Reduce Motion trong hệ điều hành */}
+              <MotionConfig reducedMotion="user">
+                <App />
+              </MotionConfig>
               <ToastContainer
                 position='top-center'
                 autoClose={4000}

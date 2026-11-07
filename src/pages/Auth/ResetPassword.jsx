@@ -6,7 +6,7 @@ import MuiCard from '@mui/material/Card'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import Zoom from '@mui/material/Zoom'
+import CardEntrance from '~/components/Motion/CardEntrance'
 import Alert from '@mui/material/Alert'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
@@ -48,7 +48,7 @@ function ResetPassword() {
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
-      <Zoom in={true} style={{ transitionDelay: '150ms' }}>
+      <CardEntrance delay={0.1}>
         <MuiCard sx={{
           width: '100%',
           maxWidth: 420,
@@ -149,7 +149,7 @@ function ResetPassword() {
             </Typography>
           </Box>
         </MuiCard>
-      </Zoom>
+      </CardEntrance>
     </Box>
   )
 }

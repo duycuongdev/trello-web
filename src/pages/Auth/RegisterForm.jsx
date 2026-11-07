@@ -9,7 +9,7 @@ import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
-import Zoom from '@mui/material/Zoom'
+import CardEntrance from '~/components/Motion/CardEntrance'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import MarkEmailReadOutlinedIcon from '@mui/icons-material/MarkEmailReadOutlined'
@@ -111,7 +111,7 @@ function RegisterForm() {
 
     return (
       <Box sx={{ width: '100%', maxWidth: 440 }}>
-        <Zoom in={true} style={{ transitionDelay: '150ms' }}>
+        <CardEntrance delay={0.1}>
           <MuiCard sx={{
             width: '100%',
             borderRadius: 3.5,
@@ -218,14 +218,14 @@ function RegisterForm() {
               </Button>
             </Box>
           </MuiCard>
-        </Zoom>
+        </CardEntrance>
       </Box>
     )
   }
 
   return (
     <form onSubmit={handleSubmit(submitRegister)} style={{ width: '100%', maxWidth: 420 }}>
-      <Zoom in={true} style={{ transitionDelay: '150ms' }}>
+      <CardEntrance delay={0.1}>
         <MuiCard sx={{
           width: '100%',
           borderRadius: 3.5,
@@ -394,7 +394,7 @@ function RegisterForm() {
             </Typography>
           </Box>
         </MuiCard>
-      </Zoom>
+      </CardEntrance>
     </form>
   )
 }

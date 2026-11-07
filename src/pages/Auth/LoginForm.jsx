@@ -10,7 +10,7 @@ import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
 import InputAdornment from '@mui/material/InputAdornment'
-import Zoom from '@mui/material/Zoom'
+import CardEntrance from '~/components/Motion/CardEntrance'
 import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import Visibility from '@mui/icons-material/Visibility'
@@ -66,7 +66,7 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(submitLogIn)} style={{ width: '100%', maxWidth: 420 }}>
-      <Zoom in={true} style={{ transitionDelay: '150ms' }}>
+      <CardEntrance delay={0.1}>
         <MuiCard sx={{
           width: '100%',
           borderRadius: 3.5,
@@ -241,7 +241,7 @@ function LoginForm() {
             </Typography>
           </Box>
         </MuiCard>
-      </Zoom>
+      </CardEntrance>
     </form>
   )
 }

@@ -18,6 +18,7 @@ import { selectCurrentUser } from '~/redux/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'framer-motion'
 
 function ListColumns({ columns = [] }) {
   const { t } = useTranslation()
@@ -85,45 +86,56 @@ function ListColumns({ columns = [] }) {
       }}>
         {/* Empty state: board chưa có cột nào - hướng dẫn tạo cột đầu tiên ngay giữa màn hình */}
         {(columns || []).length === 0 && !openNewColumnForm && (
-          <Box sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 1,
-            textAlign: 'center',
-            bgcolor: 'rgba(0, 0, 0, 0.35)',
-            backdropFilter: 'blur(6px)',
-            border: '1px dashed rgba(255, 255, 255, 0.4)',
-            borderRadius: 3,
-            p: { xs: 3, md: 4 },
-            maxWidth: 400
-          }}>
-            <ViewWeekOutlinedIcon sx={{ fontSize: 48, color: 'rgba(255, 255, 255, 0.9)', mb: 1 }} />
-            <Typography sx={{ color: 'white', fontWeight: 700, fontSize: '1.1rem', mb: 0.5 }}>
-              {t('board.emptyColumnsTitle')}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 2.5 }}>
-              {t('board.emptyColumnsHint')}
-            </Typography>
-            <Button
-              startIcon={<NoteAddIcon />}
-              onClick={toggleOpenNewColumnForm}
-              sx={{
-                bgcolor: 'white',
-                color: '#0747a6',
-                fontWeight: 700,
-                textTransform: 'none',
-                px: 3,
-                py: 1,
-                borderRadius: 2,
-                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
-                '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.85)' }
-              }}
-            >
-              {t('board.addNewColumn')}
-            </Button>
-          </Box>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 22, delay: 0.15 }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1,
+              pointerEvents: 'none'
+            }}
+          >
+            <Box sx={{
+              pointerEvents: 'auto',
+              textAlign: 'center',
+              bgcolor: 'rgba(0, 0, 0, 0.35)',
+              backdropFilter: 'blur(6px)',
+              border: '1px dashed rgba(255, 255, 255, 0.4)',
+              borderRadius: 3,
+              p: { xs: 3, md: 4 },
+              maxWidth: 400
+            }}>
+              <ViewWeekOutlinedIcon sx={{ fontSize: 48, color: 'rgba(255, 255, 255, 0.9)', mb: 1 }} />
+              <Typography sx={{ color: 'white', fontWeight: 700, fontSize: '1.1rem', mb: 0.5 }}>
+                {t('board.emptyColumnsTitle')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)', mb: 2.5 }}>
+                {t('board.emptyColumnsHint')}
+              </Typography>
+              <Button
+                startIcon={<NoteAddIcon />}
+                onClick={toggleOpenNewColumnForm}
+                sx={{
+                  bgcolor: 'white',
+                  color: '#0747a6',
+                  fontWeight: 700,
+                  textTransform: 'none',
+                  px: 3,
+                  py: 1,
+                  borderRadius: 2,
+                  boxShadow: '0 4px 14px rgba(0, 0, 0, 0.3)',
+                  '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.85)' }
+                }}
+              >
+                {t('board.addNewColumn')}
+              </Button>
+            </Box>
+          </motion.div>
         )}
 
         {(columns || []).map(column => <Column key={column._id} column={column} />)}
