@@ -103,7 +103,7 @@ function AccountTab() {
               alt="TrungQuanDev"
               src={currentUser?.avatar}
             />
-            <Tooltip title="Upload a new image to update your avatar immediately.">
+            <Tooltip title={t('settings.uploadAvatarTip')}>
               <Button
                 component="label"
                 variant="contained"
@@ -127,7 +127,7 @@ function AccountTab() {
                 disabled
                 defaultValue={currentUser?.email}
                 fullWidth
-                label="Your Email"
+                label={t('settings.yourEmail')}
                 type="text"
                 variant="filled"
                 // Mobile: thu nhỏ chữ + tăng tương phản cho ô khóa để email dài không bị cắt
@@ -155,7 +155,7 @@ function AccountTab() {
                 disabled
                 defaultValue={currentUser?.username}
                 fullWidth
-                label="Your Username"
+                label={t('settings.yourUsername')}
                 type="text"
                 variant="filled"
                 sx={{
@@ -180,7 +180,7 @@ function AccountTab() {
             <Box>
               <TextField
                 fullWidth
-                label="Your Display Name"
+                label={t('settings.yourDisplayName')}
                 type="text"
                 variant="outlined"
                 InputProps={{

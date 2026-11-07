@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
+import Badge from '@mui/material/Badge'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -65,10 +66,6 @@ function BoardBar({ board, onlineUsers = [] }) {
   const isMoreOpen = Boolean(moreAnchorEl)
   const moreBtnRef = useRef(null)
 
-  const handleOpenFilterFromMore = () => {
-    setMoreAnchorEl(null)
-    setFilterAnchorEl(moreBtnRef.current)
-  }
   const handleOpenBgFromMore = () => {
     setMoreAnchorEl(null)
     setBgAnchorEl(moreBtnRef.current)
@@ -426,12 +423,29 @@ function BoardBar({ board, onlineUsers = [] }) {
           />
         )}
 
+        {/* Mobile (xs): nút Bộ lọc dạng icon - công cụ dùng nhiều nhất nên tách ra khỏi menu ⋯
+            Có chấm cảnh báo khi đang bật bộ lọc */}
+        <Badge
+          color="warning"
+          variant="dot"
+          invisible={!hasActiveFilter}
+          sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
+        >
+          <IconButton
+            onClick={handleOpenFilter}
+            aria-label={t('boardBar.filters')}
+            sx={{ color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
+          >
+            <FilterIcon />
+          </IconButton>
+        </Badge>
+
         {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
-        <Tooltip title="More actions">
+        <Tooltip title={t('boardBar.more')}>
           <IconButton
             ref={moreBtnRef}
             onClick={(e) => setMoreAnchorEl(e.currentTarget)}
-            aria-label="More board actions"
+            aria-label={t('boardBar.more')}
             aria-haspopup="menu"
             sx={{
               display: { xs: 'inline-flex', sm: 'none' },
@@ -450,14 +464,6 @@ function BoardBar({ board, onlineUsers = [] }) {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          <MenuItem onClick={handleOpenFilterFromMore}>
-            <ListItemIcon sx={{ color: '#0052cc' }}>
-              <FilterIcon fontSize="small" />
-            </ListItemIcon>
-            <Typography variant="inherit">
-              {hasActiveFilter ? `${t('boardBar.filters')} (${activeFilterCount})` : t('boardBar.filters')}
-            </Typography>
-          </MenuItem>
           <MenuItem onClick={handleOpenBgFromMore}>
             <ListItemIcon sx={{ color: '#8b5cf6' }}>
               <WallpaperOutlinedIcon fontSize="small" />

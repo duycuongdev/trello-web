@@ -325,7 +325,7 @@ function RegisterForm() {
             <Box>
               <TextField
                 fullWidth
-                label="Confirm Password"
+                label={t('auth.confirmPassword')}
                 type={showPassword ? 'text' : 'password'}
                 variant="outlined"
                 error={!!errors.password_confirmation}

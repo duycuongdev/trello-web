@@ -466,7 +466,7 @@ function Board() {
                   onClick={handleReopen}
                   sx={{ textTransform: 'none', fontWeight: 600 }}
                 >
-                  Reopen board
+                  {t('board.reopenBoard')}
                 </Button>
                 <Button
                   variant="outlined"
@@ -475,7 +475,7 @@ function Board() {
                   onClick={handleDeletePermanently}
                   sx={{ textTransform: 'none', fontWeight: 600 }}
                 >
-                  Permanently delete board
+                  {t('board.deleteBoardPermanently')}
                 </Button>
               </>
             ) : (
@@ -486,7 +486,7 @@ function Board() {
                 to="/boards"
                 sx={{ textTransform: 'none', fontWeight: 600 }}
               >
-                Go to my boards
+                {t('board.goToMyBoards')}
               </Button>
             )}
           </Box>

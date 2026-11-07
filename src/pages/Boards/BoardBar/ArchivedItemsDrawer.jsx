@@ -56,11 +56,11 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
       setArchivedCards(data?.cards || [])
       setArchivedColumns(data?.columns || [])
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to load archived items')
+      toast.error(error?.response?.data?.message || t('archived.loadFailed'))
     } finally {
       setLoading(false)
     }
-  }, [boardId])
+  }, [boardId, t])
 
   useEffect(() => {
     if (isOpen) {
@@ -116,17 +116,17 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
       setArchivedCards(prev => prev.filter(c => c._id !== card._id))
       toast.success(t('board.cardRestored'))
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to restore card')
+      toast.error(error?.response?.data?.message || t('archived.restoreCardFailed'))
     }
   }
 
   // Xóa vĩnh viễn Card
   const handleDeleteCardPermanently = (card) => {
     confirm({
-      title: 'Delete Card Permanently?',
-      description: `Are you sure you want to permanently delete "${card.title}"? This action cannot be undone.`,
-      confirmationText: 'Delete',
-      cancellationText: 'Cancel'
+      title: t('archived.deleteCardTitle'),
+      description: t('archived.deleteCardDesc', { title: card.title }),
+      confirmationText: t('common.delete'),
+      cancellationText: t('common.cancel')
     }).then(async () => {
       try {
         await deleteCardAPI(card._id)
@@ -139,7 +139,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
         setArchivedCards(prev => prev.filter(c => c._id !== card._id))
         toast.success(t('board.cardPermanentlyDeleted'))
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to delete card')
+        toast.error(error?.response?.data?.message || t('archived.deleteCardFailed'))
       }
     }).catch(() => {})
   }
@@ -158,17 +158,17 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
       setArchivedColumns(prev => prev.filter(c => c._id !== column._id))
       toast.success(t('board.listRestored'))
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to restore list')
+      toast.error(error?.response?.data?.message || t('archived.restoreListFailed'))
     }
   }
 
   // Xóa vĩnh viễn Column
   const handleDeleteColumnPermanently = (column) => {
     confirm({
-      title: 'Delete List Permanently?',
-      description: `Are you sure you want to permanently delete list "${column.title}" and all its cards? This cannot be undone.`,
-      confirmationText: 'Delete',
-      cancellationText: 'Cancel'
+      title: t('archived.deleteListTitle'),
+      description: t('archived.deleteListDesc', { title: column.title }),
+      confirmationText: t('common.delete'),
+      cancellationText: t('common.cancel')
     }).then(async () => {
       try {
         await deleteColumnDetailsAPI(column._id)
@@ -181,7 +181,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
         setArchivedColumns(prev => prev.filter(c => c._id !== column._id))
         toast.success(t('board.listPermanentlyDeleted'))
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to delete list')
+        toast.error(error?.response?.data?.message || t('archived.deleteListFailed'))
       }
     }).catch(() => {})
   }
@@ -194,7 +194,10 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
       PaperProps={{
         sx: {
           width: { xs: 'min(320px, 86vw)', sm: 360 },
+          // PWA standalone (iPhone): chừa safe-area trên/dưới để không bị tai thẻ + home indicator che
           p: 2.5,
+          paddingTop: 'calc(20px + env(safe-area-inset-top, 0px))',
+          paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
           bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e272e' : '#ffffff',
           boxShadow: '-4px 0 20px rgba(0,0,0,0.15)'
         }
@@ -205,7 +208,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <ArchiveOutlinedIcon color="primary" />
           <Typography variant="h6" fontWeight={700}>
-            Archived Items
+            {t('board.archivedItems')}
           </Typography>
         </Box>
         <IconButton size="small" onClick={onClose} aria-label="close">
@@ -248,8 +251,8 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
           }
         }}
       >
-        <Tab label={`Cards (${archivedCards.length})`} />
-        <Tab label={`Lists (${archivedColumns.length})`} />
+        <Tab label={t('archived.cardsTab', { count: archivedCards.length })} />
+        <Tab label={t('archived.listsTab', { count: archivedColumns.length })} />
       </Tabs>
 
       {/* Body content */}
@@ -264,7 +267,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {filteredCards.length === 0 ? (
                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 4 }}>
-                  No archived cards found.
+                  {t('archived.noArchivedCards')}
                 </Typography>
               ) : (
                 filteredCards.map((card) => (
@@ -302,7 +305,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
 
                     {card.columnTitle && (
                       <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
-                        In list: <strong>{card.columnTitle}</strong>
+                        {t('archived.inList')} <strong>{card.columnTitle}</strong>
                       </Typography>
                     )}
 
@@ -314,7 +317,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
                         onClick={() => handleRestoreCard(card)}
                         sx={{ textTransform: 'none', fontSize: '12px' }}
                       >
-                        Send to board
+                        {t('archived.sendToBoard')}
                       </Button>
                       <Button
                         size="small"
@@ -324,7 +327,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
                         onClick={() => handleDeleteCardPermanently(card)}
                         sx={{ textTransform: 'none', fontSize: '12px' }}
                       >
-                        Delete
+                        {t('common.delete')}
                       </Button>
                     </Box>
                   </Paper>
@@ -338,7 +341,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               {filteredColumns.length === 0 ? (
                 <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 4 }}>
-                  No archived lists found.
+                  {t('archived.noArchivedLists')}
                 </Typography>
               ) : (
                 filteredColumns.map((col) => (
@@ -365,7 +368,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
                         onClick={() => handleRestoreColumn(col)}
                         sx={{ textTransform: 'none', fontSize: '12px' }}
                       >
-                        Send to board
+                        {t('archived.sendToBoard')}
                       </Button>
                       <Button
                         size="small"
@@ -375,7 +378,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
                         onClick={() => handleDeleteColumnPermanently(col)}
                         sx={{ textTransform: 'none', fontSize: '12px' }}
                       >
-                        Delete
+                        {t('common.delete')}
                       </Button>
                     </Box>
                   </Paper>

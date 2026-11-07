@@ -281,7 +281,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
                         size="small"
                         onClick={(e) => handleOpenEditView(label, e)}
                         sx={{ p: 0.5, flexShrink: 0 }}
-                        title="Edit label"
+                        title={t('cardModal.editLabel')}
                       >
                         <EditOutlinedIcon fontSize="small" />
                       </IconButton>

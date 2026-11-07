@@ -302,7 +302,7 @@ function Notifications({ openUpward = false }) {
                 </span>
               </Tooltip>
 
-              <Tooltip title="Clear all">
+              <Tooltip title={t('notifications.clearAll')}>
                 <IconButton
                   size="small"
                   onClick={handleClearAll}
@@ -519,7 +519,7 @@ function Notifications({ openUpward = false }) {
                       </Box>
 
                       {/* Nút Xóa thông báo này */}
-                      <Tooltip title="Dismiss">
+                      <Tooltip title={t('notifications.dismiss')}>
                         <IconButton
                           size="small"
                           onClick={(e) => handleClearOne(notification._id, e)}

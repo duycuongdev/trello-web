@@ -121,7 +121,7 @@ function CardAttachmentSection({ attachments = [], cardCover, onDeleteAttachment
                       onClick={() => onMakeCover(att.fileUrl)}
                       sx={{ textTransform: 'none', fontSize: '0.75rem', p: '2px 6px', minWidth: 'unset' }}
                     >
-                      Make cover
+                      {t('cardModal.makeCover')}
                     </Button>
                   )}
 

@@ -424,7 +424,7 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
           '&:hover': { bgcolor: 'action.hover' }
         }}
       >
-        Clear all filters
+        {t('board.clearAllFilters')}
       </Button>
     </Popover>
   )

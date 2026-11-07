@@ -302,7 +302,7 @@ function ChangeBoardBackgroundPopover({
               borderRadius: 2
             }}
           >
-            Choose image file
+            {t('background.chooseImage')}
             <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange} />
           </Button>
           <Typography variant="caption" sx={{ fontSize: '11px', color: 'text.secondary', display: 'block', mt: 0.5, mb: 1.5, textAlign: 'center' }}>
@@ -335,7 +335,7 @@ function ChangeBoardBackgroundPopover({
             disabled={!customUrl.trim()}
             sx={{ textTransform: 'none', fontWeight: 600 }}
           >
-            Apply Image URL
+            {t('background.applyUrl')}
           </Button>
         </Box>
       )}
@@ -351,7 +351,7 @@ function ChangeBoardBackgroundPopover({
           disabled={!currentBackground}
           sx={{ textTransform: 'none', fontSize: '13px' }}
         >
-          Reset to Default Theme
+          {t('background.resetDefault')}
         </Button>
       </Box>
     </Popover>

@@ -312,11 +312,11 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
 
       {/* Select Position */}
       <FormControl fullWidth size="small" sx={{ mb: 2.5 }}>
-        <InputLabel id="copy-card-select-position-label">Position</InputLabel>
+        <InputLabel id="copy-card-select-position-label">{t('cardModal.position')}</InputLabel>
         <Select
           labelId="copy-card-select-position-label"
           value={targetPosition}
-          label="Position"
+          label={t('cardModal.position')}
           onChange={(e) => setTargetPosition(Number(e.target.value))}
         >
           {positionOptions.map((pos) => (

@@ -75,9 +75,8 @@ function TabLink({ to, icon, label, active }) {
         gap: '2px',
         minWidth: 64,
         py: 1,
-        borderRadius: 2,
-        color: active ? '#ffffff' : 'rgba(255, 255, 255, 0.65)',
-        bgcolor: active ? 'rgba(255, 255, 255, 0.15)' : 'transparent',
+        // Không dùng nền pill trắng cho tab active (nhẹ nhàng hơn): chỉ đổi độ sáng chữ/icon
+        color: active ? '#ffffff' : 'rgba(255, 255, 255, 0.6)',
         textDecoration: 'none',
         transition: 'all 0.15s ease'
       }}

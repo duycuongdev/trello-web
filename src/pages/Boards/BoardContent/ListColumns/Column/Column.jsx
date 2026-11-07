@@ -225,7 +225,7 @@ function Column({ column }) {
 
           {/* prop down */}
           <Box>
-            <Tooltip title='More options'>
+            <Tooltip title={t('column.moreOptions')}>
               <ExpandMoreIcon
                 sx={{
                   color: 'text.primary',
@@ -268,7 +268,7 @@ function Column({ column }) {
                 '&:hover .archive-icon': { color: 'warning.light' }
               }}>
                 <ListItemIcon><ArchiveOutlinedIcon className='archive-icon' fontSize="small" /></ListItemIcon>
-                <ListItemText>Archive this column</ListItemText>
+                <ListItemText>{t('column.archiveThisColumn')}</ListItemText>
               </MenuItem>
             </Menu>
           </Box>
@@ -288,7 +288,7 @@ function Column({ column }) {
               justifyContent: 'space-between'
             }}>
               <Button startIcon={<AddcardIcon />} onClick={toggleOpenNewCardForm}>{t('board.addCard')}</Button>
-              <Tooltip title='Drag to move'>
+              <Tooltip title={t('column.dragToMove')}>
                 <DragHandleIcon sx={{ cursor: 'pointer' }} />
               </Tooltip>
             </Box>

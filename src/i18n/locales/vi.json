@@ -177,6 +177,7 @@
     "memberRemoved": "Đã xóa thành viên khỏi bảng",
     "filter": "Lọc thẻ",
     "filterSearchPlaceholder": "Tìm tiêu đề hoặc mô tả thẻ...",
+    "clearAllFilters": "Xóa tất cả bộ lọc",
     "filterNoLabels": "Chưa có nhãn nào trên bảng",
     "filterNoLabelsHint": "Hãy mở thẻ và tạo nhãn để lọc",
     "cardsAssignedToMe": "Thẻ được giao cho tôi",
@@ -292,6 +293,8 @@
     "createCard": "Tạo thẻ",
     "position": "Vị trí",
     "selectColor": "Chọn màu",
+    "editLabel": "Sửa nhãn",
+    "makeCover": "Đặt làm ảnh bìa",
     "addChecklist": "Thêm việc cần làm",
     "enterTitleForThisCard": "Nhập tiêu đề cho thẻ này...",
     "generalAttachments": "Tệp đính kèm chung",
@@ -302,6 +305,9 @@
     "deleteColumnTitle": "Xóa cột?",
     "deleteColumnDesc": "Bạn có chắc muốn xóa vĩnh viễn cột này? Toàn bộ thẻ bên trong sẽ bị xóa vĩnh viễn. Hành động này không thể hoàn tác.",
     "deleteThisColumn": "Xóa cột này",
+    "archiveThisColumn": "Lưu trữ cột này",
+    "moreOptions": "Tuỳ chọn khác",
+    "dragToMove": "Kéo để di chuyển",
     "archiveColumnTitle": "Lưu trữ cột?",
     "archiveColumnDesc": "Cột này sẽ được chuyển vào kho lưu trữ. Bạn có thể khôi phục bất cứ lúc nào từ mục Mục đã lưu trữ."
   },
@@ -314,7 +320,11 @@
     "newPassword": "Mật khẩu mới",
     "newPasswordConfirmation": "Xác nhận mật khẩu mới",
     "update": "Cập nhật",
-    "updatePassword": "Cập nhật mật khẩu"
+    "updatePassword": "Cập nhật mật khẩu",
+    "yourEmail": "Email của bạn",
+    "yourUsername": "Tên người dùng của bạn",
+    "yourDisplayName": "Tên hiển thị của bạn",
+    "uploadAvatarTip": "Tải lên ảnh mới để cập nhật avatar ngay lập tức."
   },
   "notifications": {
     "title": "Thông báo",
@@ -327,6 +337,7 @@
     "deadlineCardInBoard": "Thẻ \"{{card}}\" trong bảng \"{{board}}\"",
     "dueLabel": "Hạn: {{date}}",
     "dismiss": "Bỏ qua",
+    "clearAll": "Xóa tất cả",
     "someone": "Một thành viên",
     "boardFallback": "Bảng",
     "boardInvitation": "Lời mời vào bảng",
@@ -350,6 +361,7 @@
     "archived": "Đã lưu trữ",
     "closeBoard": "Đóng bảng",
     "leaveBoard": "Rời bảng",
+    "more": "Hành động khác",
     "leaveBoardTitle": "Rời bảng?",
     "leaveBoardDesc": "Bạn có chắc muốn rời \"{{title}}\"? Bạn sẽ mất quyền truy cập bảng này trừ khi được mời lại."
   },
@@ -358,7 +370,10 @@
     "gradients": "Chuyển sắc",
     "colors": "Màu",
     "upload": "Tải lên",
-    "changeTitle": "Đổi nền"
+    "changeTitle": "Đổi nền",
+    "chooseImage": "Chọn file ảnh",
+    "applyUrl": "Dùng ảnh từ URL",
+    "resetDefault": "Đặt lại chủ đề mặc định"
   },
   "home": {
     "getTrelloFree": "Dùng Trello miễn phí",
@@ -421,6 +436,7 @@
     "step2H2": "Nhân bản (Sao chép) hoặc di chuyển thẻ giữa các cột tức thì trên bảng.",
     "step2H3": "Soạn mô tả công việc giàu nội dung bằng trình soạn Markdown tích hợp.",
     "step3Tag": "BƯỚC 3 / 5 • VIỆC CẦN LÀM & HẠN CHÓT",
+    "step3Badge": "Triển khai thực tế",
     "step3Title": "Việc cần làm thông minh & Huy hiệu hạn chót",
     "step3Subtitle": "Bẻ khóa mục tiêu phức tạp thành các việc nhỏ khả thi và theo dõi hạn chót dễ dàng.",
     "step3H1": "Tạo nhiều danh sách việc cần làm cho mỗi thẻ với thanh tiến độ % real-time.",
@@ -476,5 +492,22 @@
     "noBoardUsers": "Không có thành viên trong bảng",
     "editDueDate": "Bấm để sửa hạn chót",
     "editMembers": "Bấm để sửa thành viên"
+  },
+  "archived": {
+    "cardsTab": "Thẻ ({{count}})",
+    "listsTab": "Danh sách ({{count}})",
+    "noArchivedCards": "Không có thẻ nào trong kho lưu trữ.",
+    "noArchivedLists": "Không có danh sách nào trong kho lưu trữ.",
+    "inList": "Trong danh sách:",
+    "sendToBoard": "Đưa về bảng",
+    "deleteCardTitle": "Xóa thẻ vĩnh viễn?",
+    "deleteCardDesc": "Bạn có chắc muốn xóa vĩnh viễn thẻ \"{{title}}\"? Hành động này không thể hoàn tác.",
+    "deleteListTitle": "Xóa danh sách vĩnh viễn?",
+    "deleteListDesc": "Bạn có chắc muốn xóa vĩnh viễn danh sách \"{{title}}\" cùng toàn bộ thẻ trong đó? Hành động này không thể hoàn tác.",
+    "loadFailed": "Không thể tải mục đã lưu trữ",
+    "restoreCardFailed": "Khôi phục thẻ thất bại",
+    "deleteCardFailed": "Xóa thẻ thất bại",
+    "restoreListFailed": "Khôi phục danh sách thất bại",
+    "deleteListFailed": "Xóa danh sách thất bại"
   }
 }

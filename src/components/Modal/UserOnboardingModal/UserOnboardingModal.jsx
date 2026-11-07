@@ -137,7 +137,7 @@ const getTourSteps = (t) => [
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: '0.75rem', fontWeight: 600 }}>
             <Box sx={{ width: 14, height: 14, borderRadius: '3px', border: '2px solid #cbd5e1' }} />
-            <span>Production Deployment</span>
+            <span>{t('onboarding.step3Badge')}</span>
           </Box>
         </Stack>
       </Box>

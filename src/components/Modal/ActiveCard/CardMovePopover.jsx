@@ -205,7 +205,7 @@ function CardMovePopover({ anchorEl, isOpen, onClose, card, board }) {
         <Select
           labelId="move-card-select-position-label"
           value={targetPosition}
-          label="Position"
+          label={t('cardModal.position')}
           onChange={(e) => setTargetPosition(Number(e.target.value))}
         >
           {positionOptions.map((pos) => (

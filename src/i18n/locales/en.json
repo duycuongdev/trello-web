@@ -177,6 +177,7 @@
     "memberRemoved": "Member removed from board",
     "filter": "Filter cards",
     "filterSearchPlaceholder": "Search card title or description...",
+    "clearAllFilters": "Clear all filters",
     "filterNoLabels": "No labels on this board yet",
     "filterNoLabelsHint": "Open a card and create labels to filter by them",
     "cardsAssignedToMe": "Cards assigned to me",
@@ -292,6 +293,8 @@
     "createCard": "Create card",
     "position": "Position",
     "selectColor": "Select a color",
+    "editLabel": "Edit label",
+    "makeCover": "Make cover",
     "addChecklist": "Add checklist",
     "enterTitleForThisCard": "Enter a title for this card...",
     "generalAttachments": "General Attachments",
@@ -302,6 +305,9 @@
     "deleteColumnTitle": "Delete Column ?",
     "deleteColumnDesc": "Are you sure you want to permanently delete this column? All cards in it will be permanently removed. This action cannot be undone.",
     "deleteThisColumn": "Delete this column",
+    "archiveThisColumn": "Archive this column",
+    "moreOptions": "More options",
+    "dragToMove": "Drag to move",
     "archiveColumnTitle": "Archive Column?",
     "archiveColumnDesc": "This column will be moved to the archive. You can restore it anytime from Archived Items."
   },
@@ -314,7 +320,11 @@
     "newPassword": "New Password",
     "newPasswordConfirmation": "New Password Confirmation",
     "update": "Update",
-    "updatePassword": "Update Password"
+    "updatePassword": "Update Password",
+    "yourEmail": "Your Email",
+    "yourUsername": "Your Username",
+    "yourDisplayName": "Your Display Name",
+    "uploadAvatarTip": "Upload a new image to update your avatar immediately."
   },
   "notifications": {
     "title": "Notifications",
@@ -327,6 +337,7 @@
     "deadlineCardInBoard": "Card \"{{card}}\" in board \"{{board}}\"",
     "dueLabel": "Due: {{date}}",
     "dismiss": "Dismiss",
+    "clearAll": "Clear all",
     "someone": "A teammate",
     "boardFallback": "Board",
     "boardInvitation": "Board Invitation",
@@ -350,6 +361,7 @@
     "archived": "Archived",
     "closeBoard": "Close board",
     "leaveBoard": "Leave board",
+    "more": "More actions",
     "leaveBoardTitle": "Leave Board?",
     "leaveBoardDesc": "Are you sure you want to leave \"{{title}}\"? You will lose access to this board unless invited again."
   },
@@ -358,7 +370,10 @@
     "gradients": "Gradients",
     "colors": "Colors",
     "upload": "Upload",
-    "changeTitle": "Change background"
+    "changeTitle": "Change background",
+    "chooseImage": "Choose image file",
+    "applyUrl": "Apply Image URL",
+    "resetDefault": "Reset to Default Theme"
   },
   "home": {
     "getTrelloFree": "Get Trello for free",
@@ -421,6 +436,7 @@
     "step2H2": "Instantly duplicate (Copy) or move cards across columns on the board.",
     "step2H3": "Compose rich task descriptions using the built-in formatted Markdown Editor.",
     "step3Tag": "STEP 3 / 5 • CHECKLISTS & DEADLINES",
+    "step3Badge": "Production Deployment",
     "step3Title": "Smart Checklists & Due Date Badges",
     "step3Subtitle": "Break down complex goals into actionable sub-tasks and track deadlines with ease.",
     "step3H1": "Create multiple checklists per card with real-time percentage progress bars.",
@@ -476,5 +492,22 @@
     "noBoardUsers": "No board members found",
     "editDueDate": "Click to edit due date",
     "editMembers": "Click to edit members"
+  },
+  "archived": {
+    "cardsTab": "Cards ({{count}})",
+    "listsTab": "Lists ({{count}})",
+    "noArchivedCards": "No archived cards found.",
+    "noArchivedLists": "No archived lists found.",
+    "inList": "In list:",
+    "sendToBoard": "Send to board",
+    "deleteCardTitle": "Delete card permanently?",
+    "deleteCardDesc": "Are you sure you want to permanently delete \"{{title}}\"? This action cannot be undone.",
+    "deleteListTitle": "Delete list permanently?",
+    "deleteListDesc": "Are you sure you want to permanently delete list \"{{title}}\" and all its cards? This cannot be undone.",
+    "loadFailed": "Failed to load archived items",
+    "restoreCardFailed": "Failed to restore card",
+    "deleteCardFailed": "Failed to delete card",
+    "restoreListFailed": "Failed to restore list",
+    "deleteListFailed": "Failed to delete list"
   }
 }
