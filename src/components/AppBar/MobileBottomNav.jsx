@@ -45,13 +45,13 @@ function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', minWidth: 64 }}>
         <Notifications openUpward />
-        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: '#ffffff' }}>
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 400, lineHeight: 1, color: '#ffffff' }}>
           {t('appBar.notifications')}
         </Typography>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', minWidth: 64 }}>
         <Profile onOpenTour={onOpenTour} onOpenShortcuts={onOpenShortcuts} openUpward />
-        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: '#ffffff' }}>
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 400, lineHeight: 1, color: '#ffffff' }}>
           {t('profileMenu.profile')}
         </Typography>
       </Box>
@@ -76,8 +76,11 @@ function TabLink({ to, icon, label }) {
         textDecoration: 'none'
       }}
     >
-      {icon}
-      <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: '#ffffff' }}>
+      {/* Hàng icon cao cố định 40px để icon thẳng hàng icon, chữ thẳng hàng chữ trên cả 3 tab */}
+      <Box sx={{ height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {icon}
+      </Box>
+      <Typography sx={{ fontSize: '0.65rem', fontWeight: 400, lineHeight: 1, color: '#ffffff' }}>
         {label}
       </Typography>
     </Box>

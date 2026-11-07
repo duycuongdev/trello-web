@@ -241,46 +241,11 @@ function BoardBar({ board, onlineUsers = [] }) {
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: { xs: 1, sm: 2 }
+        gap: { xs: 1, sm: 2 },
+        // Cho phép co lại để tên board tự ellipsis thay vì đẩy tràn thanh
+        flex: '1 1 auto',
+        minWidth: 0
       }}>
-        {/* Mobile (xs): cụm icon Lọc → Mời → ⋯ đứng TRƯỚC tên board, tên chiếm toàn bộ chỗ còn lại */}
-        <Badge
-          color="warning"
-          variant="dot"
-          invisible={!hasActiveFilter}
-          sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
-        >
-          <IconButton
-            onClick={handleOpenFilter}
-            aria-label={t('boardBar.filters')}
-            sx={{ color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
-          >
-            <FilterIcon />
-          </IconButton>
-        </Badge>
-
-        <Box sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
-          <InviteBoardUser boardId={board?._id} board={board} iconOnly />
-        </Box>
-
-        {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
-        <Tooltip title={t('boardBar.more')}>
-          <IconButton
-            ref={moreBtnRef}
-            onClick={(e) => setMoreAnchorEl(e.currentTarget)}
-            aria-label={t('boardBar.more')}
-            aria-haspopup="menu"
-            sx={{
-              display: { xs: 'inline-flex', sm: 'none' },
-              color: 'white',
-              bgcolor: 'rgba(255, 255, 255, 0.15)',
-              '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
-            }}
-          >
-            <MoreHorizIcon />
-          </IconButton>
-        </Tooltip>
-
         {!isEditingTitle ? (
           <Tooltip title={t('board.clickToEditTitle')}>
             <Chip
@@ -503,7 +468,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         </Menu>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexShrink: 0 }}>
         {/* Live Active Viewers Indicator */}
         {onlineUsers.length > 0 && (
           <Tooltip title={`Online on this board: ${onlineUsers.map(u => u.displayName || u.email).join(', ')}`}>
@@ -533,6 +498,44 @@ function BoardBar({ board, onlineUsers = [] }) {
             />
           </Tooltip>
         )}
+
+        {/* Mobile (xs): cụm icon Lọc → Mời → ⋯ ở CỘT PHẢI của thanh board (trước avatar) */}
+        <Badge
+          color="warning"
+          variant="dot"
+          invisible={!hasActiveFilter}
+          sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
+        >
+          <IconButton
+            onClick={handleOpenFilter}
+            aria-label={t('boardBar.filters')}
+            sx={{ color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
+          >
+            <FilterIcon />
+          </IconButton>
+        </Badge>
+
+        <Box sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
+          <InviteBoardUser boardId={board?._id} board={board} iconOnly />
+        </Box>
+
+        {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
+        <Tooltip title={t('boardBar.more')}>
+          <IconButton
+            ref={moreBtnRef}
+            onClick={(e) => setMoreAnchorEl(e.currentTarget)}
+            aria-label={t('boardBar.more')}
+            aria-haspopup="menu"
+            sx={{
+              display: { xs: 'inline-flex', sm: 'none' },
+              color: 'white',
+              bgcolor: 'rgba(255, 255, 255, 0.15)',
+              '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
+            }}
+          >
+            <MoreHorizIcon />
+          </IconButton>
+        </Tooltip>
 
         {/* handle user group */}
         <BoardUserGroup

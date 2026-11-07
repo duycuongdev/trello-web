@@ -215,22 +215,25 @@ function Boards() {
                 {isClosedView ? t('boards.closedBoards') : t('boards.yourBoards')}
               </Typography>
 
-              {/* Mobile/tablet (md trở xuống, sidebar đang ẩn): nút chuyển qua lại giữa Bảng và Bảng đã đóng */}
-              <Button
-                component={Link}
-                to={isClosedView ? '/boards' : '/boards?closed=true'}
-                startIcon={isClosedView ? <SpaceDashboardIcon /> : <FolderOffOutlinedIcon />}
-                size="small"
-                variant={isClosedView ? 'contained' : 'outlined'}
-                sx={{
-                  display: { xs: 'inline-flex', md: 'none' },
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  borderRadius: 2
-                }}
-              >
-                {isClosedView ? t('boards.sidebarBoards') : t('boards.sidebarClosedBoards')}
-              </Button>
+              {/* Mobile/tablet (md trở xuống, sidebar đang ẩn): nút vào Bảng đã đóng.
+                  Khi đang ở view Đã đóng thì KHÔNG hiện nút quay lại - bấm tab Danh sách bảng ở bottom nav để ra */}
+              {!isClosedView && (
+                <Button
+                  component={Link}
+                  to="/boards?closed=true"
+                  startIcon={<FolderOffOutlinedIcon />}
+                  size="small"
+                  variant="outlined"
+                  sx={{
+                    display: { xs: 'inline-flex', md: 'none' },
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    borderRadius: 2
+                  }}
+                >
+                  {t('boards.sidebarClosedBoards')}
+                </Button>
+              )}
             </Box>
 
             {/* Trường hợp gọi API nhưng không tồn tại cái board nào trong Database trả về */}

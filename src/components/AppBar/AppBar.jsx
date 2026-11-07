@@ -76,7 +76,7 @@ function AppBar() {
         justifyContent: 'space-between',
         gap: { xs: 1, sm: 2 },
         overflowX: 'auto',
-        paddingX: { xs: 1, sm: 2 },
+        paddingX: 2,
         bgcolor: activeBoard?.background
           ? 'rgba(0, 0, 0, 0.6)'
           : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
