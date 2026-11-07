@@ -18,8 +18,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['trello.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Trello Clone – Kanban Boards',
-        short_name: 'Trello Clone',
+        name: 'Trello – Kanban Boards',
+        short_name: 'Trello',
         description: 'A learning project inspired by Trello: manage projects and tasks with intuitive Kanban boards.',
         lang: 'en',
         start_url: '/',
