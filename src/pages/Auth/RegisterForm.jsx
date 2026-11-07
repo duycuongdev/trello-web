@@ -26,8 +26,8 @@ import { GoogleLogin } from '@react-oauth/google'
 import { useTranslation } from 'react-i18next'
 
 function RegisterForm() {
-  const dispatch = useDispatch
-  const { t } = useTranslation()()
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [registeredEmail, setRegisteredEmail] = useState(null)
   const { handleSubmit, register, formState: { errors }, watch, reset } = useForm()
