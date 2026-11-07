@@ -7,6 +7,7 @@ import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
@@ -16,7 +17,7 @@ import { inviteUserToBoardAPI } from '~/apis'
 import { useTranslation } from 'react-i18next'
 import { socketIoInstance } from '~/socketClient'
 
-function InviteBoardUser({ boardId, board }) {
+function InviteBoardUser({ boardId, board, iconOnly = false }) {
   const { t } = useTranslation()
   /**
    * Xử lý Popover để ẩn hoặc hiện một popup nhỏ, tương tự docs để tham khảo ở đây:
@@ -49,24 +50,31 @@ function InviteBoardUser({ boardId, board }) {
   return (
     <Box>
       <Tooltip title={t('board.inviteUser')}>
-        <Button
-          aria-describedby={popoverId}
-          onClick={handleTogglePopover}
-          variant="outlined"
-          startIcon={<PersonAddIcon />}
-          sx={{
-            color: 'white',
-            borderColor: 'white',
-            '&:hover': { borderColor: 'white' },
-            // Mobile: thu gọn còn icon để BoardBar không bị tràn ngang
-            minWidth: { xs: 0, sm: 64 },
-            px: { xs: 1.25, sm: 2 }
-          }}
-        >
-          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+        {iconOnly ? (
+          /* Mobile: icon nền kính - đồng bộ với nút Lọc và dấu ⋯ (không dùng borderoutlined dễ bị cắt) */
+          <IconButton
+            aria-describedby={popoverId}
+            onClick={handleTogglePopover}
+            aria-label={t('board.inviteUser')}
+            sx={{
+              color: 'white',
+              bgcolor: 'rgba(255, 255, 255, 0.15)',
+              '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
+            }}
+          >
+            <PersonAddIcon />
+          </IconButton>
+        ) : (
+          <Button
+            aria-describedby={popoverId}
+            onClick={handleTogglePopover}
+            variant="outlined"
+            startIcon={<PersonAddIcon />}
+            sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' } }}
+          >
             {t('board.invite')}
-          </Box>
-        </Button>
+          </Button>
+        )}
       </Tooltip>
 
       {/* Khi Click vào butotn Invite ở trên thì sẽ mở popover */}

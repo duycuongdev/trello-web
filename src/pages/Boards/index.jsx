@@ -182,8 +182,9 @@ function Boards() {
       <AppBar />
       <Container maxWidth="xl" sx={{ py: { xs: 2.5, sm: 4 }, px: { xs: 1.5, sm: 3, md: 4 } }}>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
-          {/* Sidebar */}
-          <Box sx={{ width: { xs: '100%', md: '260px' }, flexShrink: 0, mr: { xs: 0, md: 4 } }}>
+          {/* Sidebar - ẩn trên mobile: bottom nav đã có tab Danh sách bảng,
+              "Bảng đã đóng" nằm ở icon trên AppBar (mobile) */}
+          <Box sx={{ width: { xs: '100%', md: '260px' }, flexShrink: 0, mr: { xs: 0, md: 4 }, display: { xs: 'none', md: 'block' } }}>
             <Stack direction="column" spacing={1}>
               <SidebarItem
                 component={Link}

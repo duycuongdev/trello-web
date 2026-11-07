@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import AppsIcon from '@mui/icons-material/Apps'
+import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import TrelloIcon from '~/components/Icons/TrelloIcon'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
@@ -29,6 +30,9 @@ function AppBar() {
   // Mobile: khi đang ở trong chi tiết board thì ẩn AppBar (BoardBar đã có nút quay lại)
   // để chỉ còn 1 tầng header như app Trello thật. Desktop giữ nguyên.
   const isBoardDetail = /^\/boards\/[^/]+/.test(location.pathname)
+  // Trang DANH SÁCH bảng (không phải chi tiết): dùng để hiện nút Bảng đã đóng trên mobile
+  const isBoardsList = /^\/boards\/?$/.test(location.pathname)
+  const isClosedView = new URLSearchParams(location.search).get('closed') === 'true'
 
   // Tự động bật Tour giới thiệu tính năng khi người dùng đăng nhập lần đầu
   useEffect(() => {
@@ -90,22 +94,43 @@ function AppBar() {
         '&::-webkit-scrollbar-track': { m: 2 }
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
-          <Link to='/boards'>
-            <Tooltip title={t('appBar.boardList')}>
-              <IconButton
-                sx={{ color: 'white' }}
-                aria-label={t('appBar.boardList')}
-              >
-                <AppsIcon />
-              </IconButton>
-            </Tooltip>
-          </Link>
+          {/* Icon lưới chuyển bảng: ẩn trên mobile (bottom nav đã có tab Danh sách bảng) */}
+          <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
+            <Link to='/boards'>
+              <Tooltip title={t('appBar.boardList')}>
+                <IconButton
+                  sx={{ color: 'white' }}
+                  aria-label={t('appBar.boardList')}
+                >
+                  <AppsIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          </Box>
           <Link to='/boards' style={{ textDecoration: 'none' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
               <TrelloIcon fontSize='small' sx={{ color: 'white' }} />
               <Typography variant='span' sx={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }}>Trello</Typography>
             </Box>
           </Link>
+          {/* Mobile - chỉ ở trang danh sách bảng: nút Bảng đã đóng (toggle) */}
+          {isBoardsList && (
+            <Tooltip title={isClosedView ? t('boards.sidebarBoards') : t('boards.sidebarClosedBoards')}>
+              <IconButton
+                component={Link}
+                to={isClosedView ? '/boards' : '/boards?closed=true'}
+                aria-label={isClosedView ? t('boards.sidebarBoards') : t('boards.sidebarClosedBoards')}
+                sx={{
+                  display: { xs: 'inline-flex', sm: 'none' },
+                  color: 'white',
+                  bgcolor: isClosedView ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.15)',
+                  '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' }
+                }}
+              >
+                <FolderOffOutlinedIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>

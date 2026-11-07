@@ -241,7 +241,7 @@ function BoardBar({ board, onlineUsers = [] }) {
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: 2
+        gap: { xs: 1, sm: 2 }
       }}>
         {!isEditingTitle ? (
           <Tooltip title={t('board.clickToEditTitle')}>
@@ -252,8 +252,8 @@ function BoardBar({ board, onlineUsers = [] }) {
                 fontSize: '14px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                // Mobile: giới hạn độ rộng tên board để cụm bên phải (Mời/avatar) không bị đẩy tràn màn hình
-                maxWidth: { xs: '38vw', sm: 'none' },
+                // Mobile: giới hạn độ rộng tên board - bấm vào tên để xem/sửa đầy đủ
+                maxWidth: { xs: '42vw', sm: 'none' },
                 '& .MuiChip-label': {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -423,8 +423,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           />
         )}
 
-        {/* Mobile (xs): nút Bộ lọc dạng icon - công cụ dùng nhiều nhất nên tách ra khỏi menu ⋯
-            Có chấm cảnh báo khi đang bật bộ lọc */}
+        {/* Mobile (xs): cụm icon Lọc → Mời → ⋯ nằm ngay sau tên board (đề xuất của chủ project) */}
         <Badge
           color="warning"
           variant="dot"
@@ -439,6 +438,10 @@ function BoardBar({ board, onlineUsers = [] }) {
             <FilterIcon />
           </IconButton>
         </Badge>
+
+        <Box sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
+          <InviteBoardUser boardId={board?._id} board={board} iconOnly />
+        </Box>
 
         {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
         <Tooltip title={t('boardBar.more')}>
@@ -519,14 +522,12 @@ function BoardBar({ board, onlineUsers = [] }) {
                 fontWeight: 600,
                 height: 28,
                 cursor: 'pointer',
+                display: { xs: 'none', sm: 'inline-flex' },
                 '& .MuiChip-label': { px: 1, fontSize: '0.75rem' }
               }}
             />
           </Tooltip>
         )}
-
-        {/* handle invite user into board */}
-        <InviteBoardUser boardId={board?._id} board={board} />
 
         {/* handle user group */}
         <BoardUserGroup
