@@ -24,13 +24,21 @@ const persistor = persistStore(store)
 
 // kỹ thuật Inject store vào authorizeAxios.js để sử dụng biến store trong file authorizeAxios.js
 import { injectStore } from '~/utils/authorizeAxios'
-import { GoogleOAuthProvider } from '@react-oauth/google'
+import GoogleProvider from '~/components/GoogleProvider'
 import { MotionConfig } from 'framer-motion'
-import { GOOGLE_CLIENT_ID } from '~/utils/constants'
 injectStore(store)
 
+// PWA: kiểm tra service worker mới khi người dùng quay lại app.
+// iOS PWA khôi phục nguyên trạng webview khi mở lại (không có navigation) nên trình duyệt
+// không tự check update - phải chủ động gọi registration.update() rồi để plugin auto-reload.
+const checkSWUpdate = () => navigator.serviceWorker?.controller?.update?.()
+window.addEventListener('focus', checkSWUpdate)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') checkSWUpdate()
+})
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale="en">
+  <GoogleProvider>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BrowserRouter basename='/' future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
@@ -95,5 +103,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </BrowserRouter>
       </PersistGate>
     </Provider>
-  </GoogleOAuthProvider>
+  </GoogleProvider>
 )

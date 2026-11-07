@@ -200,7 +200,7 @@ function LoginForm() {
                 boxShadow: '0 4px 14px rgba(12, 102, 228, 0.35)'
               }}
             >
-              Log in
+              {t('auth.login')}
             </Button>
           </CardActions>
 

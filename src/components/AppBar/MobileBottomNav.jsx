@@ -47,11 +47,17 @@ function MobileBottomNav({ onOpenTour, onOpenShortcuts }) {
         label={t('appBar.boardList')}
         active={isBoardsActive || location.pathname === '/'}
       />
-      <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: 64 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', minWidth: 64 }}>
         <Notifications />
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: 'rgba(255, 255, 255, 0.85)' }}>
+          {t('appBar.notifications')}
+        </Typography>
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'center', minWidth: 64 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', minWidth: 64 }}>
         <Profile onOpenTour={onOpenTour} onOpenShortcuts={onOpenShortcuts} />
+        <Typography sx={{ fontSize: '0.65rem', fontWeight: 500, lineHeight: 1, color: 'rgba(255, 255, 255, 0.85)' }}>
+          {t('profileMenu.profile')}
+        </Typography>
       </Box>
     </Box>
   )

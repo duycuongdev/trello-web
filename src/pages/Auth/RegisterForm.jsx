@@ -358,7 +358,7 @@ function RegisterForm() {
                 boxShadow: '0 4px 14px rgba(12, 102, 228, 0.35)'
               }}
             >
-              Sign up
+              {t('auth.signUp')}
             </Button>
           </CardActions>
 

@@ -223,7 +223,7 @@ function Notifications() {
 
   return (
     <Box>
-      <Tooltip title="Notifications">
+      <Tooltip title={t('appBar.notifications')}>
         <IconButton
           id="basic-button-open-notification"
           aria-controls={open ? 'basic-notification-drop-down' : undefined}
