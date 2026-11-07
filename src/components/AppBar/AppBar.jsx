@@ -8,7 +8,7 @@ import TrelloIcon from '~/components/Icons/TrelloIcon'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 import Profile from './Menus/Profile'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Notifications from './Notifications/Notifications'
 import MobileBottomNav from './MobileBottomNav'
 import AutoCompleteSearchBoard from './SearchBoards/AutoCompleteSearchBoard'
@@ -20,10 +20,15 @@ import KeyboardShortcutsModal from '~/components/Modal/KeyboardShortcutsModal/Ke
 
 function AppBar() {
   const { t } = useTranslation()
+  const location = useLocation()
   const activeBoard = useSelector(selectCurrentActiveBoard)
   const currentUser = useSelector(selectCurrentUser)
   const [openTour, setOpenTour] = useState(false)
   const [openShortcuts, setOpenShortcuts] = useState(false)
+
+  // Mobile: khi đang ở trong chi tiết board thì ẩn AppBar (BoardBar đã có nút quay lại)
+  // để chỉ còn 1 tầng header như app Trello thật. Desktop giữ nguyên.
+  const isBoardDetail = /^\/boards\/[^/]+/.test(location.pathname)
 
   // Tự động bật Tour giới thiệu tính năng khi người dùng đăng nhập lần đầu
   useEffect(() => {
@@ -66,7 +71,7 @@ function AppBar() {
         // PWA standalone (iPhone): chừa chỗ cho thanh trạng thái/notch
         height: (theme) => `calc(${theme.trello.appBarHeight} + env(safe-area-inset-top, 0px))`,
         paddingTop: 'env(safe-area-inset-top, 0px)',
-        display: 'flex',
+        display: { xs: isBoardDetail ? 'none' : 'flex', sm: 'flex' },
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: { xs: 1, sm: 2 },

@@ -14,6 +14,7 @@ import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Tooltip from '@mui/material/Tooltip'
 import { selectCardFilter, setCardFilter, updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { updateBoardDetailsAPI, closeBoardAPI, removeBoardMemberAPI } from '~/apis'
@@ -246,6 +247,15 @@ function BoardBar({ board, onlineUsers = [] }) {
         alignItems: 'center',
         gap: 2
       }}>
+        {/* Mobile: nút quay lại danh sách board (AppBar bị ẩn trong chi tiết board trên mobile) */}
+        <IconButton
+          onClick={() => navigate('/boards')}
+          aria-label={t('board.goToMyBoards')}
+          sx={{ display: { xs: 'inline-flex', sm: 'none' }, color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+
         {!isEditingTitle ? (
           <Tooltip title={t('board.clickToEditTitle')}>
             <Chip
