@@ -332,7 +332,14 @@
     "closeFailed": "Đóng bảng thất bại",
     "leftBoard": "Bạn đã rời bảng \"{{title}}\"!",
     "leaveFailed": "Rời bảng thất bại",
-    "onlineOnBoard": "Đang trực tuyến trên bảng: {{users}}"
+    "onlineOnBoard": "Đang trực tuyến trên bảng: {{users}}",
+    "filters": "Bộ lọc",
+    "background": "Nền bảng",
+    "archived": "Đã lưu trữ",
+    "closeBoard": "Đóng bảng",
+    "leaveBoard": "Rời bảng",
+    "leaveBoardTitle": "Rời bảng?",
+    "leaveBoardDesc": "Bạn có chắc muốn rời \"{{title}}\"? Bạn sẽ mất quyền truy cập bảng này trừ khi được mời lại."
   },
   "background": {
     "photos": "Ảnh",

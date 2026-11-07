@@ -60,68 +60,72 @@ function AppBar() {
   }
 
   return (
-    <Box sx={{
-      width: '100%',
-      // PWA standalone (iPhone): chừa chỗ cho thanh trạng thái/notch
-      height: (theme) => `calc(${theme.trello.appBarHeight} + env(safe-area-inset-top, 0px))`,
-      paddingTop: 'env(safe-area-inset-top, 0px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: { xs: 1, sm: 2 },
-      overflowX: 'auto',
-      paddingX: { xs: 1, sm: 2 },
-      bgcolor: activeBoard?.background
-        ? 'rgba(0, 0, 0, 0.45)'
-        : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
-      backdropFilter: activeBoard?.background ? 'blur(6px)' : 'none',
-      borderBottom: activeBoard?.background
-        ? '1px solid rgba(255, 255, 255, 0.15)'
-        : (theme) => (theme.palette.mode === 'dark' ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.08)'),
-      transition: 'background 0.3s ease, border-color 0.3s ease',
-      // thanh scroll thẳng với list card
-      '&::-webkit-scrollbar-track': { m: 2 }
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
-        <Link to='/boards'>
-          <Tooltip title={t('appBar.boardList')}>
-            <IconButton
-              sx={{ color: 'white' }}
-              aria-label={t('appBar.boardList')}
-            >
-              <AppsIcon />
-            </IconButton>
-          </Tooltip>
-        </Link>
-        <Link to='/boards' style={{ textDecoration: 'none' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <TrelloIcon fontSize='small' sx={{ color: 'white' }} />
-            <Typography variant='span' sx={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }}>Trello</Typography>
+    <>
+      <Box sx={{
+        width: '100%',
+        // PWA standalone (iPhone): chừa chỗ cho thanh trạng thái/notch
+        height: (theme) => `calc(${theme.trello.appBarHeight} + env(safe-area-inset-top, 0px))`,
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: { xs: 1, sm: 2 },
+        overflowX: 'auto',
+        paddingX: { xs: 1, sm: 2 },
+        bgcolor: activeBoard?.background
+          ? 'rgba(0, 0, 0, 0.45)'
+          : (theme) => (theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc'),
+        backdropFilter: activeBoard?.background ? 'blur(6px)' : 'none',
+        borderBottom: activeBoard?.background
+          ? '1px solid rgba(255, 255, 255, 0.15)'
+          : (theme) => (theme.palette.mode === 'dark' ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid rgba(0, 0, 0, 0.08)'),
+        transition: 'background 0.3s ease, border-color 0.3s ease',
+        // thanh scroll thẳng với list card
+        '&::-webkit-scrollbar-track': { m: 2 }
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+          <Link to='/boards'>
+            <Tooltip title={t('appBar.boardList')}>
+              <IconButton
+                sx={{ color: 'white' }}
+                aria-label={t('appBar.boardList')}
+              >
+                <AppsIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+          <Link to='/boards' style={{ textDecoration: 'none' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <TrelloIcon fontSize='small' sx={{ color: 'white' }} />
+              <Typography variant='span' sx={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'white' }}>Trello</Typography>
+            </Box>
+          </Link>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+          {/* search board */}
+          <AutoCompleteSearchBoard />
+
+          {/* dark mode and light mode */}
+          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <ModeSelect />
           </Box>
-        </Link>
-      </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
-        {/* search board */}
-        <AutoCompleteSearchBoard />
+          {/* notifications + account: chỉ trên desktop/tablet - trên mobile chúng nằm ở BottomNav */}
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+            <Notifications />
 
-        {/* dark mode and light mode */}
-        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-          <ModeSelect />
-        </Box>
-
-        {/* notifications + account: chỉ trên desktop/tablet - trên mobile chúng nằm ở BottomNav */}
-        <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
-          <Notifications />
-
-          <Profile
-            onOpenTour={() => setOpenTour(true)}
-            onOpenShortcuts={() => setOpenShortcuts(true)}
-          />
+            <Profile
+              onOpenTour={() => setOpenTour(true)}
+              onOpenShortcuts={() => setOpenShortcuts(true)}
+            />
+          </Box>
         </Box>
       </Box>
 
-      {/* Thanh điều hướng dưới cùng cho mobile (Boards / Notifications / Account) */}
+      {/* Thanh điều hướng dưới cùng cho mobile (Boards / Notifications / Account).
+          PHẢI nằm NGOÀI Box header ở trên: backdrop-filter của header tạo containing block
+          cho position:fixed và khiến bottom nav bị neo nhầm lên đỉnh AppBar. */}
       <MobileBottomNav
         onOpenTour={() => setOpenTour(true)}
         onOpenShortcuts={() => setOpenShortcuts(true)}
@@ -132,7 +136,7 @@ function AppBar() {
 
       {/* Modal hướng dẫn phím tắt bàn phím */}
       <KeyboardShortcutsModal open={openShortcuts} onClose={() => setOpenShortcuts(false)} />
-    </Box>
+    </>
   )
 }
 

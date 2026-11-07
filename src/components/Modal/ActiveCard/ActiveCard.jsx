@@ -481,7 +481,7 @@ function ActiveCard() {
                 {t('cardModal.sendToBoard')}
               </Button>
               <Button size="small" color="error" variant="outlined" onClick={handleDeleteCard} sx={{ textTransform: 'none' }}>
-                Delete
+                {t('boards.delete')}
               </Button>
             </Box>
           </Box>

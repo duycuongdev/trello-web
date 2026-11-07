@@ -332,7 +332,14 @@
     "closeFailed": "Failed to close board",
     "leftBoard": "You have left board \"{{title}}\"!",
     "leaveFailed": "Failed to leave board",
-    "onlineOnBoard": "Online on this board: {{users}}"
+    "onlineOnBoard": "Online on this board: {{users}}",
+    "filters": "Filters",
+    "background": "Background",
+    "archived": "Archived",
+    "closeBoard": "Close board",
+    "leaveBoard": "Leave board",
+    "leaveBoardTitle": "Leave Board?",
+    "leaveBoardDesc": "Are you sure you want to leave \"{{title}}\"? You will lose access to this board unless invited again."
   },
   "background": {
     "photos": "Photos",

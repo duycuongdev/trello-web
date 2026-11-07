@@ -122,9 +122,9 @@ function Column({ column }) {
   const handleDeleteColumn = () => {
     confirmDeleteColumn({
       title: t('column.deleteColumnTitle'),
-      description: 'This action will permanent delete your Column and its Cards! Are you sure ?',
-      confirmationText: 'Confirm',
-      cancellationText: 'Cancel'
+      description: t('column.deleteColumnDesc'),
+      confirmationText: t('common.confirm'),
+      cancellationText: t('common.cancel')
     }).then(() => {
       // update cho chuẩn dữ liệu state board
       const newBoard = { ...board }
@@ -151,7 +151,7 @@ function Column({ column }) {
       title: t('column.archiveColumnTitle'),
       description: t('column.archiveColumnDesc'),
       confirmationText: t('cardModal.archive'),
-      cancellationText: 'Cancel'
+      cancellationText: t('common.cancel')
     }).then(async () => {
       try {
         await archiveColumnAPI(column._id)
@@ -253,7 +253,7 @@ function Column({ column }) {
                 '&:hover .add-card-icon': { color: 'success.light' }
               }}>
                 <ListItemIcon><AddcardIcon className='add-card-icon' fontSize="small" /></ListItemIcon>
-                <ListItemText>Add new card</ListItemText>
+                <ListItemText>{t('board.addCard')}</ListItemText>
               </MenuItem>
               <Divider />
               <MenuItem onClick={handleDeleteColumn} sx={{
@@ -287,7 +287,7 @@ function Column({ column }) {
               alignItems: 'center',
               justifyContent: 'space-between'
             }}>
-              <Button startIcon={<AddcardIcon />} onClick={toggleOpenNewCardForm}>Add new card</Button>
+              <Button startIcon={<AddcardIcon />} onClick={toggleOpenNewCardForm}>{t('board.addCard')}</Button>
               <Tooltip title='Drag to move'>
                 <DragHandleIcon sx={{ cursor: 'pointer' }} />
               </Tooltip>

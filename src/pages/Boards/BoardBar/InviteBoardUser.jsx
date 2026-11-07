@@ -54,9 +54,18 @@ function InviteBoardUser({ boardId, board }) {
           onClick={handleTogglePopover}
           variant="outlined"
           startIcon={<PersonAddIcon />}
-          sx={{ color: 'white', borderColor: 'white', '&:hover': { borderColor: 'white' } }}
+          sx={{
+            color: 'white',
+            borderColor: 'white',
+            '&:hover': { borderColor: 'white' },
+            // Mobile: thu gọn còn icon để BoardBar không bị tràn ngang
+            minWidth: { xs: 0, sm: 64 },
+            px: { xs: 1.25, sm: 2 }
+          }}
         >
-          Invite
+          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+            {t('board.invite')}
+          </Box>
         </Button>
       </Tooltip>
 
@@ -95,7 +104,7 @@ function InviteBoardUser({ boardId, board }) {
                 variant="contained"
                 color="info"
               >
-                Invite
+                {t('board.invite')}
               </Button>
             </Box>
 

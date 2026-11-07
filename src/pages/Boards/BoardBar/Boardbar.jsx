@@ -88,9 +88,9 @@ function BoardBar({ board, onlineUsers = [] }) {
   const handleCloseBoard = () => {
     confirm({
       title: t('boardBar.closeBoardTitle'),
-      description: 'You can find and reopen closed boards at the bottom of your boards page.',
+      description: t('boardBar.closeBoardDesc'),
       confirmationText: t('boardBar.close'),
-      cancellationText: 'Cancel'
+      cancellationText: t('common.cancel')
     }).then(async () => {
       try {
         await closeBoardAPI(board._id)
@@ -104,10 +104,10 @@ function BoardBar({ board, onlineUsers = [] }) {
 
   const handleLeaveBoard = () => {
     confirm({
-      title: 'Leave Board?',
-      description: `Are you sure you want to leave "${board?.title}"? You will lose access to this board unless invited again.`,
-      confirmationText: 'Leave',
-      cancellationText: 'Cancel'
+      title: t('boardBar.leaveBoardTitle'),
+      description: t('boardBar.leaveBoardDesc', { title: board?.title }),
+      confirmationText: t('boardBar.leaveBoard'),
+      cancellationText: t('common.cancel')
     }).then(async () => {
       try {
         await removeBoardMemberAPI(board._id, currentUser._id)
@@ -332,7 +332,7 @@ function BoardBar({ board, onlineUsers = [] }) {
             })
           }}
           icon={<FilterIcon />}
-          label={hasActiveFilter ? `Filters (${activeFilterCount})` : 'Filters'}
+          label={hasActiveFilter ? `${t('boardBar.filters')} (${activeFilterCount})` : t('boardBar.filters')}
           clickable
           onClick={handleOpenFilter}
         />
@@ -356,7 +356,7 @@ function BoardBar({ board, onlineUsers = [] }) {
             })
           }}
           icon={<WallpaperOutlinedIcon />}
-          label='Background'
+          label={t('boardBar.background')}
           clickable
           onClick={handleOpenBgPopover}
         />
@@ -374,7 +374,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         <Chip
           sx={{ ...MENU_STYLES, display: { xs: 'none', sm: 'inline-flex' } }}
           icon={<ArchiveOutlinedIcon />}
-          label='Archived'
+          label={t('boardBar.archived')}
           clickable
           onClick={() => setIsArchivedOpen(true)}
         />
@@ -396,7 +396,7 @@ function BoardBar({ board, onlineUsers = [] }) {
               }
             }}
             icon={<FolderOffOutlinedIcon />}
-            label='Close board'
+            label={t('boardBar.closeBoard')}
             clickable
             onClick={handleCloseBoard}
           />
@@ -413,7 +413,7 @@ function BoardBar({ board, onlineUsers = [] }) {
               }
             }}
             icon={<ExitToAppIcon />}
-            label='Leave board'
+            label={t('boardBar.leaveBoard')}
             clickable
             onClick={handleLeaveBoard}
           />
@@ -448,27 +448,27 @@ function BoardBar({ board, onlineUsers = [] }) {
               <FilterIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">
-              {hasActiveFilter ? `Filters (${activeFilterCount})` : 'Filters'}
+              {hasActiveFilter ? `${t('boardBar.filters')} (${activeFilterCount})` : t('boardBar.filters')}
             </Typography>
           </MenuItem>
           <MenuItem onClick={handleOpenBgFromMore}>
             <ListItemIcon>
               <WallpaperOutlinedIcon fontSize="small" />
             </ListItemIcon>
-            <Typography variant="inherit">Background</Typography>
+            <Typography variant="inherit">{t('boardBar.background')}</Typography>
           </MenuItem>
           <MenuItem onClick={handleOpenArchivedFromMore}>
             <ListItemIcon>
               <ArchiveOutlinedIcon fontSize="small" />
             </ListItemIcon>
-            <Typography variant="inherit">Archived</Typography>
+            <Typography variant="inherit">{t('boardBar.archived')}</Typography>
           </MenuItem>
           {isOwner && (
             <MenuItem onClick={() => { setMoreAnchorEl(null); handleCloseBoard() }}>
               <ListItemIcon>
                 <FolderOffOutlinedIcon fontSize="small" />
               </ListItemIcon>
-              <Typography variant="inherit">Close board</Typography>
+              <Typography variant="inherit">{t('boardBar.closeBoard')}</Typography>
             </MenuItem>
           )}
           {isInvitedMember && (
@@ -476,7 +476,7 @@ function BoardBar({ board, onlineUsers = [] }) {
               <ListItemIcon>
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
-              <Typography variant="inherit">Leave board</Typography>
+              <Typography variant="inherit">{t('boardBar.leaveBoard')}</Typography>
             </MenuItem>
           )}
         </Menu>
