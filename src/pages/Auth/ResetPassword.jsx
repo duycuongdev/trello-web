@@ -47,7 +47,7 @@ function ResetPassword() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2 }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2, pt: 'calc(16px + env(safe-area-inset-top, 0px))' }}>
       <CardEntrance delay={0.1}>
         <MuiCard sx={{
           width: '100%',

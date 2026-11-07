@@ -60,7 +60,7 @@ function Home() {
         borderBottom: '1px solid',
         borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'
       }}>
-        <Container maxWidth="lg" sx={{ py: 1.5, px: { xs: 1.5, sm: 3 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Container maxWidth="lg" sx={{ pt: 'calc(12px + env(safe-area-inset-top, 0px))', pb: 1.5, px: { xs: 1.5, sm: 3 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
           <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
             <Box sx={{

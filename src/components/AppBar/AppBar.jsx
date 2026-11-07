@@ -61,7 +61,9 @@ function AppBar() {
   return (
     <Box sx={{
       width: '100%',
-      height: (theme) => theme.trello.appBarHeight,
+      // PWA standalone (iPhone): chừa chỗ cho thanh trạng thái/notch
+      height: (theme) => `calc(${theme.trello.appBarHeight} + env(safe-area-inset-top, 0px))`,
+      paddingTop: 'env(safe-area-inset-top, 0px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',

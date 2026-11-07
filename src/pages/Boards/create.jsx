@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import IconButton from '@mui/material/IconButton'
@@ -13,36 +12,12 @@ import AbcIcon from '@mui/icons-material/Abc'
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import Button from '@mui/material/Button'
 import { createNewBoardAPI } from '~/apis'
-import { styled } from '@mui/material/styles'
 import { useTranslation } from 'react-i18next'
 
-const SidebarItem = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-  cursor: 'pointer',
-  backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
-  padding: '12px 16px',
-  borderRadius: '8px',
-  fontWeight: 500,
-  border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-  boxShadow: theme.palette.mode === 'dark' ? '0 1px 3px rgba(0,0,0,0.3)' : '0 1px 3px rgba(0,0,0,0.04)',
-  transition: 'all 0.15s ease',
-  '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#334155' : '#eef2f6'
-  },
-  '&.active': {
-    color: '#0052cc',
-    fontWeight: 600,
-    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 82, 204, 0.15)' : '#e9f2ff',
-    borderColor: theme.palette.mode === 'dark' ? 'rgba(0, 82, 204, 0.4)' : '#b3d4ff'
-  }
-}))
-
 /**
- * CreateBoardModal: Modal tạo Board mới, dùng chung cho Sidebar item và ô "+ Create new board" trong lưới.
- * - open/onClose: điều khiển từ component cha (nếu truyền open thì modal hiển thị theo prop)
- * - Với Sidebar: dùng SidebarCreateBoardModal (tự quản trạng thái mở/đóng)
+ * CreateBoardModal: Modal tạo Board mới, dùng chung cho ô "+ Create new board"
+ * trong lưới board ở trang Boards và trang board trống.
+ * - open/onClose: điều khiển từ component cha
  */
 export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
   const { t } = useTranslation()
@@ -155,7 +130,7 @@ export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
                   onClick={handleCloseModal}
                   sx={{ textTransform: 'none', fontWeight: 600 }}
                 >
-                    Cancel
+                  Cancel
                 </Button>
                 <Button
                   className="interceptor-loading"
@@ -164,7 +139,7 @@ export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
                   color="primary"
                   sx={{ textTransform: 'none', fontWeight: 600, px: 3 }}
                 >
-                    Create
+                  Create
                 </Button>
               </Box>
             </Box>
@@ -174,28 +149,3 @@ export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
     </Modal>
   )
 }
-
-/**
- * SidebarCreateBoardModal: nút SidebarItem "Create a new board" mở Modal tạo Board mới.
- */
-function SidebarCreateBoardModal({ afterCreateNewBoard }) {
-  const { t } = useTranslation()
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <>
-      <SidebarItem onClick={() => setIsOpen(true)}>
-        <LibraryAddIcon fontSize="small" sx={{ color: '#0052cc' }} />
-        {t('boards.createBoard')}
-      </SidebarItem>
-
-      <CreateBoardModal
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        afterCreateNewBoard={afterCreateNewBoard}
-      />
-    </>
-  )
-}
-
-export default SidebarCreateBoardModal

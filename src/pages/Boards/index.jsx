@@ -6,7 +6,6 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
-import Divider from '@mui/material/Divider'
 import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard'
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import UndoIcon from '@mui/icons-material/Undo'
@@ -19,7 +18,7 @@ import PaginationItem from '@mui/material/PaginationItem'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import randomColor from 'randomcolor'
-import SidebarCreateBoardModal, { CreateBoardModal } from './create'
+import { CreateBoardModal } from './create'
 import { styled } from '@mui/material/styles'
 import { fetchBoardsAPI, reopenBoardAPI, deleteBoardDetailsAPI } from '~/apis/index.js'
 import { DEFAULT_PAGE, DEFAULT_ITEMS_PER_PAGE } from '~/utils/constants.js'
@@ -209,14 +208,6 @@ function Boards() {
                 {t('boards.sidebarClosedBoards')}
               </SidebarItem>
             </Stack>
-            {!isClosedView && (
-              <>
-                <Divider sx={{ my: 1 }} />
-                <Stack direction="column" spacing={1}>
-                  <SidebarCreateBoardModal afterCreateNewBoard={afterCreateNewBoard} />
-                </Stack>
-              </>
-            )}
           </Box>
 
           {/* Main Content */}

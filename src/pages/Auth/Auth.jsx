@@ -140,7 +140,9 @@ function Auth() {
       <Box sx={{
         position: 'relative',
         zIndex: 2,
-        py: 2.5,
+        // PWA standalone (iPhone): chừa chỗ cho thanh trạng thái/notch
+        pt: 'calc(20px + env(safe-area-inset-top, 0px))',
+        pb: 2.5,
         px: { xs: 2.5, sm: 4 },
         display: 'flex',
         alignItems: 'center',
