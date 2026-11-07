@@ -40,7 +40,7 @@ const BOARD_INVITATION_STATUS = {
   REJECTED: 'REJECTED'
 }
 
-function Notifications() {
+function Notifications({ openUpward = false }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -244,11 +244,14 @@ function Notifications() {
       </Tooltip>
 
       <Menu
-        sx={{ mt: 1.5 }}
+        sx={{ mt: openUpward ? 0 : 1.5 }}
         id="basic-notification-drop-down"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
+        // openUpward: dùng khi nút nằm ở BottomNav (đáy màn hình) - menu mở hướng lên, không đè lên icon
+        anchorOrigin={openUpward ? { vertical: 'top', horizontal: 'right' } : { vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={openUpward ? { vertical: 'bottom', horizontal: 'right' } : { vertical: 'top', horizontal: 'left' }}
         MenuListProps={{ 'aria-labelledby': 'basic-button-open-notification', sx: { p: 0 } }}
         PaperProps={{
           sx: {
@@ -272,11 +275,11 @@ function Notifications() {
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 700, fontSize: '0.95rem' }}>
-              Notifications
+              {t('notifications.title')}
             </Typography>
             {unreadCount > 0 && (
               <Chip
-                label={`${unreadCount} new`}
+                label={t('notifications.unreadCount', { count: unreadCount })}
                 size="small"
                 color="primary"
                 sx={{ height: 20, fontSize: '0.68rem', fontWeight: 700 }}
@@ -330,7 +333,7 @@ function Notifications() {
                 {t('notifications.allCaughtUp')}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', maxWidth: 260 }}>
-                No active task deadlines or board invitations at this time.
+                {t('notifications.emptyDesc')}
               </Typography>
             </Box>
           ) : (
@@ -384,7 +387,7 @@ function Notifications() {
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 0.5 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
                               <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.82rem', color: isOverdue ? 'error.main' : 'warning.main' }}>
-                                {isOverdue ? 'Task Overdue' : 'Task Due Soon'}
+                                {isOverdue ? t('notifications.taskOverdue') : t('notifications.taskDueSoon')}
                               </Typography>
                               {!isRead && (
                                 <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: isOverdue ? 'error.main' : 'warning.main' }} />
@@ -393,18 +396,18 @@ function Notifications() {
                           </Box>
 
                           <Typography variant="body2" sx={{ wordBreak: 'break-word', lineHeight: 1.35, color: 'text.primary', fontSize: '0.84rem' }}>
-                            Card <strong>&quot;{notification.cardTitle}&quot;</strong> in board <strong>&quot;{notification.boardTitle}&quot;</strong>
+                            {t('notifications.deadlineCardInBoard', { card: notification.cardTitle, board: notification.boardTitle })}
                           </Typography>
 
                           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 0.3 }}>
                             <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '11px' }}>
-                              Due: {dayjs(notification.dueDate).format(t('common.dateFormatShort'))}
+                              {t('notifications.dueLabel', { date: dayjs(notification.dueDate).format(t('common.dateFormatShort')) })}
                             </Typography>
                           </Box>
                         </Box>
 
                         {/* Nút Xóa thông báo này */}
-                        <Tooltip title="Dismiss">
+                        <Tooltip title={t('notifications.dismiss')}>
                           <IconButton
                             size="small"
                             onClick={(e) => handleClearOne(notification._id, e)}
@@ -421,8 +424,8 @@ function Notifications() {
               }
 
               // Trường hợp 2: Lời mời tham gia Board (Board Invitation)
-              const inviterName = notification.inviter?.displayName || notification.inviter?.username || 'A teammate'
-              const boardTitle = notification.board?.title || 'Board'
+              const inviterName = notification.inviter?.displayName || notification.inviter?.username || t('notifications.someone')
+              const boardTitle = notification.board?.title || t('notifications.boardFallback')
               const isPending = notification.boardInvitation?.status === BOARD_INVITATION_STATUS.PENDING
 
               return (
@@ -458,7 +461,7 @@ function Notifications() {
                       <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 0.8 }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
                           <Typography variant="subtitle2" sx={{ fontWeight: 700, fontSize: '0.82rem', color: 'info.main' }}>
-                            Board Invitation
+                            {t('notifications.boardInvitation')}
                           </Typography>
                           {!isRead && (
                             <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'info.main' }} />
@@ -466,7 +469,7 @@ function Notifications() {
                         </Box>
 
                         <Typography variant="body2" sx={{ wordBreak: 'break-word', lineHeight: 1.35, color: 'text.primary', fontSize: '0.84rem' }}>
-                          <strong>{inviterName}</strong> invited you to join board <strong>&quot;{boardTitle}&quot;</strong>
+                          {t('notifications.invitedYouToBoard', { name: inviterName, board: boardTitle })}
                         </Typography>
 
                         {/* Các nút hành động Accept / Reject */}
@@ -496,7 +499,7 @@ function Notifications() {
                               }}
                               sx={{ textTransform: 'none', py: 0.3, px: 1.5, fontSize: '0.78rem', borderColor: 'divider' }}
                             >
-                              Decline
+                              {t('notifications.reject')}
                             </Button>
                           </Box>
                         ) : (
@@ -505,7 +508,7 @@ function Notifications() {
                               <Chip icon={<DoneIcon />} label={t('notifications.accepted')} color="success" size="small" sx={{ height: 22, fontSize: '0.7rem' }} />
                             )}
                             {notification.boardInvitation?.status === BOARD_INVITATION_STATUS.REJECTED && (
-                              <Chip icon={<NotInterestedIcon />} label="Declined" size="small" sx={{ height: 22, fontSize: '0.7rem' }} />
+                              <Chip icon={<NotInterestedIcon />} label={t('notifications.rejected')} size="small" sx={{ height: 22, fontSize: '0.7rem' }} />
                             )}
                           </Box>
                         )}

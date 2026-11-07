@@ -14,7 +14,6 @@ import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Tooltip from '@mui/material/Tooltip'
 import { selectCardFilter, setCardFilter, updateCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { updateBoardDetailsAPI, closeBoardAPI, removeBoardMemberAPI } from '~/apis'
@@ -247,15 +246,6 @@ function BoardBar({ board, onlineUsers = [] }) {
         alignItems: 'center',
         gap: 2
       }}>
-        {/* Mobile: nút quay lại danh sách board (AppBar bị ẩn trong chi tiết board trên mobile) */}
-        <IconButton
-          onClick={() => navigate('/boards')}
-          aria-label={t('board.goToMyBoards')}
-          sx={{ display: { xs: 'inline-flex', sm: 'none' }, color: 'white', bgcolor: 'rgba(255, 255, 255, 0.15)', '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.3)' } }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-
         {!isEditingTitle ? (
           <Tooltip title={t('board.clickToEditTitle')}>
             <Chip
@@ -265,6 +255,13 @@ function BoardBar({ board, onlineUsers = [] }) {
                 fontSize: '14px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
+                // Mobile: giới hạn độ rộng tên board để cụm bên phải (Mời/avatar) không bị đẩy tràn màn hình
+                maxWidth: { xs: '38vw', sm: 'none' },
+                '& .MuiChip-label': {
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                },
                 '&:hover': {
                   bgcolor: 'rgba(255, 255, 255, 0.25)'
                 }
@@ -454,7 +451,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
           <MenuItem onClick={handleOpenFilterFromMore}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: '#0052cc' }}>
               <FilterIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">
@@ -462,20 +459,20 @@ function BoardBar({ board, onlineUsers = [] }) {
             </Typography>
           </MenuItem>
           <MenuItem onClick={handleOpenBgFromMore}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: '#8b5cf6' }}>
               <WallpaperOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">{t('boardBar.background')}</Typography>
           </MenuItem>
           <MenuItem onClick={handleOpenArchivedFromMore}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: '#f59e0b' }}>
               <ArchiveOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">{t('boardBar.archived')}</Typography>
           </MenuItem>
           {isOwner && (
             <MenuItem onClick={() => { setMoreAnchorEl(null); handleCloseBoard() }}>
-              <ListItemIcon>
+              <ListItemIcon sx={{ color: '#ef4444' }}>
                 <FolderOffOutlinedIcon fontSize="small" />
               </ListItemIcon>
               <Typography variant="inherit">{t('boardBar.closeBoard')}</Typography>
@@ -483,7 +480,7 @@ function BoardBar({ board, onlineUsers = [] }) {
           )}
           {isInvitedMember && (
             <MenuItem onClick={() => { setMoreAnchorEl(null); handleLeaveBoard() }}>
-              <ListItemIcon>
+              <ListItemIcon sx={{ color: '#ef4444' }}>
                 <ExitToAppIcon fontSize="small" />
               </ListItemIcon>
               <Typography variant="inherit">{t('boardBar.leaveBoard')}</Typography>

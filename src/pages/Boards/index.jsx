@@ -27,27 +27,24 @@ import { toast } from 'react-toastify'
 import { slugify } from '~/utils/formatter'
 import { useTranslation } from 'react-i18next'
 
-// Styles của các Sidebar item menu theo chuẩn Atlassian Surface
+// Styles của các Sidebar item menu - nền trong suốt, chỉ highlight khi hover/active
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
   cursor: 'pointer',
-  backgroundColor: theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
+  color: theme.palette.mode === 'dark' ? '#cbd5e1' : '#172b4d',
   padding: '12px 16px',
   borderRadius: '8px',
   fontWeight: 500,
-  border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'}`,
-  boxShadow: theme.palette.mode === 'dark' ? '0 1px 3px rgba(0,0,0,0.3)' : '0 1px 3px rgba(0,0,0,0.04)',
   transition: 'all 0.15s ease',
   '&:hover': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#334155' : '#eef2f6'
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'
   },
   '&.active': {
     color: '#0052cc',
     fontWeight: 600,
-    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 82, 204, 0.15)' : '#e9f2ff',
-    borderColor: theme.palette.mode === 'dark' ? 'rgba(0, 82, 204, 0.4)' : '#b3d4ff'
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 82, 204, 0.15)' : '#e9f2ff'
   }
 }))
 

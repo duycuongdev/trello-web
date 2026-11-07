@@ -17,7 +17,7 @@ import { useConfirm } from 'material-ui-confirm'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
-function Profile({ onOpenTour, onOpenShortcuts }) {
+function Profile({ onOpenTour, onOpenShortcuts, openUpward = false }) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -65,6 +65,9 @@ function Profile({ onOpenTour, onOpenShortcuts }) {
         open={open}
         onClose={handleClose}
         onClick={handleClose}
+        // openUpward: dùng khi nút nằm ở BottomNav (đáy màn hình) - menu mở hướng lên, không đè lên icon
+        anchorOrigin={openUpward ? { vertical: 'top', horizontal: 'right' } : { vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={openUpward ? { vertical: 'bottom', horizontal: 'right' } : { vertical: 'top', horizontal: 'right' }}
         MenuListProps={{
           'aria-labelledby': 'basic-button-profile'
         }}
