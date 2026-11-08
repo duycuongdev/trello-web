@@ -91,7 +91,7 @@ function Card({ card }) {
             ))}
           </Box>
         )}
-        <Typography>{card?.title}</Typography>
+        <Typography sx={{ overflowWrap: 'anywhere', lineHeight: 1.4 }}>{card?.title}</Typography>
       </CardContent>
       {shouldShowCardActions(card) &&
         <CardActions sx={{ p: '1px 12px', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>

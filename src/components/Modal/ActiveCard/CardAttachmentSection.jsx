@@ -96,9 +96,9 @@ function CardAttachmentSection({ attachments = [], cardCover, onDeleteAttachment
                 </Typography>
 
                 <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mb: 0.5 }}>
-                  Added {att.uploadedAt ? dayjs(att.uploadedAt).fromNow() : ''}
+                  {t('card.addedAgo', { time: att.uploadedAt ? dayjs(att.uploadedAt).fromNow() : '' })}
                   {att.fileSize ? ` • ${formatBytes(att.fileSize)}` : ''}
-                  {isCurrentCover && ' • Current Cover'}
+                  {isCurrentCover && ` • ${t('card.currentCover')}`}
                 </Typography>
 
                 {/* Actions */}
@@ -110,7 +110,7 @@ function CardAttachmentSection({ attachments = [], cardCover, onDeleteAttachment
                     onClick={() => window.open(att.fileUrl, '_blank')}
                     sx={{ textTransform: 'none', fontSize: '0.75rem', p: '2px 6px', minWidth: 'unset' }}
                   >
-                    Open
+                    {t('common.open')}
                   </Button>
 
                   {isImage && !isCurrentCover && onMakeCover && (
@@ -132,7 +132,7 @@ function CardAttachmentSection({ attachments = [], cardCover, onDeleteAttachment
                     onClick={() => onDeleteAttachment(att._id)}
                     sx={{ textTransform: 'none', fontSize: '0.75rem', p: '2px 6px', minWidth: 'unset' }}
                   >
-                    Delete
+                    {t('common.delete')}
                   </Button>
                 </Box>
               </Box>

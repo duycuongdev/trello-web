@@ -160,24 +160,24 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <FilterListIcon fontSize="small" color="primary" />
           <Typography variant="subtitle1" fontWeight={700}>
-            Filter Cards
+            {t('board.filter')}
           </Typography>
         </Box>
-        <IconButton size="small" onClick={onClose} aria-label="close">
+        <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
 
       {hasActiveFilter && (
         <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mb: 1.5 }}>
-          Showing <strong>{matchedCards}</strong> of <strong>{totalCards}</strong> cards
+          {t('boardBar.showingCards', { shown: matchedCards, total: totalCards })}
         </Typography>
       )}
 
       {/* Tìm kiếm theo từ khóa */}
       <Box sx={{ mb: 2 }}>
-        <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 0.5, display: 'block' }}>
-          KEYWORD
+        <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 0.5, display: 'block', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          {t('boardBar.keyword')}
         </Typography>
         <TextField
           fullWidth
@@ -206,8 +206,8 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
 
       {/* Lọc theo Thành viên (Members / Only my cards) */}
       <Box sx={{ mb: 2 }}>
-        <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 1, display: 'block' }}>
-          MEMBERS
+        <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 1, display: 'block', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          {t('card.members')}
         </Typography>
 
         {/* Nút lọc nhanh: Chỉ thẻ của tôi */}
@@ -243,10 +243,10 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
             </Avatar>
             <Box>
               <Typography variant="body2" fontWeight={600}>
-                Cards assigned to me
+                {t('board.cardsAssignedToMe')}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                Only my cards
+                {t('boardBar.onlyMyCards')}
               </Typography>
             </Box>
           </Box>
@@ -308,8 +308,8 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
 
       {/* Lọc theo Nhãn (Labels) do người dùng tạo */}
       <Box sx={{ mb: 2 }}>
-        <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 1, display: 'block' }}>
-          LABELS
+        <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 1, display: 'block', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+          {t('card.labels')}
         </Typography>
 
         {availableLabels.length === 0 ? (
@@ -335,16 +335,7 @@ function BoardCardFilterPopover({ anchorEl, isOpen, onClose, board }) {
             sx={{
               maxHeight: '180px',
               overflowY: 'auto',
-              pr: 0.5,
-              '&::-webkit-scrollbar': { width: '5px' },
-              '&::-webkit-scrollbar-track': { backgroundColor: 'transparent' },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'),
-                borderRadius: '4px'
-              },
-              '&::-webkit-scrollbar-thumb:hover': {
-                backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.35)' : 'rgba(0, 0, 0, 0.35)')
-              }
+              pr: 0.5
             }}
           >
             {availableLabels.map((label) => {

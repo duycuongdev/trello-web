@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react'
+import { useEffect, useState, useMemo, useCallback, useId } from 'react'
 import dayjs from 'dayjs'
 import Badge from '@mui/material/Badge'
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
@@ -44,6 +44,9 @@ function Notifications({ openUpward = false }) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  // Notifications được render 2 lần (AppBar desktop + BottomNav mobile) nên id phải duy nhất theo instance
+  const buttonId = useId()
+  const menuId = useId()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
@@ -184,9 +187,9 @@ function Notifications({ openUpward = false }) {
 
     const onReceiveCardDueDateChanged = ({ card, boardTitle }) => {
       dispatch(fetchInvitationsAPI())
-      const cardTitle = card?.title ? `'${card.title}'` : 'assigned card'
-      const boardInfo = boardTitle ? ' on ' + boardTitle : ''
-      toast.info('⏰ Deadline updated for ' + cardTitle + boardInfo)
+      const cardTitle = card?.title ? `'${card.title}'` : t('notifications.assignedCardFallback')
+      const boardInfo = boardTitle ? t('notifications.onBoardSuffix', { board: boardTitle }) : ''
+      toast.info(t('board.deadlineUpdated', { cardTitle, boardInfo }))
     }
 
     socketIoInstance.on('BE_CARD_DUE_DATE_CHANGED', onReceiveCardDueDateChanged)
@@ -208,7 +211,7 @@ function Notifications({ openUpward = false }) {
       socketIoInstance.off('BE_CARD_DUE_DATE_CHANGED', onReceiveCardDueDateChanged)
       socketIoInstance.off('connect', onConnect)
     }
-  }, [dispatch, userId])
+  }, [dispatch, userId, t])
 
   const updateBoardInvitation = (status, invitationId) => {
     markAsRead(invitationId)
@@ -225,8 +228,9 @@ function Notifications({ openUpward = false }) {
     <Box>
       <Tooltip title={t('appBar.notifications')}>
         <IconButton
-          id="basic-button-open-notification"
-          aria-controls={open ? 'basic-notification-drop-down' : undefined}
+          id={buttonId}
+          aria-label={t('appBar.notifications')}
+          aria-controls={open ? menuId : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClickNotificationIcon}
@@ -245,14 +249,14 @@ function Notifications({ openUpward = false }) {
 
       <Menu
         sx={{ mt: openUpward ? 0 : 1.5 }}
-        id="basic-notification-drop-down"
+        id={menuId}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         // openUpward: dùng khi nút nằm ở BottomNav (đáy màn hình) - menu mở hướng lên, không đè lên icon
         anchorOrigin={openUpward ? { vertical: 'top', horizontal: 'right' } : { vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={openUpward ? { vertical: 'bottom', horizontal: 'right' } : { vertical: 'top', horizontal: 'left' }}
-        MenuListProps={{ 'aria-labelledby': 'basic-button-open-notification', sx: { p: 0 } }}
+        MenuListProps={{ 'aria-labelledby': buttonId, sx: { p: 0 } }}
         PaperProps={{
           sx: {
             maxHeight: 520,
@@ -293,6 +297,7 @@ function Notifications({ openUpward = false }) {
                 <span>
                   <IconButton
                     size="small"
+                    aria-label={t('notifications.markAllAsRead')}
                     onClick={handleMarkAllAsRead}
                     disabled={unreadCount === 0}
                     sx={{ p: 0.8 }}
@@ -305,6 +310,7 @@ function Notifications({ openUpward = false }) {
               <Tooltip title={t('notifications.clearAll')}>
                 <IconButton
                   size="small"
+                  aria-label={t('notifications.clearAll')}
                   onClick={handleClearAll}
                   sx={{ p: 0.8, color: 'text.secondary', '&:hover': { color: 'error.main' } }}
                 >
@@ -410,6 +416,7 @@ function Notifications({ openUpward = false }) {
                         <Tooltip title={t('notifications.dismiss')}>
                           <IconButton
                             size="small"
+                            aria-label={t('notifications.dismiss')}
                             onClick={(e) => handleClearOne(notification._id, e)}
                             sx={{ p: 0.4, opacity: 0.6, '&:hover': { opacity: 1, color: 'error.main' } }}
                           >
@@ -522,6 +529,7 @@ function Notifications({ openUpward = false }) {
                       <Tooltip title={t('notifications.dismiss')}>
                         <IconButton
                           size="small"
+                          aria-label={t('notifications.dismiss')}
                           onClick={(e) => handleClearOne(notification._id, e)}
                           sx={{ p: 0.4, opacity: 0.6, '&:hover': { opacity: 1, color: 'error.main' } }}
                         >

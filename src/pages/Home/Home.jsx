@@ -113,8 +113,8 @@ function Home() {
                     whiteSpace: 'nowrap'
                   }}
                 >
-                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Go to boards</Box>
-                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Boards</Box>
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('home.goToBoards')}</Box>
+                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{t('home.boardsShort')}</Box>
                 </Button>
               </>
             ) : (

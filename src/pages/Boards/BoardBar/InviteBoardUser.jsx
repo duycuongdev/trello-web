@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import TextField from '@mui/material/TextField'
 import { useForm } from 'react-hook-form'
-import { EMAIL_RULE, FIELD_REQUIRED_MESSAGE, EMAIL_RULE_MESSAGE } from '~/utils/validators'
+import { EMAIL_RULE } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { inviteUserToBoardAPI } from '~/apis'
 import { useTranslation } from 'react-i18next'
@@ -97,8 +97,8 @@ function InviteBoardUser({ boardId, board, iconOnly = false }) {
                 type="text"
                 variant="outlined"
                 {...register('inviteeEmail', {
-                  required: FIELD_REQUIRED_MESSAGE,
-                  pattern: { value: EMAIL_RULE, message: EMAIL_RULE_MESSAGE }
+                  required: t('validation.required'),
+                  pattern: { value: EMAIL_RULE, message: t('validation.emailInvalid') }
                 })}
                 error={!!errors['inviteeEmail']}
               />
@@ -133,7 +133,7 @@ function InviteBoardUser({ boardId, board, iconOnly = false }) {
                           <Box sx={{ minWidth: 0, flex: 1 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
                               <Typography variant="body2" sx={{ fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                {user?.displayName || 'User'}
+                                {user?.displayName || t('notifications.someone')}
                               </Typography>
                               {userIsOwner && (
                                 <Chip size="small" label={t('board.ownerBadge')} sx={{ height: 18, fontSize: '0.65rem', fontWeight: 700, bgcolor: 'rgba(0, 82, 204, 0.12)', color: '#0052cc' }} />

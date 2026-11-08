@@ -638,7 +638,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                               disabled={!editingItemTitle.trim()}
                               sx={{ textTransform: 'none', fontWeight: 600 }}
                             >
-                            Save
+                              {t('common.save')}
                             </Button>
                             <Button
                               size="small"
@@ -647,7 +647,7 @@ function CardChecklistSection({ checklists = [], onUpdateCardChecklists, onUploa
                               onClick={handleCancelEditItem}
                               sx={{ textTransform: 'none' }}
                             >
-                            Cancel
+                              {t('common.cancel')}
                             </Button>
                           </Box>
 

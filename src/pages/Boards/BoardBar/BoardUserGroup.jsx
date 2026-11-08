@@ -49,7 +49,7 @@ function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], is
 
     return (
       <Box key={user?._id || index} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-        <Tooltip title={`${user?.displayName || 'User'}${isOnline ? ' • Online now' : ''}`}>
+        <Tooltip title={`${user?.displayName || t('notifications.someone')}${isOnline ? ` • ${t('boardBar.onlineNow')}` : ''}`}>
           {isOnline ? (
             <Badge
               overlap="circular"
@@ -85,7 +85,7 @@ function BoardUserGroup({ boardUsers = [], limit = 4, boardId, ownerIds = [], is
           )}
         </Tooltip>
         {isOwner && !userIsOwner &&
-          <IconButton size="small" onClick={() => handleRemoveMember(user)} aria-label={`Remove ${user?.displayName}`}>
+          <IconButton size="small" onClick={() => handleRemoveMember(user)} aria-label={`${t('board.remove')} ${user?.displayName || ''}`}>
             <DeleteOutlineIcon fontSize="small" />
           </IconButton>
         }

@@ -129,7 +129,7 @@ function Boards() {
     try {
       await reopenBoardAPI(boardId)
       toast.success(t('boards.reopened'))
-      fetchBoardsAPI(location.search).then(updateStateData)
+      fetchBoardsAPI(location.search).then(updateStateData).catch(() => {})
     } catch (error) {
       toast.error(error?.response?.data?.message || t('boards.reopenFailed'))
     }
@@ -145,7 +145,7 @@ function Boards() {
       try {
         await deleteBoardDetailsAPI(b._id)
         toast.success(t('boards.permanentlyDeleted'))
-        fetchBoardsAPI(location.search).then(updateStateData)
+        fetchBoardsAPI(location.search).then(updateStateData).catch(() => {})
       } catch (error) {
         toast.error(error?.response?.data?.message || t('boards.deleteFailed'))
       }
@@ -180,7 +180,7 @@ function Boards() {
       transition: 'background-color 0.3s ease, color 0.3s ease'
     }}>
       <AppBar />
-      <Container maxWidth="xl" sx={{ py: { xs: 2.5, sm: 4 }, px: { xs: 1.5, sm: 3, md: 4 } }}>
+      <Container maxWidth="xl" sx={{ py: { xs: 2.5, sm: 4 }, pb: { xs: 'calc(80px + env(safe-area-inset-bottom, 0px))', sm: 4 }, px: { xs: 1.5, sm: 3, md: 4 } }}>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
           {/* Sidebar - ẩn trên mobile: bottom nav đã có tab Danh sách bảng,
               "Bảng đã đóng" nằm ở icon trên AppBar (mobile) */}

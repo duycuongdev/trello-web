@@ -122,10 +122,10 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
         dispatch(updateCurrentActiveBoard(newBoard))
       }
 
-      toast.success('Card copied successfully!')
+      toast.success(t('card.cardCopied'))
       onClose()
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to copy card')
+      toast.error(error?.response?.data?.message || t('card.copyFailed'))
     } finally {
       setIsSubmitting(false)
     }
@@ -163,17 +163,17 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <ContentCopyOutlinedIcon fontSize="small" color="primary" />
           <Typography variant="subtitle1" fontWeight={700}>
-            Copy Card
+            {t('cardModal.copyCard')}
           </Typography>
         </Box>
-        <IconButton size="small" onClick={onClose} aria-label="close">
+        <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
 
       {/* Title */}
       <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', display: 'block', mb: 0.5 }}>
-        TITLE
+        {t('common.title')}
       </Typography>
       <TextField
         fullWidth
@@ -190,7 +190,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
       {hasAnyKeepOption && (
         <Box sx={{ mb: 2 }}>
           <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', display: 'block', mb: 0.5 }}>
-            KEEP...
+            {t('cardModal.keep')}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.2 }}>
             {hasChecklists && (
@@ -203,7 +203,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Checklists ({card.checklists.length})</Typography>}
+                label={<Typography variant="body2">{t('cardModal.checklistsCount', { count: card.checklists.length })}</Typography>}
               />
             )}
             {hasLabels && (
@@ -216,7 +216,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Labels ({card.labels.length})</Typography>}
+                label={<Typography variant="body2">{t('cardModal.labelsCount', { count: card.labels.length })}</Typography>}
               />
             )}
             {hasAttachments && (
@@ -229,7 +229,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Attachments ({card.attachments.length})</Typography>}
+                label={<Typography variant="body2">{t('cardModal.attachmentsCount', { count: card.attachments.length })}</Typography>}
               />
             )}
             {hasDueDate && (
@@ -242,7 +242,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Due date</Typography>}
+                label={<Typography variant="body2">{t('card.dueDate')}</Typography>}
               />
             )}
             {hasMembers && (
@@ -255,7 +255,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Members ({card.memberIds.length})</Typography>}
+                label={<Typography variant="body2">{t('cardModal.membersCount', { count: card.memberIds.length })}</Typography>}
               />
             )}
             {hasCover && (
@@ -268,7 +268,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Cover image</Typography>}
+                label={<Typography variant="body2">{t('cardModal.coverImage')}</Typography>}
               />
             )}
             {hasDescription && (
@@ -281,7 +281,7 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
                     sx={{ p: 0.5 }}
                   />
                 }
-                label={<Typography variant="body2">Description</Typography>}
+                label={<Typography variant="body2">{t('card.description')}</Typography>}
               />
             )}
           </Box>
@@ -290,21 +290,21 @@ function CardCopyPopover({ anchorEl, isOpen, onClose, card, board }) {
 
       {/* Destination Section */}
       <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', display: 'block', mb: 1.5 }}>
-        COPY TO...
+        {t('boardBar.copyTo')}
       </Typography>
 
       {/* Select List */}
       <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-        <InputLabel id="copy-card-select-column-label">List</InputLabel>
+        <InputLabel id="copy-card-select-column-label">{t('common.list')}</InputLabel>
         <Select
           labelId="copy-card-select-column-label"
           value={targetColumnId}
-          label="List"
+          label={t('common.list')}
           onChange={(e) => handleColumnChange(e.target.value)}
         >
           {columns.map((col) => (
             <MenuItem key={col._id} value={col._id}>
-              {col.title} {col._id === card?.columnId ? '(current)' : ''}
+              {col.title} {col._id === card?.columnId ? t('cardModal.current') : ''}
             </MenuItem>
           ))}
         </Select>

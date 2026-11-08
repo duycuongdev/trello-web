@@ -59,8 +59,8 @@ function Settings() {
               to="/settings/security" />
           </TabList>
         </Box>
-        <TabPanel value={TABS.ACCOUNT}><AccountTab /></TabPanel>
-        <TabPanel value={TABS.SECURITY}><SecurityTab /></TabPanel>
+        <TabPanel value={TABS.ACCOUNT} sx={{ pb: { xs: 'calc(80px + env(safe-area-inset-bottom, 0px))', sm: 3 } }}><AccountTab /></TabPanel>
+        <TabPanel value={TABS.SECURITY} sx={{ pb: { xs: 'calc(80px + env(safe-area-inset-bottom, 0px))', sm: 3 } }}><SecurityTab /></TabPanel>
       </TabContext>
     </Container>
   )

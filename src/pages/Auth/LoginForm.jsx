@@ -236,7 +236,7 @@ function LoginForm() {
             <Typography variant="body2" color="text.secondary">
               {t('auth.noAccount')}{' '}
               <Link to="/register" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
-                Sign up
+                {t('auth.signUp')}
               </Link>
             </Typography>
           </Box>

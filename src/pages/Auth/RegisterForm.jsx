@@ -366,7 +366,7 @@ function RegisterForm() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, my: 1.5, px: 1.5 }}>
             <Divider sx={{ flex: 1 }} />
             <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Or continue with
+              {t('auth.orContinueWith')}
             </Typography>
             <Divider sx={{ flex: 1 }} />
           </Box>
@@ -387,9 +387,9 @@ function RegisterForm() {
           {/* Bottom link */}
           <Box sx={{ p: 1.5, textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary">
-              already have an account?{' '}
+              {t('auth.haveAccount')}{' '}
               <Link to="/login" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
-                Log in
+                {t('auth.login')}
               </Link>
             </Typography>
           </Box>

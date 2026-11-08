@@ -98,7 +98,7 @@ function CardActivitySection({
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
         <Avatar
           sx={{ width: 36, height: 36, cursor: 'pointer' }}
-          alt={currentUser?.displayName || 'Avatar'}
+          alt={currentUser?.displayName || t('common.avatar')}
           src={currentUser?.avatar}
         />
         <TextField
@@ -142,12 +142,12 @@ function CardActivitySection({
               </Typography>
 
               <Typography variant="span" sx={{ fontSize: '12px', color: 'text.secondary' }}>
-                {dayjs(comment.commentedAt).format('ddd, MMM D, YYYY h:mm A')}
+                {dayjs(comment.commentedAt).format(t('common.datetimeFormatFull'))}
               </Typography>
 
               {comment.editedAt && (
                 <Typography variant="span" sx={{ fontSize: '11px', fontStyle: 'italic', color: 'text.secondary', ml: 1 }}>
-                  (edited)
+                  {t('card.edited')}
                 </Typography>
               )}
 
@@ -177,7 +177,7 @@ function CardActivitySection({
                       onClick={() => handleSaveEdit(comment)}
                       sx={{ textTransform: 'none', fontWeight: 600 }}
                     >
-                      Save
+                      {t('common.save')}
                     </Button>
                     <Button
                       variant="text"
@@ -186,7 +186,7 @@ function CardActivitySection({
                       onClick={handleCancelEdit}
                       sx={{ textTransform: 'none' }}
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </Button>
                   </Box>
                 </Box>
@@ -218,7 +218,7 @@ function CardActivitySection({
                             '&:hover': { color: 'primary.main' }
                           }}
                         >
-                          Edit
+                          {t('common.edit')}
                         </Typography>
                       )}
                       {canDelete && (
@@ -232,7 +232,7 @@ function CardActivitySection({
                             '&:hover': { color: 'error.main' }
                           }}
                         >
-                          Delete
+                          {t('common.delete')}
                         </Typography>
                       )}
                     </Box>

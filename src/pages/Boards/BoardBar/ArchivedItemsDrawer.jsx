@@ -211,7 +211,7 @@ function ArchivedItemsDrawer({ isOpen, onClose, boardId }) {
             {t('board.archivedItems')}
           </Typography>
         </Box>
-        <IconButton size="small" onClick={onClose} aria-label="close">
+        <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>

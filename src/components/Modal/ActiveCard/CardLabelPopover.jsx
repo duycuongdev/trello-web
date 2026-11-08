@@ -192,7 +192,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
         {view === 'list' && (
           <Box>
             <Typography sx={{ fontWeight: '600', mb: 1.5, textAlign: 'center', fontSize: '15px' }}>
-              Labels
+              {t('cardModal.labelsTitle')}
             </Typography>
 
             {availableLabels.length === 0 ? (
@@ -207,10 +207,10 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
                 mb: 1.5
               }}>
                 <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600, fontSize: '0.85rem' }}>
-                  No labels yet
+                  {t('cardModal.noLabels')}
                 </Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled', mt: 0.5, display: 'block' }}>
-                  Click below to create your first label
+                  {t('cardModal.noLabelsHint')}
                 </Typography>
               </Box>
             ) : (
@@ -219,13 +219,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
                 sx={{
                   maxHeight: '260px',
                   overflowY: 'auto',
-                  pr: 0.5,
-                  '&::-webkit-scrollbar': { width: '5px' },
-                  '&::-webkit-scrollbar-track': { backgroundColor: 'transparent' },
-                  '&::-webkit-scrollbar-thumb': {
-                    backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'),
-                    borderRadius: '4px'
-                  }
+                  pr: 0.5
                 }}
               >
                 {availableLabels.map((label, idx) => {
@@ -300,7 +294,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
               onClick={handleOpenCreateView}
               sx={{ textTransform: 'none', fontWeight: 600 }}
             >
-              + Create a new label
+              {t('cardModal.createNewLabel')}
             </Button>
           </Box>
         )}
@@ -309,16 +303,16 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
         {(view === 'create' || view === 'edit') && (
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, position: 'relative' }}>
-              <IconButton size="small" onClick={() => setView('list')} sx={{ p: 0.5 }}>
+              <IconButton size="small" onClick={() => setView('list')} sx={{ p: 0.5 }} aria-label={t('common.close')}>
                 <ArrowBackIosNewIcon sx={{ fontSize: '14px' }} />
               </IconButton>
               <Typography sx={{ fontWeight: '600', flexGrow: 1, textAlign: 'center', fontSize: '15px' }}>
-                {view === 'create' ? 'Create Label' : 'Edit Label'}
+                {view === 'create' ? t('cardModal.createLabel') : t('cardModal.editLabel')}
               </Typography>
             </Box>
 
             <Typography sx={{ fontSize: '12px', fontWeight: 600, color: 'text.secondary', mb: 0.5 }}>
-              Title
+              {t('common.title')}
             </Typography>
             <TextField
               size="small"
@@ -339,7 +333,17 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
                 return (
                   <Box
                     key={color}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={color}
+                    aria-pressed={isCurrent}
                     onClick={() => setSelectedColor(color)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        setSelectedColor(color)
+                      }
+                    }}
                     sx={{
                       height: '32px',
                       borderRadius: '4px',
@@ -369,7 +373,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
                 onClick={view === 'create' ? handleSaveCreate : handleSaveEdit}
                 sx={{ textTransform: 'none', fontWeight: 600 }}
               >
-                Save
+                {t('common.save')}
               </Button>
 
               {view === 'edit' && (
@@ -381,7 +385,7 @@ function CardLabelPopover({ anchorEl, isOpen, onClose, activeCardLabels = [], on
                   startIcon={<DeleteOutlineIcon fontSize="small" />}
                   sx={{ textTransform: 'none', fontWeight: 600 }}
                 >
-                  Delete
+                  {t('common.delete')}
                 </Button>
               )}
             </Box>

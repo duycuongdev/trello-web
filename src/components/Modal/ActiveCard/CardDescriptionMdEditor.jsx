@@ -55,7 +55,7 @@ function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescript
             gap: 0.8
           }}>
             <Typography variant="caption" sx={{ fontWeight: 700, color: 'primary.main', mr: 0.5 }}>
-              Markdown Tips:
+              {t('card.markdownTips')}
             </Typography>
             <Chip size="small" label="# H1" variant="outlined" sx={{ fontSize: '0.72rem', height: 22 }} />
             <Chip size="small" label="## H2" variant="outlined" sx={{ fontSize: '0.72rem', height: 22 }} />
@@ -97,7 +97,7 @@ function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescript
               startIcon={<CloseIcon />}
               sx={{ textTransform: 'none', fontWeight: 600, borderRadius: 1.5 }}
             >
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button
               onClick={updateCardDescription}
@@ -139,7 +139,7 @@ function CardDescriptionMdEditor({ cardDescriptionProp, handleUpdateCardDescript
                     '&:hover': { borderColor: 'primary.main', bgcolor: 'action.hover' }
                   }}
                 >
-                  Edit
+                  {t('common.edit')}
                 </Button>
               </Box>
 

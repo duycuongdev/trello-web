@@ -9,7 +9,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import MailIcon from '@mui/icons-material/Mail'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
-import { FIELD_REQUIRED_MESSAGE, singleFileValidator } from '~/utils/validators'
+import { singleFileValidator } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser, updateUserAPI } from '~/redux/user/userSlice'
@@ -91,7 +91,7 @@ function AccountTab() {
           <Box>
             <Avatar
               sx={{ width: 84, height: 84, mb: 1 }}
-              alt="TrungQuanDev"
+              alt={currentUser?.displayName || t('common.avatar')}
               src={currentUser?.avatar}
             />
             <Tooltip title={t('settings.uploadAvatarTip')}>
@@ -100,7 +100,7 @@ function AccountTab() {
                 variant="contained"
                 size="small"
                 startIcon={<CloudUploadIcon />}>
-                Upload
+                {t('common.upload')}
                 <VisuallyHiddenInput type="file" onChange={uploadAvatar} />
               </Button>
             </Tooltip>
@@ -182,7 +182,7 @@ function AccountTab() {
                   )
                 }}
                 {...register('displayName', {
-                  required: FIELD_REQUIRED_MESSAGE
+                  required: t('validation.required')
                 })}
                 error={!!errors['displayName']}
               />

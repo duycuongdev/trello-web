@@ -72,7 +72,7 @@ import { fetchInvitationsAPI } from '~/redux/notifications/notificationsSlice'
 import { emitBoardUpdate, BOARD_ACTION_TYPES } from '~/sockets/boardSocketClient'
 import { socketIoInstance } from '~/socketClient'
 
-const SidebarItem = styled(Box)(({ theme }) => ({
+const SidebarItemRoot = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '6px',
@@ -89,8 +89,32 @@ const SidebarItem = styled(Box)(({ theme }) => ({
       color: theme.palette.mode === 'dark' ? '#000000de' : '#0c66e4',
       backgroundColor: theme.palette.mode === 'dark' ? '#90caf9' : '#e9f2ff'
     }
+  },
+  '&:focus-visible': {
+    outline: `2px solid ${theme.palette.primary.main}`,
+    outlineOffset: 2
   }
 }))
+
+// Mục sidebar là div có onClick → bổ sung role/tabIndex/Enter-Space để dùng được bằng bàn phím.
+// Trường hợp component="label" (upload file) giữ nguyên vì input file ẩn bên trong đã focus được.
+function SidebarItem({ onClick, component, ...props }) {
+  const actsAsButton = Boolean(onClick) && component !== 'label'
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onClick(event)
+    }
+  }
+  return (
+    <SidebarItemRoot
+      component={component}
+      onClick={onClick}
+      {...(actsAsButton && { role: 'button', tabIndex: 0, onKeyDown: handleKeyDown })}
+      {...props}
+    />
+  )
+}
 
 function ActiveCard() {
   const { t } = useTranslation()
@@ -196,9 +220,9 @@ function ActiveCard() {
   const handleDeleteCard = () => {
     confirmDeleteCard({
       title: t('cardModal.deleteCardConfirmTitle'),
-      description: 'This action will permanently delete this Card! Are you sure?',
-      confirmationText: 'Confirm',
-      cancellationText: 'Cancel'
+      description: t('cardModal.deleteCardConfirmDesc'),
+      confirmationText: t('common.confirm'),
+      cancellationText: t('common.cancel')
     }).then(() => {
       const cardId = activeCard._id
       if (searchParams.has('cardId')) {
@@ -217,7 +241,7 @@ function ActiveCard() {
         currentUser
       })
       deleteCardAPI(cardId).then(res => {
-        toast.success(res?.deleteResult || 'Card deleted successfully!')
+        toast.success(res?.deleteResult || t('board.cardPermanentlyDeleted'))
       })
     }).catch(() => {})
   }
@@ -246,9 +270,9 @@ function ActiveCard() {
         payload: { cardId: activeCard._id, columnId: activeCard.columnId },
         currentUser
       })
-      toast.success('Card archived!')
+      toast.success(t('card.cardArchived'))
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to archive card')
+      toast.error(error?.response?.data?.message || t('card.archiveFailed'))
     }
   }
 
@@ -278,9 +302,9 @@ function ActiveCard() {
         payload: restoredCard,
         currentUser
       })
-      toast.success('Card restored to board!')
+      toast.success(t('board.cardRestored'))
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to restore card')
+      toast.error(error?.response?.data?.message || t('archived.restoreCardFailed'))
     }
   }
 
@@ -317,7 +341,7 @@ function ActiveCard() {
     const file = event.target?.files?.[0]
     if (!file) return
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('File size exceeds 10MB limit!')
+      toast.error(t('card.fileTooLarge'))
       return
     }
     const formData = new FormData()
@@ -344,7 +368,7 @@ function ActiveCard() {
   const handleUploadChecklistAttachment = async (file) => {
     if (!file) return null
     if (file.size > 10 * 1024 * 1024) {
-      toast.error('File size exceeds 10MB limit!')
+      toast.error(t('card.fileTooLarge'))
       return null
     }
     const formData = new FormData()
@@ -352,10 +376,10 @@ function ActiveCard() {
 
     try {
       const uploadResult = await addCardAttachmentAPI(activeCard._id, formData, true)
-      toast.success(`Attached file: ${file.name}`)
+      toast.success(t('card.attachedFile', { name: file.name }))
       return uploadResult || { fileUrl: '', fileName: file.name }
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to upload attachment!')
+      toast.error(error?.response?.data?.message || t('card.attachmentFailed'))
       return null
     }
   }
@@ -426,7 +450,7 @@ function ActiveCard() {
       if (incomingMemberInfor.action === CARD_MEMBER_ACTION.ADD) {
         // Không toast success - user thấy mình xuất hiện trong phần Members ngay lập tức
       } else {
-        toast.info('Left card successfully!')
+        toast.info(t('card.leftCard'))
       }
     }
   }
@@ -455,7 +479,7 @@ function ActiveCard() {
           top: '8px',
           right: '8px'
         }}>
-          <IconButton size="small" onClick={handleCloseModal} aria-label="close">
+          <IconButton size="small" onClick={handleCloseModal} aria-label={t('common.close')}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -493,7 +517,7 @@ function ActiveCard() {
               <img
                 style={{ width: '100%', height: 'auto', maxHeight: '320px', borderRadius: '6px', objectFit: 'cover' }}
                 src={activeCard?.cover}
-                alt="card-cover"
+                alt={t('cardModal.cover')}
               />
             ) : (
               <Box sx={{ height: 180, background: activeCard.cover, borderRadius: '6px' }} />
@@ -593,7 +617,7 @@ function ActiveCard() {
               <Suspense fallback={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 2 }}>
                   <CircularProgress size={20} />
-                  <Typography variant="body2" color="text.secondary">Loading editor...</Typography>
+                  <Typography variant="body2" color="text.secondary">{t('common.loading')}</Typography>
                 </Box>
               }>
                 <CardDescriptionMdEditor
@@ -646,9 +670,7 @@ function ActiveCard() {
                 overflowX: { xs: 'auto', sm: 'visible' },
                 overflowY: 'hidden',
                 pb: { xs: 1, sm: 0 },
-                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' },
-                '&::-webkit-scrollbar': { height: '5px' },
-                '&::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '4px' }
+                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' }
               }}
             >
               {/* Feature 05: Xử lý hành động bản thân user tự join / leave khỏi card */}
@@ -753,9 +775,7 @@ function ActiveCard() {
                 overflowX: { xs: 'auto', sm: 'visible' },
                 overflowY: 'hidden',
                 pb: { xs: 1, sm: 0 },
-                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' },
-                '&::-webkit-scrollbar': { height: '5px' },
-                '&::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: '4px' }
+                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' }
               }}
             >
               <SidebarItem
