@@ -37,11 +37,18 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') checkSWUpdate()
 })
 
+// SW chỉ tồn tại ở bản build (vite.config.js emit sw.js); dev không cache để tránh giữ mã cũ
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <GoogleProvider>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <BrowserRouter basename='/' future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <BrowserRouter basename='/'>
           <CssVarsProvider theme={theme}>
             <ConfirmProvider defaultOptions={{
               dialogProps: { maxWidth: 'xs' },

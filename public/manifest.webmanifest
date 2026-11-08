@@ -1,0 +1,17 @@
+{
+  "name": "Trello – Kanban Boards",
+  "short_name": "Trello",
+  "description": "A learning project inspired by Trello: manage projects and tasks with intuitive Kanban boards.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0052cc",
+  "lang": "en",
+  "scope": "/",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "pwa-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "pwa-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "pwa-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

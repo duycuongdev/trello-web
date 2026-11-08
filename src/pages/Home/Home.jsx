@@ -566,7 +566,7 @@ function Home() {
       <Container maxWidth="lg" sx={{ py: { xs: 8, md: 14 } }}>
         <Grid container spacing={6} alignItems="center">
           <Grid xs={12} md={6}>
-            <Chip label="{t('home.deepTag')}" color="primary" size="small" sx={{ fontWeight: 700, mb: 2 }} />
+            <Chip label={t('home.deepTag')} color="primary" size="small" sx={{ fontWeight: 700, mb: 2 }} />
             <Typography component="h2" variant="h3" fontWeight={800} letterSpacing="-1px" sx={{ mb: 2.5 }}>
               {t('home.deepTitle')}
             </Typography>
