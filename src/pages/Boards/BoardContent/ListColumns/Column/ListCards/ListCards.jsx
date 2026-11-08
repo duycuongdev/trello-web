@@ -68,9 +68,7 @@ function ListCards({ cards }) {
                   ${theme.spacing(5)} -
                   ${theme.trello.columnHeaderheight} -
                   ${theme.trello.columnFooterHeight}
-                )`,
-        '&::-webkit-scrollbar-thumb': { backgroundColor: '#ced0da' },
-        '&::-webkit-scrollbar-thumb:hover': { backgroundColor: '#bfc2cf' }
+                )`
       }}>
         {filteredCards?.map(card => <Card key={card._id} card={card} />)}
       </Box >

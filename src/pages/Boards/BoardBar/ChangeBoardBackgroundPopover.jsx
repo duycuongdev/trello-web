@@ -24,25 +24,25 @@ import { useTranslation } from 'react-i18next'
 
 
 const PRESET_GRADIENTS = [
-  { id: 'ocean-blue', name: 'Ocean Blue', value: 'linear-gradient(135deg, #0079bf 0%, #5067c5 100%)' },
-  { id: 'sunset-glow', name: 'Sunset Glow', value: 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)' },
-  { id: 'emerald-forest', name: 'Emerald Forest', value: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' },
-  { id: 'neon-night', name: 'Neon Night', value: 'linear-gradient(135deg, #8a2387 0%, #e94057 50%, #f27121 100%)' },
-  { id: 'deep-space', name: 'Deep Space', value: 'linear-gradient(135deg, #141e30 0%, #243b55 100%)' },
-  { id: 'royal-purple', name: 'Royal Purple', value: 'linear-gradient(135deg, #654ea3 0%, #eaafc8 100%)' },
-  { id: 'cherry-blossom', name: 'Cherry Blossom', value: 'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)' },
-  { id: 'midnight-navy', name: 'Midnight Navy', value: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' }
+  { id: 'ocean-blue', nameKey: 'background.oceanBlue', value: 'linear-gradient(135deg, #0079bf 0%, #5067c5 100%)' },
+  { id: 'sunset-glow', nameKey: 'background.sunsetGlow', value: 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)' },
+  { id: 'emerald-forest', nameKey: 'background.emeraldForest', value: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' },
+  { id: 'neon-night', nameKey: 'background.neonNight', value: 'linear-gradient(135deg, #8a2387 0%, #e94057 50%, #f27121 100%)' },
+  { id: 'deep-space', nameKey: 'background.deepSpace', value: 'linear-gradient(135deg, #141e30 0%, #243b55 100%)' },
+  { id: 'royal-purple', nameKey: 'background.royalPurple', value: 'linear-gradient(135deg, #654ea3 0%, #eaafc8 100%)' },
+  { id: 'cherry-blossom', nameKey: 'background.cherryBlossom', value: 'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)' },
+  { id: 'midnight-navy', nameKey: 'background.midnightNavy', value: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)' }
 ]
 
 const PRESET_COLORS = [
-  { id: 'trello-blue', name: 'Classic Blue', value: '#0079bf' },
-  { id: 'fresh-green', name: 'Fresh Green', value: '#519839' },
-  { id: 'amber-orange', name: 'Amber Orange', value: '#d29034' },
-  { id: 'crimson-red', name: 'Crimson Red', value: '#b04632' },
-  { id: 'amethyst-purple', name: 'Purple', value: '#89609e' },
-  { id: 'bright-cyan', name: 'Bright Cyan', value: '#00aecc' },
-  { id: 'deep-charcoal', name: 'Charcoal', value: '#34495e' },
-  { id: 'elegant-navy', name: 'Navy', value: '#172b4d' }
+  { id: 'trello-blue', nameKey: 'background.classicBlue', value: '#0079bf' },
+  { id: 'fresh-green', nameKey: 'background.freshGreen', value: '#519839' },
+  { id: 'amber-orange', nameKey: 'background.amberOrange', value: '#d29034' },
+  { id: 'crimson-red', nameKey: 'background.crimsonRed', value: '#b04632' },
+  { id: 'amethyst-purple', nameKey: 'background.purple', value: '#89609e' },
+  { id: 'bright-cyan', nameKey: 'background.brightCyan', value: '#00aecc' },
+  { id: 'deep-charcoal', nameKey: 'background.charcoal', value: '#34495e' },
+  { id: 'elegant-navy', nameKey: 'background.navy', value: '#172b4d' }
 ]
 
 function ChangeBoardBackgroundPopover({
@@ -121,7 +121,7 @@ function ChangeBoardBackgroundPopover({
         <Typography variant="subtitle1" fontWeight={700}>
           {title || t('background.changeTitle')}
         </Typography>
-        <IconButton size="small" onClick={onClose}>
+        <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
@@ -161,7 +161,17 @@ function ChangeBoardBackgroundPopover({
             return (
               <Box
                 key={photo.id}
+                role="button"
+                tabIndex={0}
+                aria-label={t(photo.nameKey)}
+                aria-pressed={isSelected}
                 onClick={() => handleApplyBackground(photo.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handleApplyBackground(photo.value)
+                  }
+                }}
                 sx={{
                   position: 'relative',
                   height: 70,
@@ -210,7 +220,7 @@ function ChangeBoardBackgroundPopover({
                     textOverflow: 'ellipsis'
                   }}
                 >
-                  {photo.name}
+                  {t(photo.nameKey)}
                 </Typography>
               </Box>
             )
@@ -224,9 +234,19 @@ function ChangeBoardBackgroundPopover({
           {PRESET_GRADIENTS.map((grad) => {
             const isSelected = currentBackground === grad.value
             return (
-              <Tooltip key={grad.id} title={grad.name}>
+              <Tooltip key={grad.id} title={t(grad.nameKey)}>
                 <Box
+                  role="button"
+                  tabIndex={0}
+                  aria-label={t(grad.nameKey)}
+                  aria-pressed={isSelected}
                   onClick={() => handleApplyBackground(grad.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleApplyBackground(grad.value)
+                    }
+                  }}
                   sx={{
                     height: 52,
                     borderRadius: 1.5,
@@ -255,9 +275,19 @@ function ChangeBoardBackgroundPopover({
           {PRESET_COLORS.map((col) => {
             const isSelected = currentBackground === col.value
             return (
-              <Tooltip key={col.id} title={col.name}>
+              <Tooltip key={col.id} title={t(col.nameKey)}>
                 <Box
+                  role="button"
+                  tabIndex={0}
+                  aria-label={t(col.nameKey)}
+                  aria-pressed={isSelected}
                   onClick={() => handleApplyBackground(col.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      handleApplyBackground(col.value)
+                    }
+                  }}
                   sx={{
                     height: 52,
                     borderRadius: 1.5,
@@ -284,7 +314,7 @@ function ChangeBoardBackgroundPopover({
       {tabIndex === 3 && (
         <Box sx={{ mt: 1 }}>
           <Typography variant="caption" fontWeight={600} color="text.secondary" sx={{ display: 'block', mb: 1 }}>
-            UPLOAD FROM COMPUTER:
+            {t('background.uploadFromComputer')}
           </Typography>
 
           <Button
@@ -306,11 +336,11 @@ function ChangeBoardBackgroundPopover({
             <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange} />
           </Button>
           <Typography variant="caption" sx={{ fontSize: '11px', color: 'text.secondary', display: 'block', mt: 0.5, mb: 1.5, textAlign: 'center' }}>
-            Supported formats: JPG, PNG, WEBP (Max 10MB)
+            {t('background.supportedFormats')}
           </Typography>
 
           <Divider sx={{ my: 1.5 }}>
-            <Typography variant="caption" color="text.secondary">OR PASTE URL</Typography>
+            <Typography variant="caption" color="text.secondary">{t('background.orPasteUrl')}</Typography>
           </Divider>
 
           <TextField

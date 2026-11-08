@@ -21,7 +21,9 @@
     "dateFormatShort": "ddd, MMM D [at] h:mm A",
     "datetimeFormatFull": "ddd, MMM D, YYYY [at] h:mm A",
     "add": "Add",
-    "dateChipFormat": "MMM D"
+    "dateChipFormat": "MMM D",
+    "open": "Open",
+    "avatar": "Avatar"
   },
   "validation": {
     "required": "This field is required.",
@@ -35,7 +37,10 @@
     "pwdWeak": "Weak",
     "pwdFair": "Fair",
     "pwdGood": "Good",
-    "pwdStrong": "Strong"
+    "pwdStrong": "Strong",
+    "fileBlank": "File cannot be blank.",
+    "fileTooLarge": "Maximum file size exceeded. (10MB)",
+    "fileTypeInvalid": "File type is invalid. Only accept jpg, jpeg and png"
   },
   "mode": {
     "label": "Mode",
@@ -208,7 +213,10 @@
     "removeMemberDesc": "Remove {{name}} from this board?",
     "removeMemberFailed": "Unable to remove member",
     "youWereRemoved": "You have been removed from this board.",
-    "noTitle": "(No title)"
+    "noTitle": "(No title)",
+    "boardBackgroundUploading": "Uploading background image...",
+    "untitled": "Untitled Board",
+    "columnArchiveFailed": "Failed to archive column"
   },
   "card": {
     "dueSoon": "DUE SOON",
@@ -261,7 +269,16 @@
     "openUrl": "Open: {{url}}",
     "samplePhotos": "Sample photos",
     "updatingCover": "Updating cover...",
-    "coverUpdated": "Cover updated!"
+    "coverUpdated": "Cover updated!",
+    "copyFailed": "Failed to copy card",
+    "moveFailed": "Failed to move card",
+    "archiveFailed": "Failed to archive card",
+    "attachmentFailed": "Failed to upload attachment!",
+    "attachedFile": "Attached file: {{name}}",
+    "edited": "(edited)",
+    "currentCover": "Current Cover",
+    "markdownTips": "Markdown Tips:",
+    "addedAgo": "Added {{time}}"
   },
   "notFound": {
     "message": "The content you are looking for was not found",
@@ -301,7 +318,23 @@
     "enterTitleForThisCard": "Enter a title for this card...",
     "generalAttachments": "General Attachments",
     "labels": "Labels",
-    "checklist": "Checklist"
+    "checklist": "Checklist",
+    "copyCard": "Copy Card",
+    "moveCard": "Move Card",
+    "selectDestination": "SELECT DESTINATION",
+    "keep": "KEEP...",
+    "current": "(current)",
+    "checklistsCount": "Checklists ({{count}})",
+    "labelsCount": "Labels ({{count}})",
+    "attachmentsCount": "Attachments ({{count}})",
+    "membersCount": "Members ({{count}})",
+    "coverImage": "Cover image",
+    "dueTime": "DUE TIME",
+    "setReminder": "SET REMINDER",
+    "noLabels": "No labels yet",
+    "noLabelsHint": "Click below to create your first label",
+    "createNewLabel": "+ Create a new label",
+    "createLabel": "Create Label"
   },
   "column": {
     "deleteColumnTitle": "Delete column?",
@@ -327,7 +360,8 @@
     "yourEmail": "Your Email",
     "yourUsername": "Your Username",
     "yourDisplayName": "Your Display Name",
-    "uploadAvatarTip": "Upload a new image to update your avatar immediately."
+    "uploadAvatarTip": "Upload a new image to update your avatar immediately.",
+    "changePasswordConfirm": "You have to login again after successfully changing your password. Continue?"
   },
   "notifications": {
     "title": "Notifications",
@@ -348,7 +382,9 @@
     "accept": "Accept",
     "reject": "Reject",
     "accepted": "Accepted",
-    "rejected": "Rejected"
+    "rejected": "Rejected",
+    "assignedCardFallback": "assigned card",
+    "onBoardSuffix": " on {{board}}"
   },
   "boardBar": {
     "closeBoardTitle": "Close board?",
@@ -366,7 +402,13 @@
     "leaveBoard": "Leave board",
     "more": "More actions",
     "leaveBoardTitle": "Leave board?",
-    "leaveBoardDesc": "Are you sure you want to leave \"{{title}}\"? You will lose access to this board unless invited again."
+    "leaveBoardDesc": "Are you sure you want to leave \"{{title}}\"? You will lose access to this board unless invited again.",
+    "liveCount": "{{count}} live",
+    "showingCards": "Showing {{shown}} of {{total}} cards",
+    "keyword": "Keyword",
+    "onlyMyCards": "Only my cards",
+    "onlineNow": "Online now",
+    "copyTo": "COPY TO..."
   },
   "background": {
     "photos": "Photos",
@@ -376,7 +418,32 @@
     "changeTitle": "Change background",
     "chooseImage": "Choose image file",
     "applyUrl": "Apply Image URL",
-    "resetDefault": "Reset to Default Theme"
+    "resetDefault": "Reset to Default Theme",
+    "uploadFromComputer": "UPLOAD FROM COMPUTER:",
+    "supportedFormats": "Supported formats: JPG, PNG, WEBP (Max 10MB)",
+    "orPasteUrl": "OR PASTE URL",
+    "oceanBlue": "Ocean Blue",
+    "sunsetGlow": "Sunset Glow",
+    "emeraldForest": "Emerald Forest",
+    "neonNight": "Neon Night",
+    "deepSpace": "Deep Space",
+    "royalPurple": "Royal Purple",
+    "cherryBlossom": "Cherry Blossom",
+    "midnightNavy": "Midnight Navy",
+    "classicBlue": "Classic Blue",
+    "freshGreen": "Fresh Green",
+    "amberOrange": "Amber Orange",
+    "crimsonRed": "Crimson Red",
+    "purple": "Purple",
+    "brightCyan": "Bright Cyan",
+    "charcoal": "Charcoal",
+    "navy": "Navy",
+    "mountainPeaks": "Mountain Peaks",
+    "mistyForest": "Misty Forest",
+    "calmLake": "Calm Lake",
+    "auroraBorealis": "Aurora Borealis",
+    "starryGalaxy": "Starry Galaxy",
+    "architecture": "Architecture"
   },
   "home": {
     "getTrelloFree": "Get Trello for free",

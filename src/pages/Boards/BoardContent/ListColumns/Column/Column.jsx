@@ -2,6 +2,7 @@
 import Box from '@mui/material/Box'
 import { useState, memo } from 'react'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
@@ -75,7 +76,7 @@ function Column({ column }) {
   const [newCardTitle, setNewCardTitle] = useState('')
   const addNewCard = async () => {
     if (!newCardTitle) {
-      toast.error('Please enter Card title', { position: 'top-right' })
+      toast.error(t('board.cardTitleRequired'), { position: 'top-right' })
       return
     }
 
@@ -140,9 +141,9 @@ function Column({ column }) {
       })
 
       // gọi API xử lý phía BE
-      deleteColumnDetailsAPI(column._id).then(res => {
-        toast.success(res?.deleteResult, { position: 'top-center' })
-      })
+      deleteColumnDetailsAPI(column._id).then(() => {
+        toast.success(t('board.columnDeleted'), { position: 'top-center' })
+      }).catch(() => {})
     }).catch(() => { })
   }
 
@@ -168,9 +169,9 @@ function Column({ column }) {
           currentUser
         })
 
-        toast.success('Column archived!')
+        toast.success(t('board.columnArchived'))
       } catch (error) {
-        toast.error(error?.response?.data?.message || 'Failed to archive column')
+        toast.error(error?.response?.data?.message || t('board.columnArchiveFailed'))
       }
     }).catch(() => {})
   }
@@ -190,7 +191,7 @@ function Column({ column }) {
         payload: { columnId: column._id, title: newTitle },
         currentUser
       })
-    })
+    }).catch(() => {})
   }
 
   return (
@@ -226,17 +227,18 @@ function Column({ column }) {
           {/* prop down */}
           <Box>
             <Tooltip title={t('column.moreOptions')}>
-              <ExpandMoreIcon
-                sx={{
-                  color: 'text.primary',
-                  cursor: 'pointer'
-                }}
+              <IconButton
+                size="small"
                 id="basic-column-propdown"
                 aria-controls={open ? 'basic-menu-column-propdown' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
+                aria-label={t('column.moreOptions')}
                 onClick={handleClick}
-              />
+                sx={{ color: 'text.primary' }}
+              >
+                <ExpandMoreIcon fontSize="small" />
+              </IconButton>
             </Tooltip>
             <Menu
               id="basic-menu-column-propdown"
@@ -336,16 +338,15 @@ function Column({ column }) {
                     borderColor: (theme) => theme.palette.success.main,
                     '&:hover': { bgcolor: (theme) => theme.palette.success.main }
                   }}
-                >Add</Button>
-                <CloseIcon
-                  fontSize='small'
-                  sx={{
-                    color: (theme) => theme.palette.warning.light,
-                    cursor: 'pointer'
-                  }}
-                  // xóa value
+                >{t('common.add')}</Button>
+                <IconButton
+                  size="small"
+                  aria-label={t('common.close')}
                   onClick={toggleOpenNewCardForm}
-                />
+                  sx={{ color: (theme) => theme.palette.warning.light }}
+                >
+                  <CloseIcon fontSize='small' />
+                </IconButton>
               </Box>
             </Box>
           }

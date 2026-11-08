@@ -85,7 +85,7 @@ function KeyboardShortcutsModal({ open, onClose }) {
               {t('shortcuts.title')}
             </Typography>
           </Box>
-          <IconButton size="small" onClick={onClose} aria-label="close">
+          <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </Box>

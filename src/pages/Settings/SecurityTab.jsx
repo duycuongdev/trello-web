@@ -12,7 +12,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
-import { FIELD_REQUIRED_MESSAGE, PASSWORD_RULE, PASSWORD_RULE_MESSAGE } from '~/utils/validators'
+import { PASSWORD_RULE } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import PasswordStrengthMeter from '~/components/Form/PasswordStrengthMeter'
 import { useForm } from 'react-hook-form'
@@ -36,15 +36,15 @@ function SecurityTab() {
       title: <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <LogoutIcon sx={{ color: 'warning.dark' }} /> {t('settings.changePassword')}
       </Box>,
-      description: 'You have to login again after successfully changing your password. Continue?',
-      confirmationText: 'Confirm',
-      cancellationText: 'Cancel'
+      description: t('settings.changePasswordConfirm'),
+      confirmationText: t('common.confirm'),
+      cancellationText: t('common.cancel')
     }).then(() => {
       const { current_password, new_password } = data
 
       // Gọi API...
       toast.promise(dispatch(updateUserAPI({ current_password, new_password })), {
-        pending: 'Updating...'
+        pending: t('settings.updating')
       }).then((res) => {
         // Nếu update thành công thì điều hướng về trang dashboard
         if (!res.error) {
@@ -103,10 +103,10 @@ function SecurityTab() {
                   )
                 }}
                 {...register('current_password', {
-                  required: FIELD_REQUIRED_MESSAGE,
+                  required: t('validation.required'),
                   pattern: {
                     value: PASSWORD_RULE,
-                    message: PASSWORD_RULE_MESSAGE
+                    message: t('validation.passwordRule')
                   }
                 })}
                 error={!!errors['current_password']}
@@ -129,10 +129,10 @@ function SecurityTab() {
                   )
                 }}
                 {...register('new_password', {
-                  required: FIELD_REQUIRED_MESSAGE,
+                  required: t('validation.required'),
                   pattern: {
                     value: PASSWORD_RULE,
-                    message: PASSWORD_RULE_MESSAGE
+                    message: t('validation.passwordRule')
                   }
                 })}
                 error={!!errors['new_password']}
@@ -173,7 +173,7 @@ function SecurityTab() {
                 variant="contained"
                 color="primary"
                 fullWidth>
-                Change
+                {t('settings.update')}
               </Button>
             </Box>
           </Box>

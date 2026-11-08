@@ -137,10 +137,10 @@ function CardMovePopover({ anchorEl, isOpen, onClose, card, board }) {
         })
       }
 
-      toast.success('Card moved successfully!')
+      toast.success(t('card.cardMoved'))
       onClose()
     } catch (error) {
-      toast.error(error?.response?.data?.message || 'Failed to move card')
+      toast.error(error?.response?.data?.message || t('card.moveFailed'))
       dispatch(updateCurrentActiveBoard(board))
     } finally {
       setIsSubmitting(false)
@@ -170,30 +170,30 @@ function CardMovePopover({ anchorEl, isOpen, onClose, card, board }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <ArrowForwardOutlinedIcon fontSize="small" color="primary" />
           <Typography variant="subtitle1" fontWeight={700}>
-            Move Card
+            {t('cardModal.moveCard')}
           </Typography>
         </Box>
-        <IconButton size="small" onClick={onClose} aria-label="close">
+        <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
 
       <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', display: 'block', mb: 1.5 }}>
-        SELECT DESTINATION
+        {t('cardModal.selectDestination')}
       </Typography>
 
       {/* Select List / Column */}
       <FormControl fullWidth size="small" sx={{ mb: 2 }}>
-        <InputLabel id="move-card-select-column-label">List</InputLabel>
+        <InputLabel id="move-card-select-column-label">{t('common.list')}</InputLabel>
         <Select
           labelId="move-card-select-column-label"
           value={targetColumnId}
-          label="List"
+          label={t('common.list')}
           onChange={(e) => handleColumnChange(e.target.value)}
         >
           {columns.map((col) => (
             <MenuItem key={col._id} value={col._id}>
-              {col.title} {col._id === card?.columnId ? '(current)' : ''}
+              {col.title} {col._id === card?.columnId ? t('cardModal.current') : ''}
             </MenuItem>
           ))}
         </Select>

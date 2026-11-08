@@ -42,8 +42,8 @@ function BoardContent({
   // yêu cầu di chuyển chuột 10px thì mới kích hoạt event, fix trường hợp click bị gọi event
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
 
-  // nhấn giữ 250ms và dung sai của cảm ứng 500px thì mới kích hoạt event
-  const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 500 } })
+  // nhấn giữ 250ms mới kích hoạt drag; tolerance nhỏ để vuốt ngang vẫn cuộn board bình thường trên mobile
+  const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } })
 
   // const sensors = useSensors(pointerSensor)
   // ưu tiên kết hợp 2 loại sensor mouse và touch để trải nghiệm trên mobie tốt nhất và không bị bug

@@ -82,6 +82,9 @@ function AutoCompleteSearchBoard() {
       .then((res) => {
         setBoards(res.boards || [])
       })
+      .catch(() => {
+        setBoards([])
+      })
       .finally(() => {
         setLoading(false)
       })
@@ -113,7 +116,7 @@ function AutoCompleteSearchBoard() {
       {/* Ô tìm kiếm: luôn render trên sm trở lên, trên xs chỉ hiện khi đã mở */}
       <Box sx={{ display: { xs: mobileSearchOpen ? 'flex' : 'none', sm: 'flex' }, alignItems: 'center', gap: 0.25 }}>
         <Autocomplete
-          sx={{ width: { xs: 190, sm: 170, md: 220 } }}
+          sx={{ width: { xs: 'clamp(120px, 42vw, 190px)', sm: 170, md: 220 } }}
           id="asynchronous-search-board"
           // Cái text này hiện ra khi boards là null hoặc sau khi đã fetch boards nhưng rỗng - không có kết quả
           noOptionsText={!boards ? t('appBar.typeToSearchBoard') : t('appBar.noBoardFound')}
@@ -182,7 +185,7 @@ function AutoCompleteSearchBoard() {
         {mobileSearchOpen && (
           <IconButton
             onClick={() => setMobileSearchOpen(false)}
-            aria-label="close"
+            aria-label={t('common.close')}
             size="small"
             sx={{ color: 'white', display: { sm: 'none' } }}
           >

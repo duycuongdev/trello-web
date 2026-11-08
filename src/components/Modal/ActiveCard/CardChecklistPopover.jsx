@@ -11,10 +11,10 @@ import TaskAltOutlinedIcon from '@mui/icons-material/TaskAltOutlined'
 
 function CardChecklistPopover({ anchorEl, isOpen, onClose, onAddChecklist }) {
   const { t } = useTranslation()
-  const [title, setTitle] = useState('Checklist')
+  const [title, setTitle] = useState(t('card.checklist'))
 
   const handleClose = () => {
-    setTitle('Checklist')
+    setTitle(t('card.checklist'))
     onClose()
   }
 
@@ -64,16 +64,16 @@ function CardChecklistPopover({ anchorEl, isOpen, onClose, onAddChecklist }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <TaskAltOutlinedIcon fontSize="small" color="primary" />
           <Typography variant="subtitle1" fontWeight={700}>
-            Add checklist
+            {t('cardModal.addChecklist')}
           </Typography>
         </Box>
-        <IconButton size="small" onClick={handleClose} aria-label="close">
+        <IconButton size="small" onClick={handleClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
 
       <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 0.5, display: 'block' }}>
-        TITLE
+        {t('common.title')}
       </Typography>
       <TextField
         fullWidth
@@ -95,7 +95,7 @@ function CardChecklistPopover({ anchorEl, isOpen, onClose, onAddChecklist }) {
         onClick={handleAdd}
         sx={{ textTransform: 'none', fontWeight: 600 }}
       >
-        Add
+        {t('common.add')}
       </Button>
     </Popover>
   )

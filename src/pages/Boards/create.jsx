@@ -62,7 +62,7 @@ export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
           top: '10px',
           right: '10px'
         }}>
-          <IconButton size="small" onClick={handleCloseModal} aria-label="close">
+          <IconButton size="small" onClick={handleCloseModal} aria-label={t('common.close')}>
             <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
@@ -130,7 +130,7 @@ export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
                   onClick={handleCloseModal}
                   sx={{ textTransform: 'none', fontWeight: 600 }}
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button
                   className="interceptor-loading"
@@ -139,7 +139,7 @@ export function CreateBoardModal({ open, onClose, afterCreateNewBoard }) {
                   color="primary"
                   sx={{ textTransform: 'none', fontWeight: 600, px: 3 }}
                 >
-                  Create
+                  {t('common.create')}
                 </Button>
               </Box>
             </Box>

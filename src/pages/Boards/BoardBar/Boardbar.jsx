@@ -206,9 +206,9 @@ function BoardBar({ board, onlineUsers = [] }) {
         })
       }),
       {
-        pending: 'Uploading background image to Cloudinary...',
-        success: 'Board background updated!',
-        error: 'Failed to upload background image!'
+        pending: t('board.boardBackgroundUploading'),
+        success: t('board.boardBackgroundUpdated'),
+        error: t('board.boardBackgroundUpdateFailed')
       }
     )
   }
@@ -269,7 +269,7 @@ function BoardBar({ board, onlineUsers = [] }) {
                 }
               }}
               icon={<DashboardIcon sx={{ color: 'white !important', fontSize: '18px' }} />}
-              label={board?.title || 'Untitled Board'}
+              label={board?.title || t('board.untitled')}
               clickable
               onClick={() => {
                 setTitleValue(board?.title || '')
@@ -470,7 +470,7 @@ function BoardBar({ board, onlineUsers = [] }) {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 0.5 }, flexShrink: 0 }}>
         {/* Live Active Viewers Indicator */}
         {onlineUsers.length > 0 && (
-          <Tooltip title={`Online on this board: ${onlineUsers.map(u => u.displayName || u.email).join(', ')}`}>
+          <Tooltip title={t('boardBar.onlineOnBoard', { users: onlineUsers.map(u => u.displayName || u.email).join(', ') })}>
             <Chip
               size="small"
               icon={
@@ -483,7 +483,7 @@ function BoardBar({ board, onlineUsers = [] }) {
                   ml: 0.5
                 }} />
               }
-              label={`${onlineUsers.length} live`}
+              label={t('boardBar.liveCount', { count: onlineUsers.length })}
               sx={{
                 bgcolor: 'rgba(34, 197, 94, 0.2)',
                 color: '#bbf7d0',

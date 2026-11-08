@@ -2,6 +2,7 @@
 import Box from '@mui/material/Box'
 import Column from './Column/Column'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import ViewWeekOutlinedIcon from '@mui/icons-material/ViewWeekOutlined'
@@ -209,16 +210,17 @@ function ListColumns({ columns = [] }) {
                   '&:hover': { bgcolor: (theme) => theme.palette.success.main }
                 }}
               >{t('board.addColumn')}</Button>
-              <CloseIcon
-                fontSize='small'
+              <IconButton
+                size="small"
+                aria-label={t('common.close')}
+                onClick={toggleOpenNewColumnForm}
                 sx={{
                   color: 'white',
-                  cursor: 'pointer',
                   '&:hover': { color: (theme) => theme.palette.warning.light }
                 }}
-                // xóa value
-                onClick={toggleOpenNewColumnForm}
-              />
+              >
+                <CloseIcon fontSize='small' />
+              </IconButton>
             </Box>
           </Box>
         }

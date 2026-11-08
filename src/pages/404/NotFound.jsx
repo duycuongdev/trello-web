@@ -25,14 +25,18 @@ export default function NotFound() {
     <Box
       sx={{
         position: 'relative',
-        width: '100vw',
-        height: '100vh',
+        width: '100%',
+        minHeight: '100vh',
+        '@supports (height: 100dvh)': {
+          minHeight: '100dvh'
+        },
         overflow: 'hidden',
-        bgcolor: '#ffffff',
+        bgcolor: (theme) => theme.palette.mode === 'dark' ? '#2e3440' : '#ffffff',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         px: 3,
+        py: 4,
         '@keyframes floatUp': {
           '0%': {
             transform: 'translateY(105vh) scale(0.5)',
@@ -114,7 +118,7 @@ export default function NotFound() {
                 variant="h1"
                 sx={{
                   fontWeight: 700,
-                  color: '#2e3440',
+                  color: (theme) => theme.palette.mode === 'dark' ? '#eceff4' : '#2e3440',
                   fontSize: {
                     xs: '4rem',
                     md: '8rem'
@@ -127,7 +131,7 @@ export default function NotFound() {
               <Box
                 component="img"
                 src={compassSvg}
-                alt="Compass"
+                alt=""
                 sx={{
                   width: {
                     xs: 50,
@@ -147,7 +151,7 @@ export default function NotFound() {
                   xs: '1rem',
                   md: '1.2rem'
                 },
-                color: '#4c566a',
+                color: (theme) => theme.palette.mode === 'dark' ? '#d8dee9' : '#4c566a',
                 textAlign: {
                   xs: 'center',
                   md: 'left'
@@ -162,6 +166,7 @@ export default function NotFound() {
               href="/"
               sx={{
                 bgcolor: '#88c0d0',
+                color: '#2e3440',
                 px: 4,
                 py: 1.5,
                 borderRadius: 2,
@@ -180,7 +185,7 @@ export default function NotFound() {
           <Box
             component="img"
             src={routesSvg}
-            alt="Routes"
+            alt=""
             sx={{
               width: {
                 xs: 250,

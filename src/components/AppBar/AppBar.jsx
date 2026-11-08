@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import ModeSelect from '~/components/ModeSelect/ModeSelect'
+import LanguageSelect from '~/components/LanguageSelect/LanguageSelect'
 import { useTranslation } from 'react-i18next'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
@@ -118,9 +119,10 @@ function AppBar() {
           {/* search board */}
           <AutoCompleteSearchBoard />
 
-          {/* dark mode and light mode */}
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+          {/* dark mode + language: chỉ desktop/tablet - trên mobile truy cập qua menu Profile ở BottomNav */}
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 0.5 }}>
             <ModeSelect />
+            <LanguageSelect />
           </Box>
 
           {/* notifications + account: chỉ trên desktop/tablet - trên mobile chúng nằm ở BottomNav */}

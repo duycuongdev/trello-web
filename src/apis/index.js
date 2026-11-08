@@ -1,6 +1,7 @@
 import { API_ROOT } from '~/utils/constants'
 import authorizedAxiosInstance from '~/utils/authorizeAxios'
 import { toast } from 'react-toastify'
+import i18n from '~/i18n'
 
 // update board
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
@@ -48,7 +49,7 @@ export const loginGoogleUserAPI = async (data) => {
 
 export const verifyUserAPI = async (data) => {
   const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/verify`, data)
-  toast.success('Account verified successfully! Now you can login to enjoy our services!', {
+  toast.success(i18n.t('auth.accountVerified'), {
     theme: 'colored',
     toastId: 'account-verified-success'
   })
@@ -88,7 +89,7 @@ export const fetchBoardsAPI = async (searchPath) => {
 
 export const createNewBoardAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/boards`, data)
-  toast.success('Board created successfully')
+  toast.success(i18n.t('boards.boardCreated'))
   return response.data
 }
 
@@ -132,7 +133,7 @@ export const deleteCardAttachmentAPI = async (cardId, attachmentId) => {
 
 export const inviteUserToBoardAPI = async (data) => {
   const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/invitations/board`, data)
-  toast.success('User invited to board successfully!')
+  toast.success(i18n.t('board.invitedSuccess'))
   return response.data
 }
 

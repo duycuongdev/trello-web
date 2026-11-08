@@ -21,7 +21,9 @@
     "dateFormatShort": "ddd, D MMM [lúc] HH:mm",
     "datetimeFormatFull": "ddd, D MMM, YYYY [lúc] HH:mm",
     "add": "Thêm",
-    "dateChipFormat": "D MMM"
+    "dateChipFormat": "D MMM",
+    "open": "Mở",
+    "avatar": "Ảnh đại diện"
   },
   "validation": {
     "required": "Trường này là bắt buộc.",
@@ -35,7 +37,10 @@
     "pwdWeak": "Yếu",
     "pwdFair": "Trung bình",
     "pwdGood": "Tốt",
-    "pwdStrong": "Mạnh"
+    "pwdStrong": "Mạnh",
+    "fileBlank": "Tệp không được để trống.",
+    "fileTooLarge": "Vượt quá kích thước tệp tối đa. (10MB)",
+    "fileTypeInvalid": "Định dạng tệp không hợp lệ. Chỉ chấp nhận jpg, jpeg và png"
   },
   "mode": {
     "label": "Chế độ",
@@ -208,7 +213,10 @@
     "removeMemberDesc": "Xóa {{name}} khỏi bảng này?",
     "removeMemberFailed": "Không thể xóa thành viên",
     "youWereRemoved": "Bạn đã bị xóa khỏi bảng này.",
-    "noTitle": "(Không có tiêu đề)"
+    "noTitle": "(Không có tiêu đề)",
+    "boardBackgroundUploading": "Đang tải ảnh nền...",
+    "untitled": "Bảng chưa đặt tên",
+    "columnArchiveFailed": "Không thể lưu trữ cột"
   },
   "card": {
     "dueSoon": "SẮP ĐẾN HẠN",
@@ -261,7 +269,16 @@
     "openUrl": "Mở: {{url}}",
     "samplePhotos": "Ảnh mẫu",
     "updatingCover": "Đang cập nhật ảnh bìa...",
-    "coverUpdated": "Đã cập nhật ảnh bìa!"
+    "coverUpdated": "Đã cập nhật ảnh bìa!",
+    "copyFailed": "Không thể sao chép thẻ",
+    "moveFailed": "Không thể di chuyển thẻ",
+    "archiveFailed": "Không thể lưu trữ thẻ",
+    "attachmentFailed": "Không thể tải lên tệp đính kèm!",
+    "attachedFile": "Đã đính kèm tệp: {{name}}",
+    "edited": "(đã chỉnh sửa)",
+    "currentCover": "Ảnh bìa hiện tại",
+    "markdownTips": "Mẹo Markdown:",
+    "addedAgo": "Đã thêm {{time}}"
   },
   "notFound": {
     "message": "Không tìm thấy nội dung bạn đang tìm kiếm",
@@ -301,7 +318,23 @@
     "enterTitleForThisCard": "Nhập tiêu đề cho thẻ này...",
     "generalAttachments": "Tệp đính kèm chung",
     "labels": "Nhãn",
-    "checklist": "Việc cần làm"
+    "checklist": "Việc cần làm",
+    "copyCard": "Sao chép thẻ",
+    "moveCard": "Di chuyển thẻ",
+    "selectDestination": "CHỌN ĐÍCH ĐẾN",
+    "keep": "GIỮ LẠI...",
+    "current": "(hiện tại)",
+    "checklistsCount": "Checklist ({{count}})",
+    "labelsCount": "Nhãn ({{count}})",
+    "attachmentsCount": "Tệp đính kèm ({{count}})",
+    "membersCount": "Thành viên ({{count}})",
+    "coverImage": "Ảnh bìa",
+    "dueTime": "GIỜ ĐẾN HẠN",
+    "setReminder": "ĐẶT NHẮC NHỞ",
+    "noLabels": "Chưa có nhãn nào",
+    "noLabelsHint": "Nhấn bên dưới để tạo nhãn đầu tiên của bạn",
+    "createNewLabel": "+ Tạo nhãn mới",
+    "createLabel": "Tạo nhãn"
   },
   "column": {
     "deleteColumnTitle": "Xóa cột?",
@@ -327,7 +360,8 @@
     "yourEmail": "Email của bạn",
     "yourUsername": "Tên người dùng của bạn",
     "yourDisplayName": "Tên hiển thị của bạn",
-    "uploadAvatarTip": "Tải lên ảnh mới để cập nhật avatar ngay lập tức."
+    "uploadAvatarTip": "Tải lên ảnh mới để cập nhật avatar ngay lập tức.",
+    "changePasswordConfirm": "Bạn sẽ phải đăng nhập lại sau khi đổi mật khẩu thành công. Tiếp tục?"
   },
   "notifications": {
     "title": "Thông báo",
@@ -348,7 +382,9 @@
     "accept": "Chấp nhận",
     "reject": "Từ chối",
     "accepted": "Đã chấp nhận",
-    "rejected": "Đã từ chối"
+    "rejected": "Đã từ chối",
+    "assignedCardFallback": "thẻ được giao",
+    "onBoardSuffix": " trong bảng {{board}}"
   },
   "boardBar": {
     "closeBoardTitle": "Đóng bảng?",
@@ -366,7 +402,13 @@
     "leaveBoard": "Rời bảng",
     "more": "Hành động khác",
     "leaveBoardTitle": "Rời bảng?",
-    "leaveBoardDesc": "Bạn có chắc muốn rời khỏi \"{{title}}\"? Bạn sẽ mất quyền truy cập bảng này trừ khi được mời lại."
+    "leaveBoardDesc": "Bạn có chắc muốn rời khỏi \"{{title}}\"? Bạn sẽ mất quyền truy cập bảng này trừ khi được mời lại.",
+    "liveCount": "{{count}} trực tuyến",
+    "showingCards": "Hiển thị {{shown}} trên {{total}} thẻ",
+    "keyword": "Từ khóa",
+    "onlyMyCards": "Chỉ thẻ của tôi",
+    "onlineNow": "Đang trực tuyến",
+    "copyTo": "SAO CHÉP ĐẾN..."
   },
   "background": {
     "photos": "Ảnh",
@@ -376,7 +418,32 @@
     "changeTitle": "Đổi nền",
     "chooseImage": "Chọn file ảnh",
     "applyUrl": "Dùng ảnh từ URL",
-    "resetDefault": "Đặt lại chủ đề mặc định"
+    "resetDefault": "Đặt lại chủ đề mặc định",
+    "uploadFromComputer": "TẢI LÊN TỪ MÁY TÍNH:",
+    "supportedFormats": "Định dạng hỗ trợ: JPG, PNG, WEBP (Tối đa 10MB)",
+    "orPasteUrl": "HOẶC DÁN URL",
+    "oceanBlue": "Xanh đại dương",
+    "sunsetGlow": "Hoàng hôn rực rỡ",
+    "emeraldForest": "Rừng ngọc lục bảo",
+    "neonNight": "Đêm neon",
+    "deepSpace": "Vũ trụ sâu thẳm",
+    "royalPurple": "Tím hoàng gia",
+    "cherryBlossom": "Hoa anh đào",
+    "midnightNavy": "Xanh navy đêm",
+    "classicBlue": "Xanh cổ điển",
+    "freshGreen": "Xanh tươi mới",
+    "amberOrange": "Cam hổ phách",
+    "crimsonRed": "Đỏ thẫm",
+    "purple": "Tím",
+    "brightCyan": "Lam sáng",
+    "charcoal": "Xám than",
+    "navy": "Xanh navy",
+    "mountainPeaks": "Đỉnh núi",
+    "mistyForest": "Rừng sương mù",
+    "calmLake": "Hồ yên bình",
+    "auroraBorealis": "Bắc cực quang",
+    "starryGalaxy": "Ngân hà sao",
+    "architecture": "Kiến trúc"
   },
   "home": {
     "getTrelloFree": "Dùng Trello miễn phí",

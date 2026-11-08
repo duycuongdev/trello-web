@@ -136,10 +136,10 @@ function CardDueDatePopover({
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <WatchLaterOutlinedIcon fontSize="small" color="primary" />
           <Typography variant="subtitle1" fontWeight={700}>
-            Dates
+            {t('cardModal.dates')}
           </Typography>
         </Box>
-        <IconButton size="small" onClick={onClose} aria-label="close">
+        <IconButton size="small" onClick={onClose} aria-label={t('common.close')}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </Box>
@@ -147,7 +147,7 @@ function CardDueDatePopover({
       {/* Chọn Ngày */}
       <Box sx={{ mb: 1.5 }}>
         <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 0.5, display: 'block' }}>
-          DUE DATE
+          {t('cardModal.dueDateTitle')}
         </Typography>
         <TextField
           fullWidth
@@ -161,7 +161,7 @@ function CardDueDatePopover({
       {/* Chọn Giờ: 1 đến 12 và AM/PM */}
       <Box sx={{ mb: 1.5 }}>
         <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 0.5, display: 'block' }}>
-          DUE TIME
+          {t('cardModal.dueTime')}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {/* Giờ từ 1 đến 12 */}
@@ -212,7 +212,7 @@ function CardDueDatePopover({
       {/* Cài đặt nhắc nhở (Set Reminder) */}
       <Box sx={{ mb: 1.5 }}>
         <Typography variant="caption" fontWeight={600} sx={{ color: 'text.secondary', mb: 0.5, display: 'block' }}>
-          SET REMINDER
+          {t('cardModal.setReminder')}
         </Typography>
         <Select
           fullWidth

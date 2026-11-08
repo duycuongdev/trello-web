@@ -40,9 +40,12 @@ i18n
 
 export default i18n
 
-// Đồng bộ locale của dayjs (định dạng ngày tháng) với ngôn ngữ giao diện
-const syncDayjsLocale = (lng) => {
-  dayjs.locale(lng?.startsWith('vi') ? 'vi' : 'en')
+// Đồng bộ locale của dayjs (định dạng ngày tháng) và thẻ <html lang> (cho screen reader)
+// với ngôn ngữ giao diện
+const syncLocale = (lng) => {
+  const normalized = lng?.startsWith('vi') ? 'vi' : 'en'
+  dayjs.locale(normalized)
+  document.documentElement.lang = normalized
 }
-syncDayjsLocale(i18n.language)
-i18n.on('languageChanged', syncDayjsLocale)
+syncLocale(i18n.language)
+i18n.on('languageChanged', syncLocale)
