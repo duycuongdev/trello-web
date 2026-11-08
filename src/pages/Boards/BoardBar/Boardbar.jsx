@@ -224,7 +224,9 @@ function BoardBar({ board, onlineUsers = [] }) {
       justifyContent: { xs: 'space-between', sm: 'flex-start' },
       gap: { xs: 2, sm: 0.5 },
       overflow: 'auto',
-      paddingX: { xs: 1, sm: 2 },
+      // Lề trái 16px khớp với ml của cột đầu tiên trong BoardContent (cả mobile lẫn desktop)
+      pl: 2,
+      pr: { xs: 1, sm: 2 },
       bgcolor: board?.background
         ? 'rgba(0, 0, 0, 0.55)'
         : (theme) => (theme.palette.mode === 'dark' ? '#1e293b' : '#0747a6'),
@@ -255,8 +257,10 @@ function BoardBar({ board, onlineUsers = [] }) {
                 flex: { xs: '1 1 auto', sm: '0 1 auto' },
                 maxWidth: { sm: '320px' },
                 minWidth: 0,
-                // Mobile: giảm đệm để chữ thẳng với viền cột đầu tiên
-                px: { xs: 1.25, sm: '5px' },
+                // Mobile: bỏ đệm trái để icon + tên board thẳng hàng với viền cột đầu tiên (16px)
+                pl: { xs: 0, sm: '5px' },
+                pr: { xs: 1.25, sm: '5px' },
+                '& .MuiChip-icon': { ml: { xs: 0, sm: '5px' } },
                 '& .MuiChip-label': {
                   display: 'block',
                   overflow: 'hidden',
@@ -284,7 +288,8 @@ function BoardBar({ board, onlineUsers = [] }) {
               alignItems: 'center',
               gap: 0.75,
               height: 32,
-              px: 1,
+              pl: { xs: 0, sm: 1 },
+              pr: 1,
               borderRadius: '4px',
               bgcolor: (theme) => theme.palette.mode === 'dark' ? '#22272b' : '#ffffff',
               boxShadow: '0 0 0 2px #0052cc'
