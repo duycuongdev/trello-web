@@ -255,6 +255,8 @@ function BoardBar({ board, onlineUsers = [] }) {
                 transition: 'all 0.2s ease',
                 // Mobile: tên board chiếm khoảng trống còn lại; desktop: co theo nội dung để các nút nằm sát nhau
                 flex: { xs: '1 1 auto', sm: '0 1 auto' },
+                // Chip căn giữa nội dung theo mặc định MUI → ép icon + tên dồn về lề trái
+                justifyContent: 'flex-start',
                 maxWidth: { sm: '320px' },
                 minWidth: 0,
                 // Mobile: bỏ đệm trái để icon + tên board thẳng hàng với viền cột đầu tiên (16px)

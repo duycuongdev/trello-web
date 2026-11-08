@@ -62,7 +62,7 @@ function Home() {
       }}>
         <Container maxWidth="lg" sx={{ pt: 'calc(12px + env(safe-area-inset-top, 0px))', pb: 1.5, px: { xs: 1.5, sm: 3 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Link to="/" aria-label="Trello" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
             <Box sx={{
               width: 34,
               height: 34,
@@ -75,20 +75,17 @@ function Home() {
             }}>
               <TrelloIcon fontSize="small" sx={{ color: 'white' }} />
             </Box>
-            <Typography component="span" variant="h5" sx={{ fontWeight: 800, color: 'white', letterSpacing: '-0.5px' }}>
+            {/* Mobile hẹp: ẩn chữ để đủ chỗ cho Mode + Language + Log in + Sign up, chỉ giữ icon */}
+            <Typography component="span" variant="h5" sx={{ display: { xs: 'none', sm: 'inline' }, fontWeight: 800, color: 'white', letterSpacing: '-0.5px' }}>
               Trello
             </Typography>
           </Link>
 
           {/* Action buttons */}
           <Stack direction="row" spacing={{ xs: 0.8, sm: 1.5 }} alignItems="center">
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <ModeSelect variant="appbar" />
-            </Box>
+            <ModeSelect variant="appbar" />
 
-            <Box sx={{ display: 'block' }}>
-              <LanguageSelect variant="appbar" />
-            </Box>
+            <LanguageSelect variant="appbar" />
 
             {currentUser ? (
               <>
