@@ -1,17 +1,49 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import Board from '~/pages/Boards/_id'
-import NotFound from '~/pages/404/NotFound'
-import Auth from '~/pages/Auth/Auth'
-import AccountVerification from '~/pages/Auth/AccountVerification'
-import ForgotPassword from '~/pages/Auth/ForgotPassword'
-import ResetPassword from '~/pages/Auth/ResetPassword'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser, fetchCurrentUserAPI } from '~/redux/user/userSlice'
-import Settings from '~/pages/Settings/Settings'
-import Boards from '~/pages/Boards/index.jsx'
-import Home from '~/pages/Home/Home'
+import TrelloIcon from '~/components/Icons/TrelloIcon'
+
+// Chỉ tải mã của route đang truy cập.
+const Board = lazy(() => import('~/pages/Boards/_id'))
+const Boards = lazy(() => import('~/pages/Boards/index.jsx'))
+const Home = lazy(() => import('~/pages/Home/Home'))
+const Auth = lazy(() => import('~/pages/Auth/Auth'))
+const AccountVerification = lazy(() => import('~/pages/Auth/AccountVerification'))
+const ForgotPassword = lazy(() => import('~/pages/Auth/ForgotPassword'))
+const ResetPassword = lazy(() => import('~/pages/Auth/ResetPassword'))
+const Settings = lazy(() => import('~/pages/Settings/Settings'))
+const NotFound = lazy(() => import('~/pages/404/NotFound'))
+
+// Giữ nền theo theme trong lúc tải route để tránh lóe màu.
+const PageLoading = () => (
+  <Box sx={{
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2.5,
+    bgcolor: (theme) => theme.palette.mode === 'dark' ? '#0b1120' : '#f4f5f7'
+  }}>
+    <Box sx={{
+      width: 52,
+      height: 52,
+      borderRadius: 2.5,
+      bgcolor: '#0052cc',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: '0 8px 24px rgba(0, 82, 204, 0.35)'
+    }}>
+      <TrelloIcon sx={{ color: 'white', fontSize: 30 }} />
+    </Box>
+    <CircularProgress size={22} thickness={5} sx={{ color: '#0052cc' }} />
+  </Box>
+)
 
 /**
  * Giải pháp Clean Code trong việc xác định các route nào cần đăng nhập tài khoản xong thì mới cho truy cập
@@ -76,35 +108,37 @@ function App() {
   }, [dispatch, currentUserId, location.pathname])
 
   return (
-    <Routes>
-      {/* Landing Page: khách chưa đăng nhập xem trang giới thiệu; đã đăng nhập tự chuyển vào /boards */}
-      <Route path='/' element={currentUser ? <Navigate to='/boards/' replace={true} /> : <PageFade><Home /></PageFade>} />
-      <Route path='/home' element={<PageFade><Home /></PageFade>} />
+    <Suspense fallback={<PageLoading />}>
+      <Routes>
+        {/* Landing Page: khách chưa đăng nhập xem trang giới thiệu; đã đăng nhập tự chuyển vào /boards */}
+        <Route path='/' element={currentUser ? <Navigate to='/boards/' replace={true} /> : <PageFade><Home /></PageFade>} />
+        <Route path='/home' element={<PageFade><Home /></PageFade>} />
 
-      {/* Protected Routes (Hiểu đơn giản trong dự án của chúng ta là những route chỉ cho truy cập sau khi đã login) */}
-      <Route element={<ProtectedRoute user={currentUser} />}>
-        {/* <Outlet /> của react-router-dom sẽ chạy vào các child route trong này */}
+        {/* Protected Routes (Hiểu đơn giản trong dự án của chúng ta là những route chỉ cho truy cập sau khi đã login) */}
+        <Route element={<ProtectedRoute user={currentUser} />}>
+          {/* <Outlet /> của react-router-dom sẽ chạy vào các child route trong này */}
 
-        {/* board details route */}
-        <Route path='boards/:boardId' element={<PageFade><Board /></PageFade>} />
-        <Route path='boards/:boardId/:slug' element={<PageFade><Board /></PageFade>} />
-        <Route path='boards/' element={<PageFade><Boards /></PageFade>} />
+          {/* board details route */}
+          <Route path='boards/:boardId' element={<PageFade><Board /></PageFade>} />
+          <Route path='boards/:boardId/:slug' element={<PageFade><Board /></PageFade>} />
+          <Route path='boards/' element={<PageFade><Boards /></PageFade>} />
 
-        {/* User Settings */}
-        <Route path='settings/account' element={<PageFade><Settings /></PageFade>} />
-        <Route path='settings/security' element={<PageFade><Settings /></PageFade>} />
-      </Route>
+          {/* User Settings */}
+          <Route path='settings/account' element={<PageFade><Settings /></PageFade>} />
+          <Route path='settings/security' element={<PageFade><Settings /></PageFade>} />
+        </Route>
 
-      {/* Authentication */}
-      <Route path='login' element={<PageFade><Auth /></PageFade>} />
-      <Route path='register' element={<PageFade><Auth /></PageFade>} />
-      <Route path='/account/verification' element={<PageFade><AccountVerification /></PageFade>} />
-      <Route path='/forgot-password' element={<PageFade><ForgotPassword /></PageFade>} />
-      <Route path='/reset-password' element={<PageFade><ResetPassword /></PageFade>} />
+        {/* Authentication */}
+        <Route path='login' element={<PageFade><Auth /></PageFade>} />
+        <Route path='register' element={<PageFade><Auth /></PageFade>} />
+        <Route path='/account/verification' element={<PageFade><AccountVerification /></PageFade>} />
+        <Route path='/forgot-password' element={<PageFade><ForgotPassword /></PageFade>} />
+        <Route path='/reset-password' element={<PageFade><ResetPassword /></PageFade>} />
 
-      {/* 404 route */}
-      <Route path='*' element={<PageFade><NotFound /></PageFade>} />
-    </Routes>
+        {/* 404 route */}
+        <Route path='*' element={<PageFade><NotFound /></PageFade>} />
+      </Routes>
+    </Suspense>
   )
 }
 

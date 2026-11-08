@@ -136,7 +136,35 @@ export default defineConfig({
     ]
   },
   build: {
-    chunkSizeWarningLimit: 1200
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        // Tách vendor ổn định để cache độc lập với mã ứng dụng.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return
+          const tail = id.split('node_modules/').pop()
+          const pkg = tail.startsWith('@') ? tail.split('/').slice(0, 2).join('/') : tail.split('/')[0]
+
+          if (pkg.startsWith('@dnd-kit')) return 'vendor-dnd'
+          if (pkg === 'framer-motion' || pkg.startsWith('motion-')) return 'vendor-motion'
+          if (pkg.includes('socket.io') || pkg.includes('engine.io')) return 'vendor-socket'
+
+          // Tách React và MUI tạo chu trình phụ thuộc giữa hai chunk.
+          const reactCore = [
+            'react', 'react-dom', 'scheduler', 'react-is', 'hoist-non-react-statics',
+            'use-sync-external-store', 'react-transition-group', 'void-elements', 'html-parse-stringify',
+            'redux', 'react-redux', 'redux-persist', 'redux-thunk', 'reselect', 'immer',
+            'react-i18next', 'i18next'
+          ]
+          if (
+            pkg.startsWith('@mui') || pkg.startsWith('@emotion') ||
+            reactCore.includes(pkg) ||
+            pkg.startsWith('react-router') || pkg.startsWith('@remix-run') ||
+            pkg.startsWith('@reduxjs') || pkg.startsWith('i18next-') || pkg.startsWith('@react-oauth')
+          ) return 'vendor-ui'
+        }
+      }
+    }
   },
   // Ghim port dev: Google OAuth chỉ chấp nhận origin http://localhost:5173
   // (đã đăng ký trong Google Cloud Console). Nếu port bận thì FAIL LOUDLY
