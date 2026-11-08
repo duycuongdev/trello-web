@@ -221,8 +221,8 @@ function BoardBar({ board, onlineUsers = [] }) {
       paddingTop: 'env(safe-area-inset-top, 0px)',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: 2,
+      justifyContent: { xs: 'space-between', sm: 'flex-start' },
+      gap: { xs: 2, sm: 0.5 },
       overflow: 'auto',
       paddingX: { xs: 1, sm: 2 },
       bgcolor: board?.background
@@ -237,9 +237,9 @@ function BoardBar({ board, onlineUsers = [] }) {
       <Box sx={{
         display: 'flex',
         alignItems: 'center',
-        gap: { xs: 1, sm: 2 },
+        gap: { xs: 1, sm: 0.5 },
         // Cho phép co lại để tên board tự ellipsis thay vì đẩy tràn thanh
-        flex: '1 1 auto',
+        flex: { xs: '1 1 auto', sm: '0 1 auto' },
         minWidth: 0
       }}>
         {!isEditingTitle ? (
@@ -251,8 +251,9 @@ function BoardBar({ board, onlineUsers = [] }) {
                 fontSize: '14px',
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                // Tên board chiếm toàn bộ chỗ còn lại - dài quá thì ellipsis, bấm vào để xem/sửa
-                flex: '1 1 auto',
+                // Mobile: tên board chiếm khoảng trống còn lại; desktop: co theo nội dung để các nút nằm sát nhau
+                flex: { xs: '1 1 auto', sm: '0 1 auto' },
+                maxWidth: { sm: '320px' },
                 minWidth: 0,
                 // Mobile: giảm đệm để chữ thẳng với viền cột đầu tiên
                 px: { xs: 1.25, sm: '5px' },
@@ -466,7 +467,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         </Menu>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexShrink: 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 0.5 }, flexShrink: 0 }}>
         {/* Live Active Viewers Indicator */}
         {onlineUsers.length > 0 && (
           <Tooltip title={`Online on this board: ${onlineUsers.map(u => u.displayName || u.email).join(', ')}`}>
