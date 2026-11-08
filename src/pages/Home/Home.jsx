@@ -50,15 +50,15 @@ function Home() {
       color: (theme) => theme.palette.mode === 'dark' ? '#f1f5f9' : '#0f172a',
       transition: 'background-color 0.3s ease'
     }}>
-      {/* 1. Header / Navbar */}
+      {/* 1. Header / Navbar - đồng bộ màu xanh với AppBar các trang trong app */}
       <Box sx={{
         position: 'sticky',
         top: 0,
         zIndex: 1100,
-        backdropFilter: 'blur(12px)',
-        bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(11, 17, 32, 0.85)' : 'rgba(255, 255, 255, 0.9)',
+        bgcolor: (theme) => theme.palette.mode === 'dark' ? '#0f172a' : '#0052cc',
         borderBottom: '1px solid',
-        borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)'
+        borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+        transition: 'background-color 0.3s ease'
       }}>
         <Container maxWidth="lg" sx={{ pt: 'calc(12px + env(safe-area-inset-top, 0px))', pb: 1.5, px: { xs: 1.5, sm: 3 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           {/* Logo */}
@@ -67,7 +67,7 @@ function Home() {
               width: 34,
               height: 34,
               borderRadius: 1.5,
-              bgcolor: 'primary.main',
+              bgcolor: 'rgba(255, 255, 255, 0.16)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -75,7 +75,7 @@ function Home() {
             }}>
               <TrelloIcon fontSize="small" sx={{ color: 'white' }} />
             </Box>
-            <Typography component="span" variant="h5" sx={{ fontWeight: 800, color: 'primary.main', letterSpacing: '-0.5px' }}>
+            <Typography component="span" variant="h5" sx={{ fontWeight: 800, color: 'white', letterSpacing: '-0.5px' }}>
               Trello
             </Typography>
           </Link>
@@ -83,11 +83,11 @@ function Home() {
           {/* Action buttons */}
           <Stack direction="row" spacing={{ xs: 0.8, sm: 1.5 }} alignItems="center">
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <ModeSelect variant="page" />
+              <ModeSelect variant="appbar" />
             </Box>
 
             <Box sx={{ display: 'block' }}>
-              <LanguageSelect variant="page" />
+              <LanguageSelect variant="appbar" />
             </Box>
 
             {currentUser ? (
@@ -95,8 +95,13 @@ function Home() {
                 <Chip
                   avatar={<Avatar src={currentUser.avatar} alt={currentUser.displayName || currentUser.username} />}
                   label={currentUser.displayName || currentUser.username}
-                  variant="outlined"
-                  sx={{ display: { xs: 'none', sm: 'inline-flex' }, fontWeight: 600 }}
+                  sx={{
+                    display: { xs: 'none', sm: 'inline-flex' },
+                    fontWeight: 600,
+                    color: 'white',
+                    bgcolor: 'rgba(255, 255, 255, 0.12)',
+                    border: '1px solid rgba(255, 255, 255, 0.25)'
+                  }}
                 />
                 <Button
                   component={Link}
@@ -110,7 +115,12 @@ function Home() {
                     py: { xs: 0.8, sm: 1 },
                     fontSize: { xs: '0.85rem', sm: '0.95rem' },
                     borderRadius: 2,
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    bgcolor: 'white',
+                    // Dark mode: primary.main là xanh nhạt, không đủ tương phản trên nền nút trắng
+                    color: '#0052cc',
+                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.18)',
+                    '&:hover': { bgcolor: '#f1f5f9', boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)' }
                   }}
                 >
                   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('home.goToBoards')}</Box>
@@ -126,10 +136,11 @@ function Home() {
                   sx={{
                     textTransform: 'none',
                     fontWeight: 600,
-                    color: 'inherit',
+                    color: 'white',
                     px: { xs: 1, sm: 1.5 },
                     fontSize: { xs: '0.85rem', sm: '0.95rem' },
-                    minWidth: 'auto'
+                    minWidth: 'auto',
+                    '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.12)' }
                   }}
                 >
                   {t('home.logIn')}
@@ -146,7 +157,11 @@ function Home() {
                     fontSize: { xs: '0.85rem', sm: '0.95rem' },
                     borderRadius: 2,
                     whiteSpace: 'nowrap',
-                    boxShadow: '0 4px 14px rgba(12, 102, 228, 0.35)'
+                    bgcolor: 'white',
+                    // Dark mode: primary.main là xanh nhạt, không đủ tương phản trên nền nút trắng
+                    color: '#0052cc',
+                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.18)',
+                    '&:hover': { bgcolor: '#f1f5f9', boxShadow: '0 4px 14px rgba(0, 0, 0, 0.25)' }
                   }}
                 >
                   <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{t('home.getTrelloFree')}</Box>
