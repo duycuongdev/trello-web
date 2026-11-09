@@ -31,15 +31,46 @@ function ForgotPassword() {
   }
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 2, pt: 'calc(16px + env(safe-area-inset-top, 0px))' }}>
-      <CardEntrance delay={0.1}>
+    <Box sx={{
+      minHeight: '100vh',
+      '@supports (height: 100dvh)': { minHeight: '100dvh' },
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+      p: 2,
+      pt: 'calc(16px + env(safe-area-inset-top, 0px))',
+      pb: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+      background: (theme) => theme.palette.mode === 'dark'
+        ? 'linear-gradient(135deg, #030712 0%, #0b1329 45%, #172554 100%)'
+        : 'linear-gradient(135deg, #0747a6 0%, #0052cc 50%, #0c66e4 100%)',
+      transition: 'background 0.3s ease'
+    }}>
+      <Box sx={{
+        position: 'absolute',
+        top: '-10%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '900px',
+        height: '600px',
+        maxWidth: '160vw',
+        borderRadius: '50%',
+        background: (theme) => theme.palette.mode === 'dark'
+          ? 'radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)'
+          : 'radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%)',
+        pointerEvents: 'none',
+        zIndex: 0
+      }} />
+      <CardEntrance delay={0.1} style={{ width: '100%', maxWidth: 420, position: 'relative', zIndex: 1 }}>
         <MuiCard sx={{
           width: '100%',
           maxWidth: 420,
           borderRadius: 3.5,
           border: '1px solid',
-          borderColor: 'divider',
+          borderColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.6)',
           bgcolor: (theme) => theme.palette.mode === 'dark' ? '#1e293b' : '#ffffff',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
           p: 3
         }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mb: 2.5 }}>
@@ -101,9 +132,20 @@ function ForgotPassword() {
           )}
 
           <Box sx={{ mt: 2.5, textAlign: 'center' }}>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                '& a': {
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  color: (theme) => theme.palette.mode === 'dark' ? '#8ab4ff' : '#0c66e4',
+                  '&:hover': { textDecoration: 'underline' }
+                }
+              }}
+            >
               {t('forgotPassword.remembered')}{' '}
-              <Link to="/login" style={{ textDecoration: 'none', fontWeight: 700, color: '#0c66e4' }}>
+              <Link to="/login">
                 {t('forgotPassword.backToLogin')}
               </Link>
             </Typography>
