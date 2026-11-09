@@ -460,58 +460,88 @@ function ActiveCard() {
       disableScrollLock
       open={isShowModalActiveCard}
       onClose={handleCloseModal}
-      sx={{ overflowY: 'auto' }}>
+      sx={{
+        // Root không cuộn: chỉ vùng nội dung bên trong cuộn, nên nút Đóng luôn đứng yên.
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        overflow: 'hidden',
+        paddingTop: 'env(safe-area-inset-top, 0px)',
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+      }}>
       <Box sx={{
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: '0 1 auto',
+        minHeight: 0,
         width: { xs: '92%', sm: '90%', md: 900 },
         maxWidth: 900,
-        bgcolor: 'white',
         boxShadow: 24,
         borderRadius: '8px',
         border: 'none',
         outline: 0,
-        padding: { xs: '32px 14px 18px', sm: '40px 20px 20px' },
-        margin: { xs: '20px auto', sm: '35px auto', md: '50px auto' },
+        overflow: 'hidden',
+        margin: { xs: '12px auto', sm: '35px auto', md: '50px auto' },
         backgroundColor: (theme) => (theme.palette.mode === 'dark' ? '#1A2027' : '#fff')
       }}>
+        <IconButton
+          onClick={handleCloseModal}
+          aria-label={t('common.close')}
+          sx={{
+            position: 'absolute',
+            top: '6px',
+            right: '6px',
+            zIndex: 3,
+            width: 44,
+            height: 44,
+            borderRadius: '50%',
+            backgroundColor: (theme) => theme.palette.mode === 'dark' ? 'rgba(26, 32, 39, 0.92)' : 'rgba(255, 255, 255, 0.92)',
+            boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)',
+            '&:hover': {
+              backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#2c3641' : '#f1f2f4'
+            }
+          }}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+
         <Box sx={{
-          position: 'absolute',
-          top: '8px',
-          right: '8px'
+          flex: '1 1 auto',
+          minHeight: 0,
+          overflowY: 'auto',
+          overscrollBehavior: 'contain',
+          padding: { xs: '50px 14px 18px', sm: '40px 20px 20px' }
         }}>
-          <IconButton size="small" onClick={handleCloseModal} aria-label={t('common.close')}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </Box>
 
-        {/* Banner thông báo thẻ đã lưu trữ */}
-        {activeCard?._destroy && (
-          <Box sx={{
-            bgcolor: (theme) => theme.palette.mode === 'dark' ? '#b26b0033' : '#fff0b3',
-            color: (theme) => theme.palette.mode === 'dark' ? '#ffcc80' : '#172b4d',
-            p: 1.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            borderRadius: '4px',
-            mb: 2.5
-          }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <ArchiveOutlinedIcon fontSize="small" />
-              <Typography variant="body2" fontWeight={600}>{t('cardModal.archivedBanner')}</Typography>
+          {/* Banner thông báo thẻ đã lưu trữ */}
+          {activeCard?._destroy && (
+            <Box sx={{
+              bgcolor: (theme) => theme.palette.mode === 'dark' ? '#b26b0033' : '#fff0b3',
+              color: (theme) => theme.palette.mode === 'dark' ? '#ffcc80' : '#172b4d',
+              p: 1.5,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderRadius: '4px',
+              mb: 2.5
+            }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <ArchiveOutlinedIcon fontSize="small" />
+                <Typography variant="body2" fontWeight={600}>{t('cardModal.archivedBanner')}</Typography>
+              </Box>
+              <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button size="small" variant="contained" onClick={handleRestoreCard} sx={{ textTransform: 'none' }}>
+                  {t('cardModal.sendToBoard')}
+                </Button>
+                <Button size="small" color="error" variant="outlined" onClick={handleDeleteCard} sx={{ textTransform: 'none' }}>
+                  {t('boards.delete')}
+                </Button>
+              </Box>
             </Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Button size="small" variant="contained" onClick={handleRestoreCard} sx={{ textTransform: 'none' }}>
-                {t('cardModal.sendToBoard')}
-              </Button>
-              <Button size="small" color="error" variant="outlined" onClick={handleDeleteCard} sx={{ textTransform: 'none' }}>
-                {t('boards.delete')}
-              </Button>
-            </Box>
-          </Box>
-        )}
+          )}
 
-        {activeCard?.cover &&
+          {activeCard?.cover &&
           <Box sx={{ mb: 4 }}>
             {String(activeCard.cover).startsWith('http') ? (
               <img
@@ -523,313 +553,314 @@ function ActiveCard() {
               <Box sx={{ height: 180, background: activeCard.cover, borderRadius: '6px' }} />
             )}
           </Box>
-        }
+          }
 
-        <Box sx={{ mb: 1, mt: -3, pr: 2.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <CreditCardIcon sx={{ color: '#0052cc' }} />
+          <Box sx={{ mb: 1, mt: -3, pr: { xs: 6, sm: 4.5 }, display: 'flex', alignItems: 'center', gap: 1 }}>
+            <CreditCardIcon sx={{ color: '#0052cc' }} />
 
-          {/* Feature 01: Xử lý tiêu đề của Card */}
-          <ToggleFocusInput
-            inputFontSize='22px'
-            value={activeCard?.title}
-            onChangedValue={onUpdateCardTitle} />
-        </Box>
+            {/* Feature 01: Xử lý tiêu đề của Card */}
+            <ToggleFocusInput
+              inputFontSize='22px'
+              value={activeCard?.title}
+              onChangedValue={onUpdateCardTitle} />
+          </Box>
 
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          {/* Left side */}
-          <Grid xs={12} sm={9}>
-            <Box sx={{ display: 'flex', gap: 4, mb: 3, flexWrap: 'wrap' }}>
-              <Box>
-                <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.membersTitle')}</Typography>
-                <CardUserGroup
-                  cardMemberIds={activeCard?.memberIds}
-                  onUpdateCardMembers={onUpdateCardMembers}
-                />
-              </Box>
-
-              {!!activeCard?.labels?.length && (
+          <Grid container spacing={2} sx={{ mb: 3 }}>
+            {/* Left side */}
+            <Grid xs={12} sm={9}>
+              <Box sx={{ display: 'flex', gap: 4, mb: 3, flexWrap: 'wrap' }}>
                 <Box>
-                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.labelsTitle')}</Typography>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                    {activeCard.labels.map((label, idx) => (
-                      <Chip
-                        key={idx}
-                        label={label.title || '\u00A0'}
+                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.membersTitle')}</Typography>
+                  <CardUserGroup
+                    cardMemberIds={activeCard?.memberIds}
+                    onUpdateCardMembers={onUpdateCardMembers}
+                  />
+                </Box>
+
+                {!!activeCard?.labels?.length && (
+                  <Box>
+                    <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.labelsTitle')}</Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                      {activeCard.labels.map((label, idx) => (
+                        <Chip
+                          key={idx}
+                          label={label.title || '\u00A0'}
+                          size="small"
+                          sx={{
+                            bgcolor: label.color,
+                            color: '#fff',
+                            fontWeight: '600',
+                            borderRadius: '4px',
+                            height: '32px',
+                            px: 0.5
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Feature 09: Hiển thị Khối Hạn chót (Due Date) */}
+                {activeCard?.dueDate && (
+                  <Box>
+                    <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.dueDateTitle')}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                      <Button
                         size="small"
+                        variant="outlined"
+                        color="inherit"
+                        onClick={handleOpenDueDatePopover}
+                        endIcon={<ExpandMoreIcon fontSize="small" />}
                         sx={{
-                          bgcolor: label.color,
-                          color: '#fff',
-                          fontWeight: '600',
+                          textTransform: 'none',
+                          fontSize: '0.85rem',
+                          fontWeight: 500,
                           borderRadius: '4px',
-                          height: '32px',
-                          px: 0.5
+                          borderColor: 'divider',
+                          px: 1,
+                          py: 0.5,
+                          bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : '#f4f5f7'
                         }}
-                      />
-                    ))}
+                      >
+                        {dayjs(activeCard.dueDate).format(t('common.datetimeFormat'))}
+                      </Button>
+
+                      {activeCard?.isDueDateComplete ? (
+                        <Chip label={t('card.completed')} size="small" color="success" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
+                      ) : dayjs(activeCard.dueDate).isBefore(dayjs()) ? (
+                        <Chip label={t('card.overdue')} size="small" color="error" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
+                      ) : (activeCard?.reminderMinutes !== null && activeCard?.reminderMinutes !== undefined ? dayjs(activeCard.dueDate).diff(dayjs(), 'minute') <= activeCard.reminderMinutes : dayjs(activeCard.dueDate).diff(dayjs(), 'hour') <= 24) ? (
+                        <Chip label={t('card.dueSoon')} size="small" color="warning" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
+                      ) : null}
+                    </Box>
                   </Box>
-                </Box>
-              )}
-
-              {/* Feature 09: Hiển thị Khối Hạn chót (Due Date) */}
-              {activeCard?.dueDate && (
-                <Box>
-                  <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.dueDateTitle')}</Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color="inherit"
-                      onClick={handleOpenDueDatePopover}
-                      endIcon={<ExpandMoreIcon fontSize="small" />}
-                      sx={{
-                        textTransform: 'none',
-                        fontSize: '0.85rem',
-                        fontWeight: 500,
-                        borderRadius: '4px',
-                        borderColor: 'divider',
-                        px: 1,
-                        py: 0.5,
-                        bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : '#f4f5f7'
-                      }}
-                    >
-                      {dayjs(activeCard.dueDate).format(t('common.datetimeFormat'))}
-                    </Button>
-
-                    {activeCard?.isDueDateComplete ? (
-                      <Chip label={t('card.completed')} size="small" color="success" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
-                    ) : dayjs(activeCard.dueDate).isBefore(dayjs()) ? (
-                      <Chip label={t('card.overdue')} size="small" color="error" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
-                    ) : (activeCard?.reminderMinutes !== null && activeCard?.reminderMinutes !== undefined ? dayjs(activeCard.dueDate).diff(dayjs(), 'minute') <= activeCard.reminderMinutes : dayjs(activeCard.dueDate).diff(dayjs(), 'hour') <= 24) ? (
-                      <Chip label={t('card.dueSoon')} size="small" color="warning" sx={{ height: 24, fontWeight: 700, fontSize: '0.7rem' }} />
-                    ) : null}
-                  </Box>
-                </Box>
-              )}
-            </Box>
-
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <SubjectRoundedIcon sx={{ color: '#0052cc' }} />
-                <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>{t('cardModal.descriptionTitle')}</Typography>
+                )}
               </Box>
 
-              {/* Feature 03: Xử lý mô tả của Card */}
-              <Suspense fallback={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 2 }}>
-                  <CircularProgress size={20} />
-                  <Typography variant="body2" color="text.secondary">{t('common.loading')}</Typography>
+              <Box sx={{ mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <SubjectRoundedIcon sx={{ color: '#0052cc' }} />
+                  <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>{t('cardModal.descriptionTitle')}</Typography>
                 </Box>
-              }>
-                <CardDescriptionMdEditor
-                  cardDescriptionProp={activeCard?.description}
-                  handleUpdateCardDescription={onUpdateCardDescription}
-                />
-              </Suspense>
-            </Box>
 
-            {/* Feature 10: Xử lý tệp đính kèm (Attachments) */}
-            <CardAttachmentSection
-              attachments={activeCard?.attachments || []}
-              cardCover={activeCard?.cover}
-              onDeleteAttachment={handleDeleteAttachment}
-              onMakeCover={handleMakeCover}
-            />
-
-            {/* Feature 08: Xử lý Checklists & thanh tiến độ */}
-            <CardChecklistSection
-              checklists={activeCard?.checklists || []}
-              onUpdateCardChecklists={handleUpdateCardChecklists}
-              onUploadAttachment={handleUploadChecklistAttachment}
-              boardUsers={activeBoard?.FE_allUsers || []}
-            />
-
-            <Box sx={{ mb: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <DvrOutlinedIcon sx={{ color: '#9333ea' }} />
-                <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>{t('cardModal.activityTitle')}</Typography>
+                {/* Feature 03: Xử lý mô tả của Card */}
+                <Suspense fallback={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 2 }}>
+                    <CircularProgress size={20} />
+                    <Typography variant="body2" color="text.secondary">{t('common.loading')}</Typography>
+                  </Box>
+                }>
+                  <CardDescriptionMdEditor
+                    cardDescriptionProp={activeCard?.description}
+                    handleUpdateCardDescription={onUpdateCardDescription}
+                  />
+                </Suspense>
               </Box>
 
-              {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
-              <CardActivitySection
-                cardComments={activeCard?.comments}
-                onAddCardComment={onAddCardComment}
-                onUpdateCardComment={onUpdateCardComment}
-                onDeleteCardComment={onDeleteCardComment}
-                boardOwnerIds={activeBoard?.ownerIds || []}
+              {/* Feature 10: Xử lý tệp đính kèm (Attachments) */}
+              <CardAttachmentSection
+                attachments={activeCard?.attachments || []}
+                cardCover={activeCard?.cover}
+                onDeleteAttachment={handleDeleteAttachment}
+                onMakeCover={handleMakeCover}
               />
-            </Box>
-          </Grid>
 
-          {/* Right side - trên mobile (xs) đưa lên TRƯỚC nội dung chính (order: -1) để không phải cuộn xuống cuối */}
-          <Grid xs={12} sm={3} sx={{ order: { xs: -1, sm: 0 } }}>
-            <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.addToCard')}</Typography>
-            <Stack
-              spacing={1}
-              direction={{ xs: 'row', sm: 'column' }}
-              sx={{
-                overflowX: { xs: 'auto', sm: 'visible' },
-                overflowY: 'hidden',
-                pb: { xs: 1, sm: 0 },
-                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' }
-              }}
-            >
-              {/* Feature 05: Xử lý hành động bản thân user tự join / leave khỏi card */}
-              {!activeCard?.memberIds?.includes(currentUser._id) ? (
-                <SidebarItem
-                  className="active"
-                  onClick={() => onUpdateCardMembers({ userId: currentUser._id, action: CARD_MEMBER_ACTION.ADD })}
-                >
-                  <PersonOutlineOutlinedIcon fontSize="small" sx={{ color: '#16a34a' }} />
-                  {t('cardModal.join')}
+              {/* Feature 08: Xử lý Checklists & thanh tiến độ */}
+              <CardChecklistSection
+                checklists={activeCard?.checklists || []}
+                onUpdateCardChecklists={handleUpdateCardChecklists}
+                onUploadAttachment={handleUploadChecklistAttachment}
+                boardUsers={activeBoard?.FE_allUsers || []}
+              />
+
+              <Box sx={{ mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <DvrOutlinedIcon sx={{ color: '#9333ea' }} />
+                  <Typography variant="span" sx={{ fontWeight: '600', fontSize: '20px' }}>{t('cardModal.activityTitle')}</Typography>
+                </Box>
+
+                {/* Feature 04: Xử lý các hành động, ví dụ comment vào Card */}
+                <CardActivitySection
+                  cardComments={activeCard?.comments}
+                  onAddCardComment={onAddCardComment}
+                  onUpdateCardComment={onUpdateCardComment}
+                  onDeleteCardComment={onDeleteCardComment}
+                  boardOwnerIds={activeBoard?.ownerIds || []}
+                />
+              </Box>
+            </Grid>
+
+            {/* Right side - trên mobile (xs) đưa lên TRƯỚC nội dung chính (order: -1) để không phải cuộn xuống cuối */}
+            <Grid xs={12} sm={3} sx={{ order: { xs: -1, sm: 0 } }}>
+              <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.addToCard')}</Typography>
+              <Stack
+                spacing={1}
+                direction={{ xs: 'row', sm: 'column' }}
+                sx={{
+                  overflowX: { xs: 'auto', sm: 'visible' },
+                  overflowY: 'hidden',
+                  pb: { xs: 1, sm: 0 },
+                  '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' }
+                }}
+              >
+                {/* Feature 05: Xử lý hành động bản thân user tự join / leave khỏi card */}
+                {!activeCard?.memberIds?.includes(currentUser._id) ? (
+                  <SidebarItem
+                    className="active"
+                    onClick={() => onUpdateCardMembers({ userId: currentUser._id, action: CARD_MEMBER_ACTION.ADD })}
+                  >
+                    <PersonOutlineOutlinedIcon fontSize="small" sx={{ color: '#16a34a' }} />
+                    {t('cardModal.join')}
+                  </SidebarItem>
+                ) : (
+                  <SidebarItem
+                    className="active"
+                    onClick={() => onUpdateCardMembers({ userId: currentUser._id, action: CARD_MEMBER_ACTION.REMOVE })}
+                    sx={{
+                      '&:hover': {
+                        color: 'error.main',
+                        '& .MuiSvgIcon-root': { color: 'error.main' }
+                      }
+                    }}
+                  >
+                    <ExitToAppIcon fontSize="small" sx={{ color: '#ef4444' }} />
+                    {t('cardModal.leave')}
+                  </SidebarItem>
+                )}
+                {/* Feature 06: Xử lý hành động cập nhật ảnh Cover của Card */}
+                <SidebarItem className="active" onClick={handleOpenCoverPicker}>
+                  <ImageOutlinedIcon fontSize="small" sx={{ color: '#ec4899' }} />
+                  {t('cardModal.cover')}
+
                 </SidebarItem>
-              ) : (
+                {/* Popover chọn Cover — tái sử dụng nguyên bộ picker của board (Photos/Gradients/Colors/Upload) */}
+                <ChangeBoardBackgroundPopover
+                  anchorEl={coverPickerAnchorEl}
+                  isOpen={Boolean(coverPickerAnchorEl)}
+                  onClose={() => setCoverPickerAnchorEl(null)}
+                  currentBackground={activeCard?.cover || null}
+                  onSelectBackground={handleMakeCover}
+                  onUploadBackgroundFile={handleUploadCardCoverFile}
+                  title={t('cardModal.cover')}
+                />
+
+                {/* Feature 10: Nút Upload tệp đính kèm */}
+                <SidebarItem className="active" component="label">
+                  <AttachFileOutlinedIcon fontSize="small" sx={{ color: '#0d9488' }} />
+                  {t('cardModal.generalAttachment')}
+                  <VisuallyHiddenInput type="file" onChange={onUploadCardAttachment} />
+                </SidebarItem>
+
+                {/* Feature 07: Xử lý chọn & custom nhãn cho Card */}
+                <SidebarItem className="active" onClick={handleOpenLabelPopover}>
+                  <LocalOfferOutlinedIcon fontSize="small" sx={{ color: '#8b5cf6' }} />
+                  {t('cardModal.labels')}
+                </SidebarItem>
+
+                <CardLabelPopover
+                  anchorEl={labelAnchorEl}
+                  isOpen={isLabelOpen}
+                  onClose={handleCloseLabelPopover}
+                  activeCardLabels={activeCard?.labels || []}
+                  onUpdateCardLabels={handleUpdateCardLabels}
+                />
+
+                {/* Feature 08: Thêm Checklist */}
+                <SidebarItem className="active" onClick={handleOpenChecklistPopover}>
+                  <TaskAltOutlinedIcon fontSize="small" sx={{ color: '#16a34a' }} />
+                  {t('cardModal.checklist')}
+                </SidebarItem>
+
+                <CardChecklistPopover
+                  anchorEl={checklistAnchorEl}
+                  isOpen={isChecklistOpen}
+                  onClose={handleCloseChecklistPopover}
+                  onAddChecklist={handleAddChecklist}
+                />
+
+                {/* Feature 09: Chọn Hạn chót Dates */}
+                <SidebarItem className="active" onClick={handleOpenDueDatePopover}>
+                  <WatchLaterOutlinedIcon fontSize="small" sx={{ color: '#f59e0b' }} />
+                  {t('cardModal.dates')}
+                </SidebarItem>
+
+                <CardDueDatePopover
+                  anchorEl={dueDateAnchorEl}
+                  isOpen={isDueDateOpen}
+                  onClose={handleCloseDueDatePopover}
+                  dueDate={activeCard?.dueDate}
+                  isDueDateComplete={activeCard?.isDueDateComplete}
+                  reminderMinutes={activeCard?.reminderMinutes}
+                  onUpdateDueDate={handleUpdateDueDate}
+                />
+              </Stack>
+
+              <Divider sx={{ my: 2 }} />
+
+              <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.actions')}</Typography>
+              <Stack
+                spacing={1}
+                direction={{ xs: 'row', sm: 'column' }}
+                sx={{
+                  overflowX: { xs: 'auto', sm: 'visible' },
+                  overflowY: 'hidden',
+                  pb: { xs: 1, sm: 0 },
+                  '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' }
+                }}
+              >
                 <SidebarItem
                   className="active"
-                  onClick={() => onUpdateCardMembers({ userId: currentUser._id, action: CARD_MEMBER_ACTION.REMOVE })}
+                  onClick={handleDeleteCard}
                   sx={{
                     '&:hover': {
-                      color: 'error.main',
-                      '& .MuiSvgIcon-root': { color: 'error.main' }
+                      color: 'error.light',
+                      '& .MuiSvgIcon-root': { color: 'error.light' }
                     }
                   }}
                 >
-                  <ExitToAppIcon fontSize="small" sx={{ color: '#ef4444' }} />
-                  {t('cardModal.leave')}
+                  <DeleteForeverIcon fontSize="small" sx={{ color: '#ef4444' }} />
+                  {t('cardModal.deleteCard')}
                 </SidebarItem>
-              )}
-              {/* Feature 06: Xử lý hành động cập nhật ảnh Cover của Card */}
-              <SidebarItem className="active" onClick={handleOpenCoverPicker}>
-                <ImageOutlinedIcon fontSize="small" sx={{ color: '#ec4899' }} />
-                {t('cardModal.cover')}
 
-              </SidebarItem>
-              {/* Popover chọn Cover — tái sử dụng nguyên bộ picker của board (Photos/Gradients/Colors/Upload) */}
-              <ChangeBoardBackgroundPopover
-                anchorEl={coverPickerAnchorEl}
-                isOpen={Boolean(coverPickerAnchorEl)}
-                onClose={() => setCoverPickerAnchorEl(null)}
-                currentBackground={activeCard?.cover || null}
-                onSelectBackground={handleMakeCover}
-                onUploadBackgroundFile={handleUploadCardCoverFile}
-                title={t('cardModal.cover')}
-              />
-
-              {/* Feature 10: Nút Upload tệp đính kèm */}
-              <SidebarItem className="active" component="label">
-                <AttachFileOutlinedIcon fontSize="small" sx={{ color: '#0d9488' }} />
-                {t('cardModal.generalAttachment')}
-                <VisuallyHiddenInput type="file" onChange={onUploadCardAttachment} />
-              </SidebarItem>
-
-              {/* Feature 07: Xử lý chọn & custom nhãn cho Card */}
-              <SidebarItem className="active" onClick={handleOpenLabelPopover}>
-                <LocalOfferOutlinedIcon fontSize="small" sx={{ color: '#8b5cf6' }} />
-                {t('cardModal.labels')}
-              </SidebarItem>
-
-              <CardLabelPopover
-                anchorEl={labelAnchorEl}
-                isOpen={isLabelOpen}
-                onClose={handleCloseLabelPopover}
-                activeCardLabels={activeCard?.labels || []}
-                onUpdateCardLabels={handleUpdateCardLabels}
-              />
-
-              {/* Feature 08: Thêm Checklist */}
-              <SidebarItem className="active" onClick={handleOpenChecklistPopover}>
-                <TaskAltOutlinedIcon fontSize="small" sx={{ color: '#16a34a' }} />
-                {t('cardModal.checklist')}
-              </SidebarItem>
-
-              <CardChecklistPopover
-                anchorEl={checklistAnchorEl}
-                isOpen={isChecklistOpen}
-                onClose={handleCloseChecklistPopover}
-                onAddChecklist={handleAddChecklist}
-              />
-
-              {/* Feature 09: Chọn Hạn chót Dates */}
-              <SidebarItem className="active" onClick={handleOpenDueDatePopover}>
-                <WatchLaterOutlinedIcon fontSize="small" sx={{ color: '#f59e0b' }} />
-                {t('cardModal.dates')}
-              </SidebarItem>
-
-              <CardDueDatePopover
-                anchorEl={dueDateAnchorEl}
-                isOpen={isDueDateOpen}
-                onClose={handleCloseDueDatePopover}
-                dueDate={activeCard?.dueDate}
-                isDueDateComplete={activeCard?.isDueDateComplete}
-                reminderMinutes={activeCard?.reminderMinutes}
-                onUpdateDueDate={handleUpdateDueDate}
-              />
-            </Stack>
-
-            <Divider sx={{ my: 2 }} />
-
-            <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>{t('cardModal.actions')}</Typography>
-            <Stack
-              spacing={1}
-              direction={{ xs: 'row', sm: 'column' }}
-              sx={{
-                overflowX: { xs: 'auto', sm: 'visible' },
-                overflowY: 'hidden',
-                pb: { xs: 1, sm: 0 },
-                '& > *': { flexShrink: { xs: 0, sm: 1 }, whiteSpace: 'nowrap' }
-              }}
-            >
-              <SidebarItem
-                className="active"
-                onClick={handleDeleteCard}
-                sx={{
-                  '&:hover': {
-                    color: 'error.light',
-                    '& .MuiSvgIcon-root': { color: 'error.light' }
-                  }
-                }}
-              >
-                <DeleteForeverIcon fontSize="small" sx={{ color: '#ef4444' }} />
-                {t('cardModal.deleteCard')}
-              </SidebarItem>
-
-              <SidebarItem className="active" onClick={handleOpenMovePopover}>
-                <ArrowForwardOutlinedIcon fontSize="small" sx={{ color: '#6366f1' }} />
-                {t('cardModal.move')}
-              </SidebarItem>
-              <CardMovePopover
-                anchorEl={moveAnchorEl}
-                isOpen={isMoveOpen}
-                onClose={handleCloseMovePopover}
-                card={activeCard}
-                board={activeBoard}
-              />
-
-              <SidebarItem className="active" onClick={handleOpenCopyPopover}>
-                <ContentCopyOutlinedIcon fontSize="small" sx={{ color: '#0ea5e9' }} />
-                {t('cardModal.copy')}
-              </SidebarItem>
-              <CardCopyPopover
-                anchorEl={copyAnchorEl}
-                isOpen={isCopyOpen}
-                onClose={handleCloseCopyPopover}
-                card={activeCard}
-                board={activeBoard}
-              />
-
-              {activeCard?._destroy ? (
-                <SidebarItem className="active" onClick={handleRestoreCard}>
-                  <UndoIcon fontSize="small" sx={{ color: '#16a34a' }} />
-                  {t('cardModal.sendToBoard')}
+                <SidebarItem className="active" onClick={handleOpenMovePopover}>
+                  <ArrowForwardOutlinedIcon fontSize="small" sx={{ color: '#6366f1' }} />
+                  {t('cardModal.move')}
                 </SidebarItem>
-              ) : (
-                <SidebarItem className="active" onClick={handleArchiveCard}>
-                  <ArchiveOutlinedIcon fontSize="small" sx={{ color: '#f43f5e' }} />
-                  {t('cardModal.archive')}
+                <CardMovePopover
+                  anchorEl={moveAnchorEl}
+                  isOpen={isMoveOpen}
+                  onClose={handleCloseMovePopover}
+                  card={activeCard}
+                  board={activeBoard}
+                />
+
+                <SidebarItem className="active" onClick={handleOpenCopyPopover}>
+                  <ContentCopyOutlinedIcon fontSize="small" sx={{ color: '#0ea5e9' }} />
+                  {t('cardModal.copy')}
                 </SidebarItem>
-              )}
-            </Stack>
+                <CardCopyPopover
+                  anchorEl={copyAnchorEl}
+                  isOpen={isCopyOpen}
+                  onClose={handleCloseCopyPopover}
+                  card={activeCard}
+                  board={activeBoard}
+                />
+
+                {activeCard?._destroy ? (
+                  <SidebarItem className="active" onClick={handleRestoreCard}>
+                    <UndoIcon fontSize="small" sx={{ color: '#16a34a' }} />
+                    {t('cardModal.sendToBoard')}
+                  </SidebarItem>
+                ) : (
+                  <SidebarItem className="active" onClick={handleArchiveCard}>
+                    <ArchiveOutlinedIcon fontSize="small" sx={{ color: '#f43f5e' }} />
+                    {t('cardModal.archive')}
+                  </SidebarItem>
+                )}
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Box>
     </Modal>
   )
