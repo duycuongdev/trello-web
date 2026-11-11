@@ -129,9 +129,11 @@ function AppBar() {
           <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
             <Notifications />
 
+            {/* Desktop: navbar đã có sẵn nút Chế độ + Ngôn ngữ phía trên nên ẩn 2 mục đó trong menu Profile */}
             <Profile
               onOpenTour={() => setOpenTour(true)}
               onOpenShortcuts={() => setOpenShortcuts(true)}
+              showPreferences={false}
             />
           </Box>
         </Box>

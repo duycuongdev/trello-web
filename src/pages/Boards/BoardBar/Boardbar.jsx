@@ -221,7 +221,8 @@ function BoardBar({ board, onlineUsers = [] }) {
       paddingTop: 'env(safe-area-inset-top, 0px)',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: { xs: 'space-between', sm: 'flex-start' },
+      // Tách 2 bên trên mọi kích thước: cụm công cụ bên trái - live/mời/avatar bên phải
+      justifyContent: 'space-between',
       gap: { xs: 2, sm: 0.5 },
       overflow: 'auto',
       // Lề trái 16px khớp với ml của cột đầu tiên trong BoardContent (cả mobile lẫn desktop)
@@ -240,8 +241,8 @@ function BoardBar({ board, onlineUsers = [] }) {
         display: 'flex',
         alignItems: 'center',
         gap: { xs: 1, sm: 0.5 },
-        // Cho phép co lại để tên board tự ellipsis thay vì đẩy tràn thanh
-        flex: { xs: '1 1 auto', sm: '0 1 auto' },
+        // Chiếm toàn bộ khoảng trống còn lại để đẩy cụm live/mời/avatar sang mép phải
+        flex: '1 1 auto',
         minWidth: 0
       }}>
         {!isEditingTitle ? (
@@ -474,7 +475,7 @@ function BoardBar({ board, onlineUsers = [] }) {
         </Menu>
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 0.5 }, flexShrink: 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1.5, sm: 1 }, flexShrink: 0 }}>
         {/* Live Active Viewers Indicator */}
         {onlineUsers.length > 0 && (
           <Tooltip title={t('boardBar.onlineOnBoard', { users: onlineUsers.map(u => u.displayName || u.email).join(', ') })}>

@@ -8,7 +8,6 @@ import ListItemText from '@mui/material/ListItemText'
 import Avatar from '@mui/material/Avatar'
 import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
-import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import KeyboardOutlinedIcon from '@mui/icons-material/KeyboardOutlined'
@@ -26,7 +25,12 @@ import { useTranslation } from 'react-i18next'
 import { useColorScheme } from '@mui/material/styles'
 import { SUPPORTED_LANGUAGES } from '~/i18n'
 
-function Profile({ onOpenTour, onOpenShortcuts, openUpward = false }) {
+/**
+ * showPreferences: hiện mục "Chế độ" + "Ngôn ngữ" trong menu.
+ * - BottomNav mobile (mặc định): GIỮ, vì navbar mobile ẩn 2 nút Mode/Language.
+ * - AppBar desktop: TRUYỀN false vì navbar desktop đã có sẵn 2 nút đó (tránh trùng lặp).
+ */
+function Profile({ onOpenTour, onOpenShortcuts, openUpward = false, showPreferences = true }) {
   // Profile được render 2 lần (AppBar desktop + BottomNav mobile) nên id phải duy nhất theo instance
   const buttonId = React.useId()
   const menuId = React.useId()
@@ -131,39 +135,35 @@ function Profile({ onOpenTour, onOpenShortcuts, openUpward = false }) {
           </ListItemIcon>
           {t('profileMenu.shortcuts')}
         </MenuItem>
+        {/* Chế độ sáng/tối + ngôn ngữ: chỉ hiển thị khi navbar không có sẵn 2 nút này (mobile/BottomNav) */}
+        {showPreferences && (
+          <>
+            <Divider />
+            <MenuItem
+              onClick={(event) => { event.stopPropagation(); setThemeAnchor(event.currentTarget) }}
+              aria-haspopup="menu"
+              aria-expanded={themeAnchor ? 'true' : undefined}
+            >
+              <ListItemIcon>
+                <ModeIcon fontSize="small" sx={{ color: '#f59e0b' }} />
+              </ListItemIcon>
+              <ListItemText>{t('mode.label')}</ListItemText>
+              <ChevronRightIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+            </MenuItem>
+            <MenuItem
+              onClick={(event) => { event.stopPropagation(); setLangAnchor(event.currentTarget) }}
+              aria-haspopup="menu"
+              aria-expanded={langAnchor ? 'true' : undefined}
+            >
+              <ListItemIcon>
+                <TranslateIcon fontSize="small" sx={{ color: '#10b981' }} />
+              </ListItemIcon>
+              <ListItemText>{t('language.label')}</ListItemText>
+              <ChevronRightIcon fontSize="small" sx={{ color: 'text.secondary' }} />
+            </MenuItem>
+          </>
+        )}
         <Divider />
-        {/* Chế độ sáng/tối + ngôn ngữ: đặt trong menu Profile để truy cập được trên mobile (BottomNav) */}
-        <MenuItem
-          onClick={(event) => { event.stopPropagation(); setThemeAnchor(event.currentTarget) }}
-          aria-haspopup="menu"
-          aria-expanded={themeAnchor ? 'true' : undefined}
-        >
-          <ListItemIcon>
-            <ModeIcon fontSize="small" sx={{ color: '#f59e0b' }} />
-          </ListItemIcon>
-          <ListItemText>{t('mode.label')}</ListItemText>
-          <ChevronRightIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-        </MenuItem>
-        <MenuItem
-          onClick={(event) => { event.stopPropagation(); setLangAnchor(event.currentTarget) }}
-          aria-haspopup="menu"
-          aria-expanded={langAnchor ? 'true' : undefined}
-        >
-          <ListItemIcon>
-            <TranslateIcon fontSize="small" sx={{ color: '#10b981' }} />
-          </ListItemIcon>
-          <ListItemText>{t('language.label')}</ListItemText>
-          <ChevronRightIcon fontSize="small" sx={{ color: 'text.secondary' }} />
-        </MenuItem>
-        <Divider />
-        <Link to='/settings/account' style={{ color: 'inherit', textDecoration: 'none' }}>
-          <MenuItem>
-            <ListItemIcon>
-              <Settings fontSize="small" sx={{ color: '#6366f1' }} />
-            </ListItemIcon>
-            {t('profileMenu.settings')}
-          </MenuItem>
-        </Link>
         <MenuItem onClick={handleLogout} sx={{
           '&:hover': {
             color: 'error.main',
@@ -178,49 +178,53 @@ function Profile({ onOpenTour, onOpenShortcuts, openUpward = false }) {
       </Menu>
 
       {/* Submenu chế độ sáng/tối/hệ thống */}
-      <Menu
-        anchorEl={themeAnchor}
-        open={Boolean(themeAnchor)}
-        onClose={() => setThemeAnchor(null)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        MenuListProps={{ 'aria-label': t('mode.label') }}
-      >
-        {modeOptions.map(({ value, label, Icon }) => (
-          <MenuItem
-            key={value}
-            selected={mode === value}
-            onClick={() => { setMode(value); handleClose() }}
-          >
-            <ListItemIcon sx={{ minWidth: 32 }}>
-              <Icon fontSize="small" />
-            </ListItemIcon>
-            <Box sx={{ flexGrow: 1 }}>{label}</Box>
-            {mode === value && <CheckIcon fontSize="small" sx={{ color: 'primary.main' }} />}
-          </MenuItem>
-        ))}
-      </Menu>
+      {showPreferences && (
+        <Menu
+          anchorEl={themeAnchor}
+          open={Boolean(themeAnchor)}
+          onClose={() => setThemeAnchor(null)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          MenuListProps={{ 'aria-label': t('mode.label') }}
+        >
+          {modeOptions.map(({ value, label, Icon }) => (
+            <MenuItem
+              key={value}
+              selected={mode === value}
+              onClick={() => { setMode(value); handleClose() }}
+            >
+              <ListItemIcon sx={{ minWidth: 32 }}>
+                <Icon fontSize="small" />
+              </ListItemIcon>
+              <Box sx={{ flexGrow: 1 }}>{label}</Box>
+              {mode === value && <CheckIcon fontSize="small" sx={{ color: 'primary.main' }} />}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
 
       {/* Submenu ngôn ngữ English / Tiếng Việt */}
-      <Menu
-        anchorEl={langAnchor}
-        open={Boolean(langAnchor)}
-        onClose={() => setLangAnchor(null)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        MenuListProps={{ 'aria-label': t('language.label') }}
-      >
-        {SUPPORTED_LANGUAGES.map(({ code, label }) => (
-          <MenuItem
-            key={code}
-            selected={currentLang === code}
-            onClick={() => { i18n.changeLanguage(code); handleClose() }}
-          >
-            <Box sx={{ flexGrow: 1 }}>{label}</Box>
-            {currentLang === code && <CheckIcon fontSize="small" sx={{ color: 'primary.main' }} />}
-          </MenuItem>
-        ))}
-      </Menu>
+      {showPreferences && (
+        <Menu
+          anchorEl={langAnchor}
+          open={Boolean(langAnchor)}
+          onClose={() => setLangAnchor(null)}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          MenuListProps={{ 'aria-label': t('language.label') }}
+        >
+          {SUPPORTED_LANGUAGES.map(({ code, label }) => (
+            <MenuItem
+              key={code}
+              selected={currentLang === code}
+              onClick={() => { i18n.changeLanguage(code); handleClose() }}
+            >
+              <Box sx={{ flexGrow: 1 }}>{label}</Box>
+              {currentLang === code && <CheckIcon fontSize="small" sx={{ color: 'primary.main' }} />}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
     </Box>
   )
 }
