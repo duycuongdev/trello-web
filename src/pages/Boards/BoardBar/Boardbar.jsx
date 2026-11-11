@@ -525,6 +525,11 @@ function BoardBar({ board, onlineUsers = [] }) {
           <InviteBoardUser boardId={board?._id} board={board} iconOnly />
         </Box>
 
+        {/* Desktop (sm+): nút mời thành viên - trước đây chỉ có trên mobile */}
+        <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
+          <InviteBoardUser boardId={board?._id} board={board} />
+        </Box>
+
         {/* Mobile (xs): menu "⋯" gom các công cụ bị tràn thanh */}
         <Tooltip title={t('boardBar.more')}>
           <IconButton

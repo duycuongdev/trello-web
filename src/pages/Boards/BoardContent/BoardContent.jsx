@@ -222,7 +222,12 @@ function BoardContent({
       const { id: overCardId } = over
 
       // tìm 2 cái column của cardId
-      const activeColumn = findColumnByCardId(activeDraggingCardId)
+      // FIX BUG: sau khi đi qua onDragOver, card đã nằm sẵn trong column đích ở FE state,
+      // nên findColumnByCardId(activeDraggingCardId) trả về sai column nguồn (chính là column đích).
+      // Hậu quả: activeColumn === overColumn => nhánh "xóa card khỏi column nguồn" chạy rồi return,
+      // nhánh "thêm card vào column đích" không bao giờ chạy => card biến mất khỏi cả 2 client
+      // và cardOrderIds ở DB bị lệch với card.columnId. Column nguồn thật luôn là oldColumnWhenDraggingCard.
+      const activeColumn = oldColumnWhenDraggingCard || findColumnByCardId(activeDraggingCardId)
       const overColumn = findColumnByCardId(overCardId)
 
       // nếu không tồn tại 1 trong 2 column thì không làm gì hết, tránh crash trang web

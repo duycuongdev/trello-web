@@ -24,6 +24,15 @@ export const loginGoogleUserAPI = createAsyncThunk(
   }
 )
 
+// Đăng nhập nhanh dành cho khách (nút "Try as Guest" ở trang Login)
+export const loginGuestUserAPI = createAsyncThunk(
+  'user/loginGuestUserAPI',
+  async () => {
+    const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/users/guest_login`)
+    return response.data
+  }
+)
+
 export const fetchCurrentUserAPI = createAsyncThunk(
   'user/fetchCurrentUserAPI',
   async () => {
@@ -81,6 +90,10 @@ export const userSlice = createSlice({
       state.currentUser = user
     })
     builder.addCase(loginGoogleUserAPI.fulfilled, (state, action) => {
+      const user = action.payload
+      state.currentUser = user
+    })
+    builder.addCase(loginGuestUserAPI.fulfilled, (state, action) => {
       const user = action.payload
       state.currentUser = user
     })

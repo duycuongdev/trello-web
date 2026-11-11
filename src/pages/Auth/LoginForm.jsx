@@ -15,6 +15,7 @@ import Alert from '@mui/material/Alert'
 import Divider from '@mui/material/Divider'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import { useForm } from 'react-hook-form'
 import {
   EMAIL_RULE,  PASSWORD_RULE
@@ -22,7 +23,7 @@ import {
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
-import { loginUserApi, loginGoogleUserAPI } from '~/redux/user/userSlice'
+import { loginUserApi, loginGoogleUserAPI, loginGuestUserAPI } from '~/redux/user/userSlice'
 import { GoogleLogin } from '@react-oauth/google'
 
 function LoginForm() {
@@ -57,6 +58,16 @@ function LoginForm() {
       pending: t('auth.signingInWithGoogle')
     }).then((res) => {
       if (!res.error) { navigate('/') }
+    })
+  }
+
+  // Đăng nhập nhanh tài khoản Guest để trải nghiệm demo không cần đăng ký
+  const handleGuestLogin = () => {
+    toast.promise(dispatch(loginGuestUserAPI()), {
+      pending: t('auth.tryingAsGuest')
+    }).then((res) => {
+      if (!res.error) { navigate('/') }
+      else { toast.error(t('auth.guestLoginFailed')) }
     })
   }
 
@@ -224,6 +235,27 @@ function LoginForm() {
               text="signin_with"
               shape="rectangular"
             />
+          </Box>
+
+          {/* Try as Guest - trải nghiệm demo không cần đăng ký */}
+          <Box sx={{ px: 1.5, mb: 1 }}>
+            <Button
+              className="interceptor-loading"
+              onClick={handleGuestLogin}
+              variant="outlined"
+              color="primary"
+              size="large"
+              fullWidth
+              startIcon={<PersonOutlineIcon />}
+              sx={{
+                py: 1.1,
+                borderRadius: 2,
+                fontWeight: 700,
+                textTransform: 'none'
+              }}
+            >
+              {t('auth.tryAsGuest')}
+            </Button>
           </Box>
 
           {/* Bottom link */}

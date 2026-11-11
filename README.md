@@ -16,7 +16,9 @@
 ## 🌐 Live Demo
 
 - 🚀 **Web Application**: [https://trello-web-tawny.vercel.app](https://trello-web-tawny.vercel.app)
-- 📦 **Test Account**: Feel free to register a new account or sign in directly with your **Google Account** in just one click!
+- ⚡ **Try as Guest**: hit the **"Try as Guest"** button on the login page to explore a pre-seeded demo workspace instantly (no sign-up needed — normal registration requires Brevo email activation).
+- 🐢 Backend runs on Render free tier: **the first request may take ~30s to wake up**, then everything is snappy.
+- 📦 Prefer your own account? Register normally or sign in with your **Google Account** in one click!
 
 ---
 
@@ -152,9 +154,18 @@ Easily collaborate by adding teammates via email. Real-time notifications and in
 ---
 
 ### 15. Notification Center
-Bell icon on the navigation bar tracks invitations and approaching deadlines. Displays a friendly status when all alerts have been reviewed: *"You're all caught up!"*.
+
+Manage board invitations and deadline alerts with an intuitive *"You're all caught up!"* state.
 
 ![Notifications](./screenshots/15-notifications.png)
+
+---
+
+## ⚡ Real-Time Proof
+
+Two independent browser sessions watching the same board. Dragging a card between columns in one window propagates **instantly** to the other through the Socket.IO `board:<id>` room — no refresh, no polling.
+
+![Real-time demo — two windows, one board](./screenshots/16-realtime-demo.gif)
 
 ---
 
