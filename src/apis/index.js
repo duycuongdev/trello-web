@@ -42,11 +42,6 @@ export const registerUserAPI = async (data) => {
   return response.data
 }
 
-export const loginGoogleUserAPI = async (data) => {
-  const response = await authorizedAxiosInstance.post(`${API_ROOT}/v1/users/google-login`, data)
-  return response.data
-}
-
 export const verifyUserAPI = async (data) => {
   const response = await authorizedAxiosInstance.put(`${API_ROOT}/v1/users/verify`, data)
   toast.success(i18n.t('auth.accountVerified'), {
@@ -74,11 +69,6 @@ export const refreshTokenAPI = async (refreshToken) => {
     headers['x-refresh-token'] = refreshToken
   }
   const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/users/refresh_token`, { headers })
-  return response.data
-}
-
-export const fetchCurrentUserAPI = async () => {
-  const response = await authorizedAxiosInstance.get(`${API_ROOT}/v1/users/me`)
   return response.data
 }
 

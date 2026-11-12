@@ -37,15 +37,12 @@ function BoardContent({
   moveCardInTheSameColumn,
   moveCardToDifferentColumn
 }) {
-  // const pointerSensor = useSensor(PointerSensor, { activationConstraint: { distance: 10 } })
-
   // yêu cầu di chuyển chuột 10px thì mới kích hoạt event, fix trường hợp click bị gọi event
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
 
   // nhấn giữ 250ms mới kích hoạt drag; tolerance nhỏ để vuốt ngang vẫn cuộn board bình thường trên mobile
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 8 } })
 
-  // const sensors = useSensors(pointerSensor)
   // ưu tiên kết hợp 2 loại sensor mouse và touch để trải nghiệm trên mobie tốt nhất và không bị bug
   const sensors = useSensors(mouseSensor, touchSensor)
 
@@ -152,7 +149,6 @@ function BoardContent({
   }
 
   const handleDragStart = (event) => {
-    // console.log ('handleDragEnd: ', event)
     setActiveDragItemId(event?.active?.id)
     setActiveDragItemType(event?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
     setActiveDragItemData(event?.active?.data?.current)
@@ -168,7 +164,6 @@ function BoardContent({
     // không làm gì thêm nếu đang kéo column
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return
 
-    // console.log('handleDragEnd: ', event)
     //  còn nếu kéo card thì xử lí thêm để có thể kéo card qua lại giữa các columns
     const { active, over } = event
 
@@ -208,7 +203,6 @@ function BoardContent({
   }
 
   const handleDragEnd = (event) => {
-    // console.log('handleDragEnd: ', event)
     const { active, over } = event
 
     // kiểm tra nếu không tồn tại over (kéo linh tinh ra ngoài thì return luôn tránh lỗi)
@@ -283,7 +277,6 @@ function BoardContent({
 
     // xử lý kéo thả columns
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
-      // console.log('hành động kéo thả column - tạm thời không làm gì')
       // nếu vị trí sau khi kéo thả khác với vị trí ban đầu
       if (active.id !== over.id) {
         // lấy vị trí cũ
@@ -328,11 +321,6 @@ function BoardContent({
     const pointerInterSection = pointerWithin(args)
     // mảng rỗng (khi kéo ra ngoài) thì return luôn
     if (!pointerInterSection?.length) return
-
-    // thuật toán phát hiện va chạm sẽ trả về 1 mảng các va chạm ở đây
-    // const intersection = !!pointerInterSection?.length
-    //   ? pointerInterSection
-    //   : rectIntersection(args)
 
     // tìm overId đầu tiên trong đám pointerInterSection
     let overId = getFirstCollision(pointerInterSection, 'id')

@@ -1,4 +1,3 @@
-// import React from 'react'
 import ReactDOM from 'react-dom/client'
 // i18n song ngữ (EN/VI) - khởi tạo trước App
 import '~/i18n'

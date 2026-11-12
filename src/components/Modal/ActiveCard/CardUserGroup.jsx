@@ -30,11 +30,11 @@ function CardUserGroup({ cardMemberIds = [], onUpdateCardMembers }) {
   const FE_CardMembers = board?.FE_allUsers?.filter(user => cardMemberIds.includes(user._id))
 
   const handleUpdateCardMembers = (user) => {
-    const incomingMemberInfor = {
+    const incomingMemberInfo = {
       userId: user._id,
       action: cardMemberIds.includes(user._id) ? CARD_MEMBER_ACTION.REMOVE : CARD_MEMBER_ACTION.ADD
     }
-    onUpdateCardMembers(incomingMemberInfor)
+    onUpdateCardMembers(incomingMemberInfo)
   }
 
   // Lưu ý ở đây chúng ta không dùng Component AvatarGroup của MUI bởi nó không hỗ trợ tốt trong việc chúng ta cần custom & trigger xử lý phần tử tính toán cuối, đơn giản là cứ dùng Box và CSS - Style đám Avatar cho chuẩn kết hợp tính toán một chút thôi.

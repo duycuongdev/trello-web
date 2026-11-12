@@ -443,11 +443,11 @@ function ActiveCard() {
     return updatedCard
   }
 
-  const onUpdateCardMembers = async (incomingMemberInfor) => {
-    await callApiUpdateCard({ incomingMemberInfor })
+  const onUpdateCardMembers = async (incomingMemberInfo) => {
+    await callApiUpdateCard({ incomingMemberInfo })
     dispatch(fetchInvitationsAPI())
-    if (incomingMemberInfor?.userId === currentUser._id) {
-      if (incomingMemberInfor.action === CARD_MEMBER_ACTION.ADD) {
+    if (incomingMemberInfo?.userId === currentUser._id) {
+      if (incomingMemberInfo.action === CARD_MEMBER_ACTION.ADD) {
         // Không toast success - user thấy mình xuất hiện trong phần Members ngay lập tức
       } else {
         toast.info(t('card.leftCard'))
