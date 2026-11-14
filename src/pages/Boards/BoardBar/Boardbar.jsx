@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import dayjs from 'dayjs'
 import { useSelector, useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
@@ -12,6 +13,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import FilterIcon from '@mui/icons-material/FilterList'
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined'
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
 import FolderOffOutlinedIcon from '@mui/icons-material/FolderOffOutlined'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
@@ -120,6 +122,48 @@ function BoardBar({ board, onlineUsers = [] }) {
         toast.error(error?.response?.data?.message || t('boardBar.leaveFailed'))
       }
     }).catch(() => {})
+  }
+
+  const handleExportBoard = () => {
+    try {
+      if (!board) return
+      const exportData = {
+        title: board.title,
+        description: board.description || '',
+        exportedAt: new Date().toISOString(),
+        version: '1.0',
+        columns: (board.columns || []).map(col => ({
+          title: col.title,
+          cards: (col.cards || []).filter(c => !c.FE_PlaceholderCard).map(card => ({
+            title: card.title,
+            description: card.description || '',
+            dueDate: card.dueDate || null,
+            isDueDateComplete: Boolean(card.isDueDateComplete),
+            labels: card.labels || [],
+            checklists: (card.checklists || []).map(cl => ({
+              title: cl.title,
+              items: (cl.items || []).map(item => ({
+                title: item.title,
+                isDone: Boolean(item.isDone)
+              }))
+            }))
+          }))
+        }))
+      }
+
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportData, null, 2))}`
+      const downloadAnchor = document.createElement('a')
+      downloadAnchor.setAttribute('href', jsonString)
+      const fileName = `${slugify(board.title || 'board')}-export-${dayjs().format('YYYYMMDD-HHmmss')}.json`
+      downloadAnchor.setAttribute('download', fileName)
+      document.body.appendChild(downloadAnchor)
+      downloadAnchor.click()
+      downloadAnchor.remove()
+
+      toast.success(t('boardBar.exportSuccess'))
+    } catch (_err) {
+      toast.error('Export failed!')
+    }
   }
 
   const cardFilter = useSelector(selectCardFilter)
@@ -396,6 +440,15 @@ function BoardBar({ board, onlineUsers = [] }) {
           onClick={() => setIsArchivedOpen(true)}
         />
 
+        {/* Nút Xuất dữ liệu Bảng (Export Board JSON) */}
+        <Chip
+          sx={{ ...MENU_STYLES, display: { xs: 'none', sm: 'inline-flex' } }}
+          icon={<FileDownloadOutlinedIcon />}
+          label={t('boardBar.exportBoard')}
+          clickable
+          onClick={handleExportBoard}
+        />
+
         <ArchivedItemsDrawer
           isOpen={isArchivedOpen}
           onClose={() => setIsArchivedOpen(false)}
@@ -455,6 +508,12 @@ function BoardBar({ board, onlineUsers = [] }) {
               <ArchiveOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <Typography variant="inherit">{t('boardBar.archived')}</Typography>
+          </MenuItem>
+          <MenuItem onClick={() => { setMoreAnchorEl(null); handleExportBoard() }}>
+            <ListItemIcon sx={{ color: '#0ea5e9' }}>
+              <FileDownloadOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="inherit">{t('boardBar.exportBoard')}</Typography>
           </MenuItem>
           {isOwner && (
             <MenuItem onClick={() => { setMoreAnchorEl(null); handleCloseBoard() }}>

@@ -400,6 +400,8 @@
     "filters": "Bộ lọc",
     "background": "Nền bảng",
     "archived": "Đã lưu trữ",
+    "exportBoard": "Xuất bảng",
+    "exportSuccess": "Xuất dữ liệu bảng thành công!",
     "closeBoard": "Đóng bảng",
     "leaveBoard": "Rời bảng",
     "more": "Hành động khác",

@@ -25,6 +25,7 @@ const persistor = persistStore(store)
 import { injectStore } from '~/utils/authorizeAxios'
 import GoogleProvider from '~/components/GoogleProvider'
 import { MotionConfig } from 'framer-motion'
+import ErrorBoundary from '~/components/ErrorBoundary/ErrorBoundary'
 injectStore(store)
 
 // PWA: kiểm tra service worker mới khi người dùng quay lại app.
@@ -98,7 +99,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <CssBaseline />
               {/* reducedMotion="user": tự tắt animation khi người dùng bật Reduce Motion trong hệ điều hành */}
               <MotionConfig reducedMotion="user">
-                <App />
+                <ErrorBoundary>
+                  <App />
+                </ErrorBoundary>
               </MotionConfig>
               <ToastContainer
                 position='top-center'

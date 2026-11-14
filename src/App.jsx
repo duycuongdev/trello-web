@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from 'react'
+import { useEffect, lazy, Suspense, useRef } from 'react'
 import { Routes, Route, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import Box from '@mui/material/Box'
@@ -79,21 +79,28 @@ function App() {
   const location = useLocation()
   const currentUser = useSelector(selectCurrentUser)
   const currentUserId = currentUser?._id
+  const lastSessionCheckRef = useRef(0)
 
-  // Xác thực phiên làm việc liên tục:
-  // 1. Khi app mount hoặc currentUserId thay đổi
-  // 2. Khi người dùng click chuyển hướng giữa các trang (location.pathname)
-  // 3. Khi người dùng switch tab quay lại cửa sổ trình duyệt (window focus & visibilitychange)
+  // Xác thực phiên làm việc thông minh (kèm throttle để tránh spam request liên tục):
+  // 1. Khi app mount hoặc currentUserId thay đổi -> kiểm tra ngay
+  // 2. Khi chuyển trang (location.pathname) -> kiểm tra nếu đã qua ít nhất 60s kể từ lần check trước
+  // 3. Khi người dùng focus/quay lại tab -> kiểm tra nếu đã qua ít nhất 30s kể từ lần check trước
   // Nếu user đã bị xóa hoặc vô hiệu hóa trong DB, interceptor 401 sẽ tự động kích hoạt logoutUserAPI ngay lập tức.
   useEffect(() => {
     if (!currentUserId) return
 
-    // Kiểm tra ngay khi mount hoặc khi route thay đổi
-    dispatch(fetchCurrentUserAPI())
+    const now = Date.now()
+    // Nếu vừa mới kiểm tra trong vòng 60 giây trước đó thì bỏ qua lần đổi route này
+    if (now - lastSessionCheckRef.current >= 60000) {
+      lastSessionCheckRef.current = now
+      dispatch(fetchCurrentUserAPI())
+    }
 
-    // Kiểm tra ngay lập tức khi người dùng quay lại tab (ví dụ sau khi thao tác xóa tài khoản trong DB)
+    // Khi người dùng quay lại tab (focus hoặc visibilitychange), kiểm tra với throttle 30s
     const handleCheckSession = () => {
-      if (document.visibilityState === 'visible') {
+      const currentTime = Date.now()
+      if (document.visibilityState === 'visible' && currentTime - lastSessionCheckRef.current >= 30000) {
+        lastSessionCheckRef.current = currentTime
         dispatch(fetchCurrentUserAPI())
       }
     }

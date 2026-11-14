@@ -400,6 +400,8 @@
     "filters": "Filters",
     "background": "Background",
     "archived": "Archived",
+    "exportBoard": "Export Board",
+    "exportSuccess": "Board exported successfully!",
     "closeBoard": "Close board",
     "leaveBoard": "Leave board",
     "more": "More actions",
